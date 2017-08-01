@@ -1,5 +1,65 @@
 ---
 format: Markdown
+title: Heynihao
 ...
 
-test
+# General
+
+**我需要治疗** from Beihang University
+
+# Workshop
+
+[tips and tricks]() 小提示，tricks，易错点
+
+[code library]() 代码模板
+
+[conclusion]() 结论，公式
+
+## coldwater
+
+[self page](coldwater/Front Page)
+
+组织好队伍训练，监督队员补题写总结。康复训练。
+
+接锅：dp，图论，数据结构，字符串。
+
+## ShinriiTin
+
+[self page](ShinriiTin/Front Page)
+
+接锅：
+
+## zhongzihao
+
+[self page](zhongzihao/Front Page)
+
+接锅：
+
+## Unsolved
+
+# BUAA 2017 Summer Training
+
+<!-- format: date [contestName]() **DONE** `partners` `pro: solved/total` `rk: rank/total` `sol: hasSolution` `sum: hasSummary` -->
+<!-- order: chronological -->
+<!-- unsolved counter: 11 (last updated: 2017.08.01 05:27:56) -->
+
+**Week 1**
+
+[Week 1 Summary]() [字符串专题]()
+
+2017.07.30 [2013 ACM-ICPC Asia Changchun Regional Contest]() `pro:6/10` `rk:2/6`
+
+2017.07.29 [2013 Multi-University Training Contest 7]() **DONE** `pro:6/10` `rk:2/13`
+
+2017.07.28 [2013 ACM-ICPC Asia Nanjing Regional Contest]() **DONE** `pro:8/11` `rk:1/8`
+
+2017.07.27 [2017 Multi-University Training Contest - Team 2]() **DONE** `pro:8/11` `rk:12/882`
+
+2017.07.26 [2013 ACM-ICPC Asia Hangzhou Regional Contest]() *WATING*
+
+2017.07.25 [2017 Multi-University Training Contest - Team 1]() **DONE** `pro:4/12` `rk:83/883`
+
+**Week 2**
+
+2017.08.01 [2017 Multi-University Training Contest - Team 3]() `pro:8/11` `rk:18/883`
+
