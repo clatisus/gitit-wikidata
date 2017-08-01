@@ -44,15 +44,15 @@ date 2017.07.27 12:00-17:00
 
 *性质三*：所有局面都可以通过一定的操作得到右下角为如下图的局面。以 $4\times 7$ 为例。
 
-![fig1](http://clatisus.com/attachment/73/fig1.png)
+![](http://clatisus.com/attachment/73/fig1.png)
 
 因为对于任意一个 $2\times 3$ 或者 $3\times 2$ 的局面，我们可以分情况讨论，发现都可以转移到下图中左上角的局面。很容易推广到 $n\times m$ 的情况。
 
-![fig2](http://clatisus.com/attachment/73/fig2.png)
+![](http://clatisus.com/attachment/73/fig2.png)
 
 我们距离目标状态就只剩下了最后一个 $2\times 2$ 的区域。
 
-![fig3](http://clatisus.com/attachment/73/fig3.png)
+![](http://clatisus.com/attachment/73/fig3.png)
 
 我们暴力枚举 $6$ 种情况，可以发现按上述定义的相同逆序对奇偶性的局面可以相互到达。于是我们只需要计算出原序列的逆序对奇偶性即可。直接计算 $O(nlogn)$ 不能承受，我们分析构造的过程，计算每个数字的贡献即可，复杂度 $O(n)$。
 
@@ -118,7 +118,7 @@ $$
 
 对每种颜色单独考虑，计算有多少个子矩形不含该颜色，每种颜色可以 $O(n^2)$ 求解。这样总复杂度为 $O(n^4)$，不能承受。显然我们在计算的时候，会出现很多空行（该行不含某种颜色），我们稍微观察一下下图，可以发现空行与之前的行的状态可以 $O(1)$ 转移。下图中，每个格子的数字，表示以该格子为右下角的子矩形个数。对于含有颜色的某行，我们用一个单调栈 $O(n)$ 维护一下这个位置往上最多扩展多少个格子即可得到下图中的数字。
 
-![fig4](http://clatisus.com/attachment/73/fig4.png)
+![](http://clatisus.com/attachment/73/fig4.png)
 
 假设颜色 $i$ 的格子占据了 $x_i$ 行，那么有 $\sum x_i \leq nm$，我们的复杂度为 $O(m\sum x_i) = O(n^3)$。
 
@@ -144,7 +144,7 @@ $$
 
 $1.$ 将 $T$ 串中某个位置的权值 $f_x$ 修改为 $y$；
 
-$2.$ 给出两个区间 $[a,b]$ 和 $[c,d]$ ，对$S$ 串中位置 $[a,b]$ 对应的子串在 $T$ 串中位置 $[c,d]$ 内出现的位置 $[x_1,y_1]$，$\cdots$，$[x_k,y_k]$，$ c \leq x_i,y_i \leq d $，求 $\sum f_{y_k}$.
+$2.$ 给出两个区间 $[a,b]$ 和 $[c,d]$ ，对$S$ 串中位置 $[a,b]$ 对应的子串在 $T$ 串中位置 $[c,d]$ 内出现的位置 $[x_1,y_1]$，$\cdots$，$[x_k,y_k]$，$c \leq x_i,y_i \leq d$，求 $\sum f_{y_k}$.
 
 题目要求强制在线。
 
