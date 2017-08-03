@@ -42,7 +42,7 @@ $$
 $$
 \left\{
 \begin{aligned}
-&dp[i][j]=b[i],&j=0\\
+&dp[i][j]=B[i],&j=0\\
 &dp[i][j]=dp[i\lor 2^{j-1}][j-1]*1526^{2^{j-1}}+dp[i][j-1],&i\land 2^{j-1}=0
 \end{aligned}\\
 \right.
@@ -52,7 +52,18 @@ $$
 
 [C++ Code](http://paste.ubuntu.com/25230613/)
 
-法二：
+法二：由上面的讨论容易知道：
+
+$$
+\begin{aligned}\\
+C[k]&=\sum_{i\oplus j=k}[i\land j=i] *a[i]*b[j]*2^{bitcnt(i)}\\
+&=\sum_{i\oplus j=k}[bitcnt(j)-bitcnt(i)=bitcnt(k)]*a[i]*b[j]*2^{bitcnt(i)}
+\end{aligned}\\
+$$
+
+就可以用元素为多项式的 $FWT$ 来加速了，复杂度 $O(2^{m}\cdot m^{2})$ ，有些卡常，实现时要非常小心。
+
+[C++ Code](http://paste.ubuntu.com/25233499/)
 
 ## C. Kanade's sum
 
