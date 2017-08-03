@@ -6,6 +6,30 @@ date 2017.08.01 12:00-17:00
 
 # Solutions
 
+## A. simple counting problem
+
+**题目大意**：给你 $m, n, b, c$ ，求满足 $0\le x_{i} \le b^{i} - c $ 且 $\sum_{i=1}^{m} x_i< n$ 的数列 $\{x_i \}$ 有多少个。
+
+**题解**：给数列补上一个 $x_{m+1}=n-\sum_{i=1}^{m}x_{i}$ ，答案即为求 $x_{1}+\cdots+x_{m+1}=n+m$ 的正整数解的个数。如果没有上界限制，这就是一道水题，而在题目的限制下，我们考虑容斥解决。 显然 $\displaystyle ans = \sum_{S\subseteq [1,n]}(-1)^{|S|}C_{n+m-1-\sum_{i\in S}(b^{i}-c+1)}^{m}$ ，直接计算的复杂度有 $2^{50}$ ，显然不能满足题目要求。我们注意到，如果把组合数写成 $\sum_{i\in S}b^{i}$ 的 $m$ 次多项式，则这个多项式的系数只和 $|S|$ 有关，我们尝试在这方面加速。设 $dp[i][j][k]$ 表示 $\displaystyle \sum_{S\subseteq[1,i], |S|=j}(\sum_{i\in S}b^{i})^{k}$ ，容易写出转移方程：
+
+$$
+dp[i][j][k]=
+\left\{
+\begin{aligned}
+&0,&i<j\\
+&1,&j=k=0\\
+&dp[i-1][j][k]+b^{ik},&j=1\\
+&dp[i-1][j][k]+\sum_{u=0}^{k}C_{k}^{u}b^{iu}dp[i-1][j-1][k-u],&others
+\end{aligned}
+\right.
+$$
+
+固定 $|S|$ , 可以发现，组合数不为 $0$ 的条件是 $\sum_{i\in S}b^{i} < n+|S|(c-1)$ ，我们把 $n+|S|(c-1)$ 写成一个 $b$ 进制数，然后就可以数位 $dp$ 枚举子集，利用刚刚预处理的东西配合二项式定理就很容易做了（这个实在没法写式子，偷个懒）。复杂度 $O(m^{4})$ 。
+
+这道题的确是个原题 [梦中的题面](http://uoj.ac/contest/40/problem/312)
+
+[C++ Code](http://paste.ubuntu.com/25230559/)
+
 ## C. Kanade's sum
 
 **题目大意**：给出一个 $1$ 到 $n$（$n \leq 5 \times 10^5$） 的排列，和一个正整数 $K$（$K \leq \min(n,80)$），求所有长度不小于 $K$ 的区间的第 $K$ 大的数之和。
