@@ -6,6 +6,35 @@ date: 2017.08.02 10:00-15:00
 
 # Solutions
 
+## C. Clumsy Algorithm
+
+**题目大意**：给你一个 $1 \sim n$  的排列 $p$ ，定义一次操作为交换 $p_{i}, p_{j}(i \not= j)$ ，代价为 $2|i-j|-1$ .定义 $f(p)$ 表示将 $p$ 变成顺序排列的最小代价， $g(p)$ 定义为 $\sum_{i=1}^{n}\mathrm{max}(0,i-p_{i})$ ，现在给定 $p$ 的长度为 $k$ 的前缀，问满足 $f(p)=g(p)$ 的排列有多少种。
+
+**题解**：先证明 $f(p)$ 就是 $p$ 的逆序数。对任何交换 $i,j(i<j)$ 的操作，我们都可以通过依次进行 $(i,i+1), \cdots, (j-2, j-1), (j-1, j), (j-1, j-2), \cdots,(i+1,i)$ 来代替，代价是 $2|i-j|-1$ ，故最优解一定可以通过交换相邻元素得到。容易证明最小代价就是 $p$ 的逆序数。 
+$$
+\begin{aligned}\\
+f(p)&=\sum_{i=1}^{n}\sum_{j=i+1}^{n}[p_{i}>p_{j}]\\
+&=\sum_{i=1}^{n}i-\sum_{i=1}^{n}p_{i}+\sum_{i=1}^{n}\sum_{j=i+1}^{n}[p_{i}>p_{j}]\\
+&=\sum_{i=1}^{n}(i-p_{i}+\sum_{j=i+1}^{n}[p_{i}>p_{j}])\\
+\end{aligned}\\
+$$
+
+显然所有小于等于 $p_{i}$ 的数都给 $i+\sum_{j=i+1}^{n}[p_{i}>p_{j}]$ 做了 $1$ 的贡献，所以有 $i-p_{i}+\sum_{j=i+1}^{n}[p_{i}>p_{j}]\ge \mathrm{max}(0,i-p_{i})$ 。要求 $f(p)=g(p)$ ，即要求对于每个 $i$ 有 $i-p_{i}+\sum_{j=i+1}^{n}[p_{i}>p_{j}] = \mathrm{max}(0,i-p_{i})$ ，若 $i-p_{i}<0$ ，等价于 $p_{i}$ 左边的都小于 $p_{i}$ ，若 $i-p_{i}\ge 0$ ，等价于比 $p_{i}$ 小的都在 $p_{i}$ 左边，即要求 $p$ 的每一个位置都满足前述两个要求之一（这和最长下降子序列长度小于等于 $2$ 是等价的）。我们用 $dp$ 来计数。不考虑前缀，设 $dp[i][j]$ 表示 $\max\limits_{1 \le k \le i}p_{k}=j$ 的方案数，则转移方程为：
+
+$$
+dp[i][j]=
+\left\{
+\begin{aligned}
+&1,&i=j=0\\
+&\sum_{k=0}^{j-1}dp[i-1][k]+[i\ge j]dp[i-1][j],&\mathrm{others}\\
+\end{aligned}
+\right.
+$$
+
+最后考虑前缀，容易发现这是唬人的。按照刚刚说的验证一下就好了。复杂度 $O(n^{3})$ 。
+
+[C++ Code](http://paste.ubuntu.com/25233635/)
+
 # Replay and Summary
 
 ## Replay
