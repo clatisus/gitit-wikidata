@@ -8,7 +8,7 @@ date 2017.08.01 12:00-17:00
 
 ## A. simple counting problem
 
-**题目大意**：给你 $m, n, b, c$ ，求满足 $0\le x_{i} \le b^{i} - c $ 且 $\sum_{i=1}^{m} x_i< n$ 的数列 $\{x_i \}$ 有多少个。
+**题目大意**：给你 $m, n, b, c$ ，求满足 $0\le x_{i} \le b^{i} - c$ 且 $\sum_{i=1}^{m} x_i< n$ 的数列 $\{x_i \}$ 有多少个。
 
 **题解**：给数列补上一个 $x_{m+1}=n-\sum_{i=1}^{m}x_{i}$ ，答案即为求 $x_{1}+\cdots+x_{m+1}=n+m$ 的正整数解的个数。如果没有上界限制，这就是一道水题，而在题目的限制下，我们考虑容斥解决。 显然 $\displaystyle ans = \sum_{S\subseteq [1,n]}(-1)^{|S|} { {n+m-1-\displaystyle \sum_{i\in S}(b^{i}-c+1)} \choose {m}}$ ，直接计算的复杂度有 $2^{50}$ ，显然不能满足题目要求。我们注意到，如果把组合数写成 $\sum_{i\in S}b^{i}$ 的 $m$ 次多项式，则这个多项式的系数只和 $|S|$ 有关，我们尝试在这方面加速。设 $dp[i][j][k]$ 表示 $\displaystyle \sum_{S\subseteq[1,i], |S|=j}(\sum_{i\in S}b^{i})^{k}$ ，容易写出转移方程：
 
