@@ -30,6 +30,30 @@ $$
 
 [C++ Code](http://paste.ubuntu.com/25230559/)
 
+## B. Kanade's convolution
+
+**题目大意**：给你两个数列 $A[0, \dots, 2^{m}-1]$ 和 $B[0, \dots ,2^{m}-1]$ ，定义 $\displaystyle C[k]=\sum_{i\land  j=k}A[i \oplus j]* B[i\lor j]$ ，求 $\sum_{i=0}^{2^{m}-1}C[i]*1526^{i}$ 。
+
+**题解**：
+
+法一：统计每个 $A[i]*B[j]$ 给答案做了多少贡献。 观察容易发现，只有当 $i\land j=i$ 时， $A[i]*B[j]$ 才给答案做贡献。得到 $A[i]*B[j]$ 的情况有 $2^{bitcnt(i\land j)}=2^{i}$ 种，它给 $C[i\oplus j]$ 贡献答案，也就是说还要乘上 $1526^{i\oplus j}$ ，即答案为 $\sum_{i=0}^{2^{m}-1}2^{bitcnt(i)}*A[i]*\displaystyle \sum_{i\land j=i}1526^{i\oplus j}B[j]$ 。
+
+现在的问题就变成了对于每个 $i$ 计算 $\displaystyle \sum_{i\land j=i}1526^{i\oplus j}B[j]$ ，这可以用一个 $m$ 维后缀和来计算。设 $dp[i][j]$ 表示后 $j$ 位大于等于 $i$ 的后 $j$ 位（从最低位为$1$ 开始编号） ， 剩余的位等于 $i$ 的对应位，这样的数的答案的后缀和。 $dp$ 方程为：
+$$
+\left\{
+\begin{aligned}
+&dp[i][j]=b[i],&j=0\\
+&dp[i][j]=dp[i\lor 2^{j-1}][j-1]*1526^{2^{j-1}}+dp[i][j-1],&i\land 2^{j-1}=0
+\end{aligned}\\
+\right.
+$$
+
+对于 $i$ 所要求的答案即为 $dp[i][m]$ 。复杂度 $O(2^{m}\cdot m)$ 。
+
+[C++ Code](http://paste.ubuntu.com/25230613/)
+
+法二：
+
 ## C. Kanade's sum
 
 **题目大意**：给出一个 $1$ 到 $n$（$n \leq 5 \times 10^5$） 的排列，和一个正整数 $K$（$K \leq \min(n,80)$），求所有长度不小于 $K$ 的区间的第 $K$ 大的数之和。
