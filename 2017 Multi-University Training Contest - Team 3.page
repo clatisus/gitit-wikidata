@@ -88,6 +88,40 @@ $$
 
 [C++ Code](http://paste.ubuntu.com/25226510/)
 
+## F. RXD and functions
+**题目大意**：给你一个 $n$ 次多项式 $f(x)=\sum_{i=0}^{n}b_{i}x^{i}$ ，和长度为 $m$ 的数列 $a_{i}$ ，求 $g(x) = f(x-\sum_{i=1}^{m}a_{i})$ 。
+
+**题解**：设 $-\sum_{i=1}^{m}a_{i}=a$：
+
+$$
+\begin{aligned}\\
+g(x)&=f(x+a)\\
+&=\sum_{i=0}^{n}b_{i}\sum_{j=0}^{i}C_{i}^{j}x^{j}a^{i-j}\\
+g_{i}&=\sum_{j=i}^{n}b_{j}C_{j}^{i}a^{j-i}\\
+&=\sum_{j=i}^{n}b_{j}\frac{j!}{i!(j-i)!}a^{j-i}\\
+i!g_{i}&=\sum_{j=i}^{n}j!b_{j}\cdot\frac{a^{j-i}}{(j-i)!}\\
+\end{aligned}\\
+$$
+
+这玩意儿看起来很像卷积，不过 $j$ 和 $j-i$ 是同时增长的，解决这个问题很简单，只要把其中一个数列 `reverse` 一下就好了，然后 $NTT$ 加速。复杂度 $O(nlogn)$ 。
+
+[C++ Code](http://paste.ubuntu.com/25230659/)
+
+## H. RXD and math
+**题目大意**：算个式子。
+
+**题解**： $[1,n^{k}]$ 中的每个整数可以唯一的表示成 $a = b*c$ 的形式，其中 $b$ 是一个完全平方数， $c$ 中没有平方因子。故：
+
+$$\begin{align}
+\sum_{i = 1}^{n^k} \mu^2(i) \times \left\lfloor \sqrt{\frac{n^k}{i}} \right\rfloor &= \sum_{i = 1}^{n^k} \mu^2(i) \times \sum_{j^2 \le \frac{n^k}{i}} 1\\
+&= \sum_{i = 1}^{n^k} \sum_{ij^2 \le n^k} \mu^2(i)\\
+&= \sum_{x = 1}^{n^k} \sum_{i = 1}^{n^k} \sum_{ij^2 = x} \mu^2(i)\\
+&= \sum_{x = 1}^{n^k} 1= n^k
+\end{align}
+$$
+
+[C++ Code](http://paste.ubuntu.com/25230665/)
+
 ## I. RXD and numbers
 
 **题目大意**：序列 $\{ A_i \}$ 满足以下性质：
