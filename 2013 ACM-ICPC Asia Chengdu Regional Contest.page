@@ -96,6 +96,12 @@ $2\leq n\leq 100, 0\leq m\leq 200, 1\leq B\leq 4, 2\leq K\leq 5, 0\leq R\leq 10^
 
 签到题
 
+## I. ICPC Ranking
+
+unsolved
+
+[贴一个昂神的Code](http://paste.ubuntu.com/25225534/)
+
 ## J. Just Random
 
 **题目大意**：求 $\displaystyle \sum_{i=a}^{b}\sum_{j=c}^{d}[i+j\equiv m(\mathrm{mod}\ p)]$。
