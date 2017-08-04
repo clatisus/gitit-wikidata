@@ -19,7 +19,7 @@ f(i-1,j-1)+1,&\left|A_i-B_j\right|>k\\
 $$
 显然，第二种情况只会出现 $O(nk)$ 次，直接暴力转移即可。
 
-而对于第一种情况，我们可以直接二分找到一个最小的 $t$ ，满足对 $\forall i\in [1, x-t]$ 都有 $\left| A_{t+i} - B_{y-x+t+i}\right| > k$，这样就可以加速 $f(x,y)$ 的转移：
+而对于第一种情况，我们可以直接二分找到一个最小的 $t$ ，满足对 $\forall i\in [1, x-t]$ 都有 $\left| A_{t+i} - B_{y-x+t+i}\right| > k$。也即最小的 $t$ 满足 $\left| A_t - B_{y-x+t}\right| \leq k$。这样就可以加速 $f(x,y)$ 的转移：
 
 $$f(x,y) = f(t, y-x+t) + (x-t)$$
 
