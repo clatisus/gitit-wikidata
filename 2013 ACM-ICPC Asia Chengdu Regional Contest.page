@@ -55,6 +55,14 @@ $$
 
 [C++ Code](http://paste.ubuntu.com/25233635/)
 
+## F. Fibonacci Tree
+
+**题目大意**：给你一棵边上黑白染色的树，问你是否存在一棵生成树，满足树中白边的数量是 Fibonacci 数（$1, 2, 3, 5, 8, \dots$）。
+
+**题解**：白边权值为 $1$，黑边权值为 $0$。分别做一次最大和最小生成树，如果区间中有 Fibonacci 数，那么一定可以达到。
+
+[C++ Code](http://paste.ubuntu.com/25237018/)
+
 ## H. Hard Disk Drive
 
 签到题
