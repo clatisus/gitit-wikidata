@@ -24,7 +24,7 @@ date 2017.07.27 12:00-17:00
 
 ## C. Maximum Sequence
 
-**题目大意**：给出长度为 $n$ 的两个数列 $\{ a_i \}$ 和 $\{ b_i \}$，$ 1 \leq b_i \leq n$，已知 $a_i \leq \max\limits_{b_k \leq j < i} \{ a_j - j\}$，$n+1 \leq i \leq 2n$，其中 $b_k$ 不能两次选择同一个 $b_i$，要求 $\max \sum_{n+1}^{2n} a_i$，输出时对 $1000000007$ 取模。
+**题目大意**：给出长度为 $n$ 的两个数列 $\{ a_i \}$ 和 $\{ b_i \}$，$1 \leq b_i \leq n$，已知 $a_i \leq \max\limits_{b_k \leq j < i} \{ a_j - j\}$，$n+1 \leq i \leq 2n$，其中 $b_k$ 不能两次选择同一个 $b_i$，要求 $\max \sum_{n+1}^{2n} a_i$，输出时对 $1000000007$ 取模。
 
 **题解**：$a_i \leq \max\limits_{b_k \leq j < i} \{ a_j - j\}$ 可以拆为 $a_i \leq \max\limits_{b_k \leq j \leq n } \{ a_j - j\}$ 和 $a_i \leq \max\limits_{n+1 \leq j < i} \{ a_j - j\ \}$，第一部分对于每个 $b_k$ ，都有一个确定的值，且关于 $b_k$ 递减，因此，最优的方案需要使 $a_i \leq \max\limits_{n+1 \leq j < i} \{ a_j - j\ \}$ 尽可能大，我们让 $a_{n+1}$ 取最大，则后面的所有数的第二部分都可以取到 $a_{n+1} - (n+1)$ 这个位置的贡献，这个方案就是最优的。如果有个位置 $i>n+1$ 满足 $a_i-i>a_{n+1}-(n+1)$，那么交换 $i$ 和 $n+1$ 使用的 $b_k$ 一定会更优。
 
