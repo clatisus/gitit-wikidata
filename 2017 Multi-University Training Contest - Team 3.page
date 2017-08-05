@@ -127,7 +127,7 @@ $$
 
 我们首先识别出输入的 $m$ 位表示的数是 $0\sim 2^m-1$ 的哪一个。这个操作可以利用 $2 + 4 + \dots + 2^m = 2^{m+1} - 2$ 个额外的位来完成，分别表示长度为 $i(1\leq i\leq m)$ 的前缀是否存在，然后递推即可。
 
-根据输入的真值表，我们可以知道输入为 $0$ 和 $1$ 的值哪个更少。设 $\text{out}$ 为这个值，并设该值的自变量取值集合为 $S$，有 $|S|$ 至多为 $2^{m-1}$。对这 $2^{m-1}$ 个变量，记录相应的识别位的取反。然后可以求得 $\text{res} := \bigwedge_{i \in S} \neg\text{indicate}[i]$。最后通过 $\text{out} = \text{out} \oplus (\text{ONE} \wedge \text{res})$ 这个操作即可得到答案。
+根据输入的真值表，我们可以知道输入为 $0$ 和 $1$ 的值哪个更少。设 $\text{out}$ 为这个值，并设该值的自变量取值集合为 $S$，有 $|S|$ 至多为 $2^{m-1}$。对这 $2^{m-1}$ 个变量，记录相应的识别位的取反。设 $res$ 为集合 $S$ 中的自变量对应识别位的取反的与。最后通过 $\text{out} = \text{out} \oplus (\text{ONE} \wedge \text{res})$ 这个操作即可得到答案。
 
 总的额外变量数至多为 $3 + m + 2^{m+1} - 2 + 2^{m-1} = 5\cdot 2^{m-1} + m + 1$。操作数至多为 $m + 2^{m+1} - 2 + 2\cdot 2^{m-1} + 1 = 3\cdot 2^m + m - 1$。两者都是不超过 $800$ 的。
 
@@ -140,10 +140,8 @@ $$
 **题解**： $[1,n^{k}]$ 中的每个整数可以唯一的表示成 $a = b*c$ 的形式，其中 $b$ 是一个完全平方数， $c$ 中没有平方因子。故：
 
 $$\begin{align}
-\sum_{i = 1}^{n^k} \mu^2(i) \times \left\lfloor \sqrt{\frac{n^k}{i}} \right\rfloor &= \sum_{i = 1}^{n^k} \mu^2(i) \times \sum_{j^2 \le \frac{n^k}{i}} 1\\
-&= \sum_{i = 1}^{n^k} \sum_{ij^2 \le n^k} \mu^2(i)\\
-&= \sum_{x = 1}^{n^k} \sum_{i = 1}^{n^k} \sum_{ij^2 = x} \mu^2(i)\\
-&= \sum_{x = 1}^{n^k} 1= n^k
+\sum_{i=1}^{n^{k}}\mu^{2}(i)\lfloor\sqrt{\frac{n^{k}}{i}}\rfloor &= \sum_{i=1}^{n^{k}}\mu^{2}(i)\sum_{j=1}^{\lfloor\sqrt{\frac{n^{k}}{i}}\rfloor}1\\
+&=\sum_{i=1}^{n^{k}}1=n^{k}
 \end{align}
 $$
 
