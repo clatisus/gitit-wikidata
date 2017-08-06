@@ -101,6 +101,8 @@ $$f(x,y) = f(t, y-x+t) + (x-t)$$
 
 最终复杂度为 $O(nk\log n)$。具体实现的时候，用记忆化搜索会方便很多。
 
+[tls 有个 nk 的算法](https://wiki-three-investigators.icpc-camp.org/2017%20Multi-University%20Training%20Contest%20-%20Team%204#j.-security-check)
+
 ## K. Time To Get Up
 
 签到题
