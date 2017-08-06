@@ -101,7 +101,7 @@ $$
 - 只由 `R` 和 `D` 组成，且 `R` 有 $n$ 个，`D` 有 $m$ 个
 - 包含两个给出的串作为子串
 
-**题解**：跟[这题](BUAA%20Summer%20Practice%202017%20String%20Theory#a.-password-suspects)是一样的，只是修改一下 dp 状态把 `R` 和 `D` 的状态记录下来就行了。
+**题解**：跟[这题](BUAA%20Summer%20Practice%202017%20String%20Theory#a.-password-suspects)是一样的，只是修改一下 dp 状态把 `R` 和 `D` 的个数记录下来就行了。
 
 # Replay and Summary
 
