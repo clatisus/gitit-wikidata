@@ -28,13 +28,13 @@ date: 2017.07.28 10:00-15:00
 
 **题解**：显然我们可以对每个三角形分别计算后把答案相加。对每个三角形我们分类讨论，设线段为 $ST$ ，直线的方向为 $\boldsymbol{r}$ ，三角形为 $ABC$：
 
- - 若 $\vec{ST}\parallel\boldsymbol{r}$
-  - 若 $ST$ 与 $\Delta ABC$ 相交，则答案 $+1$
-  - 否则答案不变
- - 否则，若 $\boldsymbol{r}\parallel平面ABC$
-  - 若 $ST$ 在平面 $ABC$ 上，则将 $\Delta ABC$ 投影到线段 $ST$ 上，答案加投影所占 $ST$ 比例
-  - 否则答案不变
- - 否则求出 $ST$ 和 $\boldsymbol{r}$ 组成的平面与 $\Delta ABC$ 的交线段，将交线段投影到线段 $ST$ 上，答案加投影所占 $ST$ 比例
+* 若 $\vec{ST}\parallel\boldsymbol{r}$
+    - 若 $ST$ 与 $\Delta ABC$ 相交，则答案 $+1$
+    - 否则答案不变
+* 否则，若 $\boldsymbol{r}\parallel平面ABC$
+    - 若 $ST$ 在平面 $ABC$ 上，则将 $\Delta ABC$ 投影到线段 $ST$ 上，答案加投影所占 $ST$ 比例
+    - 否则答案不变
+* 否则求出 $ST$ 和 $\boldsymbol{r}$ 组成的平面与 $\Delta ABC$ 的交线段，将交线段投影到线段 $ST$ 上，答案加投影所占 $ST$ 比例
  
 ## E. Circular Lamps
 
