@@ -6,6 +6,36 @@ date 2017.08.08 12:00-17:00
 
 # Solutions
 
+## D. Rikka with Rock-paper-scissors
+
+**题目大意**：两个人玩 $n$ 盘石头剪刀布，设 $A$ 赢了 $a$ 盘， $B$ 赢了 $b$ 盘，则这一次游戏的得分为 $gcd(a, b)$ 。问期望得分乘以 $3^{2n}$ 。
+
+**题解**：显然答案即为所有情况的得分和。不考虑 $ab=0$ 的情况：
+
+$$
+\begin{aligned}\\
+ans&=\sum_{i=1}^{n-1}\sum_{j=1}^{n-i}\frac{n!}{i!j!(n-i-j)!}\cdot3^{i}\cdot3^{j}\cdot3^{n-i-j}gcd(i,j)\\
+&=n!3^{n}\sum_{i=1}^{n-1}\sum_{j=1}^{n-i}\frac{gcd(i,j)}{i!j!(n-i-j)!}\\
+&=n!3^{n}\sum_{d=1}^{n-1}d\sum_{i=1}^{\lfloor\frac{n-1}{d}\rfloor}\sum_{j=1}^{\lfloor\frac{n-1}{d}\rfloor-i}\frac{[gcd(i,j)=1]}{(id)!(jd)!(n-id-jd)!}\\
+记 S(d)&=\sum_{i=1}^{\lfloor\frac{n-1}{d}\rfloor}\sum_{j=1}^{\lfloor\frac{n-1}{d}\rfloor-i}\frac{1}{(id)!(jd)!(n-id-jd)!}\\
+则ans&=n!3^{n}\sum_{d=1}^{n-1}d\sum_{d|u}\mu(\frac{u}{d})S(u)\\
+&=n!3^{n}\sum_{u=1}^{n-1}S(u)\sum_{d|u}d\mu(\frac{u}{d})\\
+&=n!3^{n}\sum_{u=1}^{n-1}\phi(u)S(u)\\
+&注意到S(u)可以写成\\
+S(u)&=\sum_{i=1}^{\lfloor\frac{n-1}{u}\rfloor}\frac{1}{(n-iu)!}\sum_{j=1}^{i-1}\frac{1}{(ju)!}\cdot\frac{1}{[(i-j)u]!}\\
+\end{aligned}\\
+$$
+
+这就是常见的卷积形式了，可以 $FFT$ 加速，复杂度为 $\mathcal{O}(\sum_{u=1}^{n-1}\frac{n}{u}\log\frac{n}{u})=\mathcal{O}(n\log^2{n})$ 。 $ab=0$ 的情况容易特殊处理。
+
+由于本题的质数不是 $NTT$ 模数，具体实现时需要使用拆系数 $FFT$ 。
+
+## I. Rikka with Number
+
+**题目大意**：定义一个 $d$ 进制数是好的，当且仅当它的各位数字是 $[0, d-1]$ 的一个排列。定义一个十进制数是好的，当且仅当它在某个进制下是好的。求十进制下 $[L,R]$ 中的好数个数。
+
+**题解**：考虑对 $[0,R]$ 求解，容易发现好数随着进制数增加而增大，所以我们只需要特殊处理 $[0,R]$ 中不能取到全部好数的进制，更小进制的好数则一定能全部取到，且容易计算个数。为寻找这样不能全取的进制，容易发现 $R$ 在这种进制下的位数一定和进制相等，这时我们可以使用 $log$ 来大致估计一下进制上限，再暴力地往下找到准确的位数，当然也有可能找不到位数和进制相等的情况，这时显然所有的进制都能完全取到。找到这样的进制以后，就是一个简单的数位 dp 问题了，不用多说。
+
 # Replay and Summary
 
 ## Replay
