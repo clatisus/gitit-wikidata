@@ -16,6 +16,12 @@ date 2017.08.10 12:00-17:00
 
 有一个在线的做法，我们枚举每个长度，对小于等于这个长度的单词建立一个可持久化线段树维护 dfs 序。
 
+## C. Inversion
+
+**题目大意**：给出一个长度为 $2\leq n\leq10^5$ 的数组 $A$，$1\leq A_i \leq 10^9(1\leq i\leq n)$。数组 $B$ 满足 $B_i=\max\limits_{i \not\mid j} A_j$，$2\leq i \leq n$。输出 $B$ 数组。
+
+**题解**：先将 $A$ 数组带着下标排个序，然后枚举 $i$ 再从大到小去找第一个不被 $i$ 整除的 $j$，则 $B_i=A_j$。时间复杂度 $\mathcal{O}(n\log n)$。
+
 # Replay and Summary
 
 ## Replay
