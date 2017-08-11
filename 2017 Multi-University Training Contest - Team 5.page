@@ -6,6 +6,14 @@ date 2017.08.08 12:00-17:00
 
 # Solutions
 
+## A. Rikka with Candies
+
+**题目大意**：给出两个数列 $\{a_n \}$ 和 $\{b_m \}$。 $q$ 次询问，每次询问给出 $k$，要求输出有多少对 $(i, j)$ 满足 $a_i\equiv k(\text{mod }b_j)$。保证两个数列内部没有相等的数字。$1\leq n, m, q, a_i, b_j\leq 50000, 0\leq k< \text{max }b_j$。每次只用输出答案对 $2$ 取模。
+
+**题解**：模 $2$ 意义下的加法就是异或运算，这提示我们用 `bitset`。我们用 $A$ 的各位记录数列 $\{a_n \}$ 的出现。对于每一个 $b_j$，我们把 $A$ 中的区间 $[0, b_j), [b_j, 2b_j),...$ 全部加（异或）到 $ans$ 的 $[0, b_j)$ 上去。那么 $ans$ 的第 $k$ 位就是询问为 $k$ 时的答案。
+
+提取区间 $[l, r)$ 的操作我们需要手写 `bitset`。通过先向左移动右端点使区间长度为 $32$ 倍数，然后通过预处理的 $A_i = A << i$ 来快速实现。总的复杂度为 $\displaystyle \mathcal{O}\left(\sum_{i=1}^m \frac{\text{max }a}{b_i}\times (32 + \frac{b_i}{32})\right)=\mathcal{O}(\frac{m\cdot \text{max }a}{32})$。
+
 ## B. Rikka with String
 
 **题目大意**：给定 $n$ 个 $01$ 串 $\{s_i \}$。问有多少个长度为 $2L$ 的反对称串包含给定的 $n$ 个串为子串。反对称串定义为 $s_i \neq s_{|s|-i+1}$ 对 $\forall i \in [1, |s|]$（下标从 $1$ 开始）。
