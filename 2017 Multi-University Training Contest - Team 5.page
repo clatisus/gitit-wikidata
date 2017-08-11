@@ -12,7 +12,7 @@ date 2017.08.08 12:00-17:00
 
 **题解**：我们暴力枚举横跨位置 $L,L+1$ 的部分，计算出能包含的串的集合。这里的复杂度是 $\mathcal{O}(\mathrm{max}|s_i|2^{\mathrm{max}|s_i|})$。然后我们发现，剩余的串在位置 $[L+1, 2L]$ 中匹配，是可以转换到 $[1, L]$ 中去计算的。我们把这些串以及转换之后的串插入到一个 ac 自动机中。
 
-然后对于之前暴力枚举的部分，我们找到它在自动机中的对应结点，初始化 dp 值。然后外层枚举长度转移 dp 值即可。总复杂度 $\mathcal{O}(\mathrm{max}|s_i|2^{\mathrm{max}|s_i|}+2^nL\sum |s_i|)$
+然后对于之前暴力枚举的部分，我们找到它在自动机中的对应结点，初始化 dp 值。然后外层枚举长度转移 dp 值即可。总复杂度 $\mathcal{O}(\mathrm{max}|s_i|2^{\mathrm{max}|s_i|}+2^nL\sum |s_i|)$。
 
 ## D. Rikka with Rock-paper-scissors
 
