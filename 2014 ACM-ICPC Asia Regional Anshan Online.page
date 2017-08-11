@@ -83,6 +83,10 @@ $$
 
 签到题
 
+## H. KAMI
+
+unsolved
+
 ## I. Compromise
 
 **题目大意**：两个人在一个 $DAG$ 上玩游戏，度为 $0$ 的点对两个人分别有一个价值，其它点属于且仅属于其中一个人。两个人从 $1$ 开始走，轮到谁的点就谁走，两个人的策略是让自己的价值最大，而不管对方。问：
@@ -105,6 +109,10 @@ dp[i][j]=\left\{
 \end{aligned}
 \right.
 $$
+
+## J. Resistance
+
+unsolved
 
 # Replay and Summary
 
