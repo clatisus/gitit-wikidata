@@ -1,5 +1,5 @@
 ```c++
-//Tarjan,ÎÞÏòÍ¼ÇóË«Á¬Í¨·ÖÁ¿ºÍ±ßË«Á¬Í¨·ÖÁ¿,O(n+m) 
+//Tarjan, 无向图求双连通分量和边双连通分量，O(n+m)
 #define max_N (1000005)
 #define max_M (2000005)
 struct edge{
@@ -7,7 +7,7 @@ struct edge{
 	edge(int v=0,int n=0):v(v),n(n){}
 }e[max_M<<1];
 int head[max_N],tot=1;
-//°´Ë³Ðò¼Ó±ß£¬±àºÅÎªiµÄÎÞÏò±ß¶ÔÓ¦µÄÁÚ½Ó±íÖÐµÄ±àºÅÎª2iºÍ2i+1 
+//按顺序加边，编号为i的无向边对应的邻接表中的编号为2i和2i+1
 inline void add_edge(int u,int v){
 	e[++tot]=edge(v,head[u]),head[u]=tot;
 	e[++tot]=edge(u,head[v]),head[v]=tot;
@@ -17,9 +17,9 @@ class Tarjan{
 		int st[max_M<<1],top;
 	public:
 		int dfn[max_N],low[max_N],cnt;
-		//lowÖµÏàÍ¬µÄµãÊôÓÚÍ¬Ò»¸ö±ßË«Á¬Í¨·ÖÁ¿ 
+		//low值相同的点属于同一个边双连通分量
 		bool cut[max_N],bridge[max_M];
-		//¸îµãµÄbccnoÎÞÒâÒå ,bcc´Ó1¿ªÊ¼±àºÅ
+		//割点的bccno无意义，bcc从1开始编号
 		int bccno[max_N],bcc_cnt;
 		vector<int>bcc[max_N];
 		inline void init(int n,int m){
@@ -27,7 +27,7 @@ class Tarjan{
 			for(int i=1;i<=n;++i)dfn[i]=cut[i]=bccno[i]=0;
 			for(int i=1;i<=m;++i)bridge[i]=0;
 		}
-		void dfs(int x,int p){//µÚÒ»´Îµ÷ÓÃÊ±pÓ¦¸Ã´«Èë0
+		void dfs(int x,int p){//第一次调用时p应该传入0
 			low[x]=dfn[x]=++cnt;
 			int ch=0;
 			for(int i=head[x],y;i;i=e[i].n){
@@ -49,7 +49,7 @@ class Tarjan{
 						}
 					} 
 					if(dfn[x]<low[y])bridge[i>>1]=1;
-					//ÊÓÇé¿öÐèÒªµ¥¶À´¦ÀíÖØ±ß£¬ÖØ±ß¶¼²»ÊÇÇÅ 
+					//视情况需要单独处理重边，重边不是桥
 				}
 				else if(dfn[y]<dfn[x]){
 					st[++top]=i;
@@ -57,7 +57,7 @@ class Tarjan{
 				}
 			}
 			if(!p&&ch==1)cut[x]=0;
-			//Èç¹ûdfsÊ÷ÖÐµÄ¸ù½ÚµãÖ»ÓÐÒ»¸ö×ÓÊ÷ÓëÆäÏàÁ¬£¬Ëü¿Ï¶¨²»ÊÇ¸îµã 
+			//如果dfs树中的根节点只有一个子树与其相连，它肯定不是割点
 		}
 };
 ```
