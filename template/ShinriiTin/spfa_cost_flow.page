@@ -1,0 +1,104 @@
+```c++
+const int max_N=500,max_M=5e5,inf=0x3f3f3f3f;
+namespace MinCost{
+	struct edge{
+		int v,w,c,f,n;
+		inline int cap(){return c-f;}
+	}e[max_M+21];
+	int head[max_N+21],tot;
+	int n,s,t;
+	inline void init(int N,int S,int T){
+		n=N,s=S,t=T;
+		tot=1;
+		for(int i=1;i<=n;++i)head[i]=0;
+	}
+	inline void add_edge(int u,int v,int w,int c){
+		e[++tot]={v,w,c,0,head[u]},head[u]=tot;
+		e[++tot]={u,-w,0,0,head[v]},head[v]=tot;
+	}
+	int d[max_N+21],p[max_N+21];
+    bool vis[max_N+21];
+	std::queue<int>que;
+	inline bool spfa(){
+		register int i,x,y;
+		for(i=1;i<=n;++i)d[i]=inf,vis[i]=0;
+		d[s]=0;
+		que.push(s),vis[s]=1;
+		while(!que.empty()){
+			x=que.front();
+			for(i=head[x];i;i=e[i].n)
+				if(e[i].cap()>0&&d[y=e[i].v]>d[x]+e[i].w){
+					p[y]=i,d[y]=d[x]+e[i].w;
+					if(!vis[y])que.push(y),vis[y]=1;
+				}
+			que.pop(),vis[x]=0;
+		}
+		return d[t]<inf;
+	}
+	inline int MinCost(){
+		int ans=0,a,x;
+		while(spfa()){
+			a=inf;
+			for(x=t;x!=s;x=e[p[x]^1].v)a=std::min(e[p[x]].cap(),a);
+			for(x=t;x!=s;x=e[p[x]^1].v)e[p[x]].f+=a,e[p[x]^1].f-=a;
+			ans+=a*d[t];
+		}
+		return ans;
+	}
+};
+```
+多路增广
+```c++
+const int max_N=500,max_M=5e5,inf=0x3f3f3f3f;
+
+namespace MinCost{
+	struct edge{
+		int v,w,c,f,n;
+		inline int cap(){return c-f;}
+	}e[max_M+21];
+	int head[max_N+21],tot;
+	int n,s,t;
+	inline void init(int N,int S,int T){
+		n=N,s=S,t=T;
+		tot=1;
+		for(int i=1;i<=n;++i)head[i]=0;
+	}
+	inline void add_edge(int u,int v,int w,int c){
+		e[++tot]={v,w,c,0,head[u]},head[u]=tot;
+		e[++tot]={u,-w,0,0,head[v]},head[v]=tot;
+	}
+	int d[max_N+21],p[max_N+21],vis[max_N+21],vis_time;
+	std::queue<int>que;
+	inline bool spfa(){
+		register int i,x,y;
+		for(i=1;i<=n;++i)d[i]=inf,vis[i]=0;
+		d[s]=0;
+		que.push(s),vis[s]=1;
+		while(!que.empty()){
+			x=que.front();
+			for(i=head[x];i;i=e[i].n)
+				if(e[i].cap()>0&&d[y=e[i].v]>d[x]+e[i].w){
+					p[y]=i,d[y]=d[x]+e[i].w;
+					if(!vis[y])que.push(y),vis[y]=1;
+				}
+			que.pop(),vis[x]=0;
+		}
+		return d[t]<inf;
+	}
+	int dfs(int x,int a){
+		vis[x]=vis_time;
+		if(x==t)return a;
+		for(int i=head[x],y,tmp;i;i=e[i].n)
+			if(vis[y=e[i].v]!=vis_time&&e[i].cap()>0&&d[y]==d[x]+e[i].w){
+				if((tmp=dfs(y,std::min(e[i].cap(),a)))>0)return e[i].f+=tmp,e[i^1].f-=tmp,tmp;
+			}
+		return 0;
+	}
+	inline int MinCost(){
+		int ans=0;
+		vis_time=0;
+		while(spfa())++vis_time,ans+=dfs(s,inf)*d[t];
+		return ans;
+	}
+};
+```
