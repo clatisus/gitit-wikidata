@@ -72,16 +72,18 @@ $$
 设处理后的向量为 $(x'_{1},y'_{1}),(x'_{2},y'_{2}),(x'_{3},y'_{3})$ ，满足 $gcd(x'_{1},x'_{2},x'_{3})=gcd(y'_{1},y'_{2},y'_{3})=1$ 。我们考虑这三个向量在两个坐标轴上能组合出什么。 设 $a=x'_{1}y'_{2}-x'_{2}y'_{1},b=x'_{1}y'_{3}-x'_{3}y'_{1},c=x'_{2}y'_{3}-x'_{3}y'_{2}$ 。不妨考虑 $y$ 轴，它们两两可以组合出的是 $\displaystyle (0,\frac{a}{gcd(x'_{1},x'_{2})}),(0,\frac{b}{gcd(x'_{1},x'_{3})}),(0,\frac{c}{gcd(x'_{2},x'_{3})})$ 的倍数，因此它们三个可以组合出的是 $\displaystyle (0,gcd(\frac{a}{gcd(x'_{1},x'_{2})},\frac{b}{gcd(x'_{1},x'_{3})},\frac{c}{gcd(x'_{2},x'_{3})}))$ 的倍数。
 
 下面证明 $\displaystyle gcd(\frac{a}{gcd(x'_{1},x'_{2})},\frac{b}{gcd(x'_{1},x'_{3})},\frac{c}{gcd(x'_{2},x'_{3})})=gcd(a,b,c)$ 。注意到 $\displaystyle a=\frac{bx'_{2}-cx'_{1}}{x_{3}}$ ，设 $gcd(a,b,c)=u\cdot v$ ，其中 $\displaystyle u=\max_{d|gcd(a,b,c),gcd(d,x'_{1},x'_{2})=1}d$：
- $$
- \because gcd(u,x1,x2)=1, u|a\\
- \therefore u|\frac{a}{gcd(x'_{1},x'_{2})}\\
- \because v|b,v|c\\
- \therefore v|(b\frac{x'_{2}}{gcd(x'_{1},x’_{2})}-c\frac{x'_{2}}{gcd(x'_{1},x’_{2})})\\
- \because gcd(v,x'_{3})=1\\
- \therefore v|\frac{b\frac{x'_{2}}{gcd(x'_{1},x’_{2})}-c\frac{x'_{2}}{gcd(x'_{1},x’_{2})}}{x'_{3}}\\
- 即 v|\frac{a}{gcd(x'_{1},x'_{2})}\\
- \because gcd(u,v)=1\\
-\therefore gcd(a,b,c)|\frac{a}{gcd(x'_{1},x'_{2})}\\
+
+$$\begin{aligned}
+&\because gcd(u,x1,x2)=1, u\mid a\\
+&\therefore u\mid \frac{a}{gcd(x'_{1},x'_{2})}\\
+&\because v\mid b,v\mid c\\
+&\therefore v\mid \left(b\frac{x'_{2}}{gcd(x'_{1},x’_{2})}-c\frac{x'_{2}}{gcd(x'_{1},x’_{2})} \right)\\
+&\because gcd(v,x'_{3})=1\\
+&\therefore v\mid \frac{b\frac{x'_{2}}{gcd(x'_{1},x’_{2})}-c\frac{x'_{2}}{gcd(x'_{1},x’_{2})}}{x'_{3}}\\
+&即 v\mid \frac{a}{gcd(x'_{1},x'_{2})}\\
+&\because gcd(u,v)=1\\
+&\therefore gcd(a,b,c)\mid \frac{a}{gcd(x'_{1},x'_{2})}
+\end{aligned}
 $$
 
 同理有 $\displaystyle gcd(a,b,c)|\frac{b}{gcd(x'_{1},x'_{3})},gcd(a,b,c)|\frac{c}{gcd(x'_{2},x'_{3})}$ ，故 $\displaystyle gcd(\frac{a}{gcd(x'_{1},x'_{2})},\frac{b}{gcd(x'_{1},x'_{3})},\frac{c}{gcd(x'_{2},x'_{3})})=gcd(a,b,c)$ 。即 $y$ 轴上可以组合出的是  $(0,gcd(a,b,c))$ 的倍数，同理 $x$ 轴上可以组合出的是 $(gcd(a,b,c),0)$  的倍数。我们取 $[0,gcd(a,b,c)-1]^{2}$ 的一个矩形，容易知道这个矩形平移后可以覆盖整个平面。考虑这个矩形内部，根据上面的结论和裴蜀定理易证每一行每一列有且仅有一个点，故所求面积至少是 $\displaystyle \frac{gcd^{2}(a,b,c)}{gcd(a,b,c)}=gcd(a,b,c)$ （否则显然不能铺满整个平面），而这个值可以通过对每个点选取它上方 $1\times gcd(a,b,c)$ 的矩形取到。故答案为
