@@ -4,31 +4,34 @@
 #define max_M (2000005)
 struct edge{
 	int v,n;
-	edge(int v=0,int n=0):v(v),n(n){}
 }e[max_M<<1];
 int head[max_N],tot=1;
 //按顺序加边，编号为i的无向边对应的邻接表中的编号为2i和2i+1
 inline void add_edge(int u,int v){
-	e[++tot]=edge(v,head[u]),head[u]=tot;
-	e[++tot]=edge(u,head[v]),head[v]=tot;
+	e[++tot]={v,head[u]},head[u]=tot;
+	e[++tot]={u,head[v]},head[v]=tot;
 }
 class Tarjan{
 	private:
 		int st[max_M<<1],top;
+		std::stack<int>stack;
 	public:
 		int dfn[max_N],low[max_N],cnt;
-		//low值相同的点属于同一个边双连通分量
 		bool cut[max_N],bridge[max_M];
 		//割点的bccno无意义，bcc从1开始编号
 		int bccno[max_N],bcc_cnt;
-		vector<int>bcc[max_N];
+		std::vector<int>bcc[max_N];
+		//ebcc从1开始编号
+		int ebccno[max_N],ebcc_cnt;
+		std::vector<int>ebcc[max_N];
 		inline void init(int n,int m){
-			cnt=bcc_cnt=0;
-			for(int i=1;i<=n;++i)dfn[i]=cut[i]=bccno[i]=0;
+			cnt=bcc_cnt=ebcc_cnt=0;
+			for(int i=1;i<=n;++i)dfn[i]=cut[i]=bccno[i]=ebccno[i]=0;
 			for(int i=1;i<=m;++i)bridge[i]=0;
 		}
 		void dfs(int x,int p){//第一次调用时p应该传入0
 			low[x]=dfn[x]=++cnt;
+			stack.push(x);
 			int ch=0;
 			for(int i=head[x],y;i;i=e[i].n){
 				y=e[i].v;
@@ -36,7 +39,7 @@ class Tarjan{
 				if(!dfn[y]){
 					st[++top]=i;
 					++ch,dfs(y,x);
-					low[x]=min(low[x],low[y]);
+					low[x]=std::min(low[x],low[y]);
 					if(dfn[x]<=low[y]){
 						cut[x]=1;
 						bcc[++bcc_cnt].clear();
@@ -47,17 +50,28 @@ class Tarjan{
 							if(bccno[v]!=bcc_cnt)bcc[bccno[v]=bcc_cnt].push_back(v);
 							if(j==i)break;
 						}
-					} 
+					}
 					if(dfn[x]<low[y])bridge[i>>1]=1;
 					//视情况需要单独处理重边，重边不是桥
 				}
 				else if(dfn[y]<dfn[x]){
 					st[++top]=i;
-					low[x]=min(low[x],dfn[y]);
+					low[x]=std::min(low[x],dfn[y]);
 				}
 			}
 			if(!p&&ch==1)cut[x]=0;
 			//如果dfs树中的根节点只有一个子树与其相连，它肯定不是割点
+			if(dfn[x]==low[x]){
+				ebcc[++ebcc_cnt].clear();
+				ebccno[x]=ebcc_cnt;
+				ebcc[ebcc_cnt].push_back(x);
+				while(stack.top()!=x){
+					ebccno[stack.top()]=ebcc_cnt;
+					ebcc[ebcc_cnt].push_back(stack.top());
+					stack.pop();
+				}
+				stack.pop();
+			}
 		}
 };
 ```
