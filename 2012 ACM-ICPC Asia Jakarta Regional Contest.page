@@ -31,7 +31,7 @@ date: 2017.08.13 10:30-15:30
 \therefore gcd(a,b,c)|\frac{a}{gcd(x'_{1},x'_{2})}\\
 $$
 
-同理有 $gcd(a,b,c)|\frac{b}{gcd(x'_{1},x'_{3})},gcd(a,b,c)|\frac{c}{gcd(x'_{2},x'_{3})}$ ，故 $gcd(\frac{a}{gcd(x'_{1},x'_{2})},\frac{b}{gcd(x'_{1},x'_{3})},\frac{c}{gcd(x'_{2},x'_{3})})=gcd(a,b,c)$ 。即 $y$ 轴上可以组合出的是  $(0,gcd(a,b,c))$ 的倍数，同理 $x$ 轴上可以组合出的是 $(gcd(a,b,c),0)$  的倍数。我们取 $[0,gcd(a,b,c)-1]^{2}$ 的一个矩形，容易知道这个矩形平移后可以覆盖整个平面。考虑这个矩形内部，根据上面的结论和裴蜀定理易证每一行每一列有且仅有一个点，故所求面积至少是 $\displaystyle \frac{gcd^{2}(a,b,c)}{gcd(a,b,c)}=gcd(a,b,c)$ （否则显然不能铺满整个平面），而这个值可以通过对每个点选取它上方 $1\times gcd(a,b,c)$ 的矩形取到。故答案为
+同理有 $\displaystyle gcd(a,b,c)|\frac{b}{gcd(x'_{1},x'_{3})},gcd(a,b,c)|\frac{c}{gcd(x'_{2},x'_{3})}$ ，故 $\displaystyle gcd(\frac{a}{gcd(x'_{1},x'_{2})},\frac{b}{gcd(x'_{1},x'_{3})},\frac{c}{gcd(x'_{2},x'_{3})})=gcd(a,b,c)$ 。即 $y$ 轴上可以组合出的是  $(0,gcd(a,b,c))$ 的倍数，同理 $x$ 轴上可以组合出的是 $(gcd(a,b,c),0)$  的倍数。我们取 $[0,gcd(a,b,c)-1]^{2}$ 的一个矩形，容易知道这个矩形平移后可以覆盖整个平面。考虑这个矩形内部，根据上面的结论和裴蜀定理易证每一行每一列有且仅有一个点，故所求面积至少是 $\displaystyle \frac{gcd^{2}(a,b,c)}{gcd(a,b,c)}=gcd(a,b,c)$ （否则显然不能铺满整个平面），而这个值可以通过对每个点选取它上方 $1\times gcd(a,b,c)$ 的矩形取到。故答案为
 $$
 ans=gcd(a,b,c)\cdot gcd(x_{1},x_{2},x_{3})\cdot gcd(y_{1},y_{2},y_{3})\\
 记gcd(x_{1},x_{2},x_{3})=x_{0},gcd(y_{1},y_{2},y_{3})=y_{0},有\\
