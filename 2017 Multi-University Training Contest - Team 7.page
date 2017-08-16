@@ -28,6 +28,29 @@ date 2017.08.15 12:00-17:00
 
 正确的做法，是观察 $(x, y), (x, i), (y, i)$ 在题目所述的对称的条件下，其实等价于 $(x, i), (i, y), (y, x)$，就是求三元环的个数。上述做法中的“暴力做”，其实就是在做一个三元环。所以正解的代码和比赛写的实际上相差无几，时间上也都差不多。
 
+## K. Kolakoski
+
+**题目大意**：有一个由 $1$ 和 $2$ 两种数字组成的数列 $\{A_n\}$，$A_1=1$。如果将数列 $\{A_n\}$ 中相邻且相同的项缩成一块，将每一块的长度写成一个新的数列 $\{B_n\}$，满足 $A_i=B_i$。要求输出这个数列的第 $n\leq10^7$ 项。
+
+**题解**：签到题，直接按题意模拟填数列。时间复杂度和空间复杂度都是 $\mathcal{O}(n)$。
+
+## L. Loop nest
+
+**题目大意**：有一个 $m\leq15$ 的循环，第 $i$ 层的循环变量为 $c_i$。$c_i$的下界和上界可能和前 $i-1$ 层的循环变量的值有关。具体地，第 $i$ 层对应两个集合 $P_i,Q_i\subseteq \{1,\cdots,i-1\}$，则$c_i$ 的下界为 $\max\limits_{k\in P_i}\{c_k\}$，上界为 $\min\limits_{k\in Q_i}\{c_k\}$。特别地，如果 $P_i=\varnothing$，则下界为 $1$；如果 $Q_i=\varnothing$，则上界为 $n\leq10^9$。求这个循环执行的次数，答案对 $2\leq p\leq10^9+7$ 取模。
+
+**题解**：比赛时没有看懂题意，下来重新看了一下。等价于求满足下列条件的数列 $\{A_m\}$ 的数量，$1\leq A_i\leq n$，$A_i\geq A_j(j\in P_i)$，$A_i\leq A_j(j\in Q_i)$。
+
+考虑按照大小关系将数列分成 $k$ 个非空集合，同一个集合中的元素取相同的值。第 $i$ 个集合的值严格小于第 $i+1$ 个集合的值，则使得这个数列合法的赋值方法有 ${n\choose k}$ 种。令 $f[set][k]$ 表示将集合 $set$ 划分成 $k$ 个满足上述条件的非空集合的方案数，则有
+
+<center> $f[set][k]=\sum\limits_{s\subset set \land \forall x(x\in s\to\not\exists y(y\in(set\setminus s)\land[y\in Q_x]))} f[set\setminus s][k-1]$,$(set\neq \varnothing$,$1\leq k\leq m)$</center>
+<center>特别地，$f[0][0]=1$</center>
+
+判断 $s\subset set$ 是否可以作为 $set$ 的划分中最后的一个集合，可以令 $geq[i]$ 表示需要小于等于 $A_i$ 的元素集合，$set\_geq[set]=\bigcup\limits_{i\in set} geq[i]$，如果 $set\_geq[set\setminus s]\verb'&'s=\varnothing$，那么这样划分就是合法的。
+
+另外，在标程中 get 了一种计算 ${n\choose i}\text{mod }p$，在 $n,p$ 比较大，对 $\forall 1\leq i\leq m$，$m$ 很小，$p$ 不一定是质数时的方法。我们将 ${n\choose {i-1}}$ 用 $i-1$ 个因子的乘积表示，那么我们递推计算 $n\choose i$ 的时候，只需要增加一个因子 $(n+i-1)$，再在这 $i$ 个因子中去把 $i$ 除掉即可。时间复杂度 $\mathcal{O}(m^2)$，空间复杂度 $\mathcal{O}(m)$。
+
+整个算法的时空复杂度都是 $\mathcal{O}(m\times2^m)$。
+
 # Replay and Summary
 
 ## Replay
