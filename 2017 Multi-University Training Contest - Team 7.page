@@ -42,8 +42,10 @@ date 2017.08.15 12:00-17:00
 
 考虑按照大小关系将数列分成 $k$ 个非空集合，同一个集合中的元素取相同的值。第 $i$ 个集合的值严格小于第 $i+1$ 个集合的值，则使得这个数列合法的赋值方法有 ${n\choose k}$ 种。令 $f[set][k]$ 表示将集合 $set$ 划分成 $k$ 个满足上述条件的非空集合的方案数，则有
 
-<center> $f[set][k]=\sum\limits_{s\subset set \land \forall x(x\in s\to\not\exists y(y\in(set\setminus s)\land[y\in Q_x]))} f[set\setminus s][k-1]$,$(set\neq \varnothing$,$1\leq k\leq m)$</center>
-<center>特别地，$f[0][0]=1$</center>
+$$
+f[set][k]=\sum\limits_{s\subset set \land \forall x(x\in s\to\not\exists y(y\in(set\setminus s)\land[y\in Q_x]))} f[set\setminus s][k-1],(set\neq \varnothing,1\leq k\leq m)\\
+\text{特别地，}f[0][0]=1
+$$
 
 判断 $s\subset set$ 是否可以作为 $set$ 的划分中最后的一个集合，可以令 $geq[i]$ 表示需要小于等于 $A_i$ 的元素集合，$set\_geq[set]=\bigcup\limits_{i\in set} geq[i]$，如果 $set\_geq[set\setminus s]\verb'&'s=\varnothing$，那么这样划分就是合法的。
 
