@@ -32,9 +32,9 @@ tips:
 
 1. 求三元环的方法：（很久之前和队友口胡出的做法，正好趁着这次验证了一下）我们给每条边指定方向之后，从度数小的指向度数大的，如果度数相同，从编号小的指向编号大的（保证两个点之间只有一条有向边），然后去掉重边。枚举每条边 $u\rightarrow v$，然后再枚举 $u$ 的其他出边 $u\rightarrow w$，判断是否存在边 $w\rightarrow v$。判断可以用 `hash` 或者 `bitset`。这样每个三元环会给我们的答案贡献 $1$。特别地，如果存在 $u\rightarrow u$ 这样的自环，会被我们计算一次；如果存在 $u\rightarrow v, v\rightarrow v$ 或者是 $u\rightarrow v, u\rightarrow u$ 这样的也会被我们计算一次。而且我们是能知道每个三元环的具体信息的，所以也能很容易判断当前的这个环的形状。
 
- 用在这题中，三个点相同的三元环贡献为 $1$，两个点相同的三元环贡献为 $3$，三个点均不同的三元环贡献为 $6$。
+   用在这题中，三个点相同的三元环贡献为 $1$，两个点相同的三元环贡献为 $3$，三个点均不同的三元环贡献为 $6$。
 
- 复杂度证明：我们枚举一条边 $u\rightarrow v$，对于 $\deg(u)\leq \sqrt{m}$ 的边，此时枚举 $u$ 的其他出边的复杂度为 $\mathcal{O}(\sqrt{m})$。对于 $\sqrt{m}< \deg(u)$ 的边，此时对 $u$ 的所有出边 $u\rightarrow w$，因为有 $\deg(u) \leq \deg(w)$，所以 $\sqrt{m} < \deg(w)$。这样的 $w$ 只有 $\mathcal{O}(\sqrt{m})$ 个，所以枚举 $u$ 的其他出边的复杂度还是 $\mathcal{O}(\sqrt{m})$。故总复杂度为 $\mathcal{O}(m\sqrt{m})$。
+   复杂度证明：我们枚举一条边 $u\rightarrow v$，对于 $\deg(u)\leq \sqrt{m}$ 的边，此时枚举 $u$ 的其他出边的复杂度为 $\mathcal{O}(\sqrt{m})$。对于 $\sqrt{m}< \deg(u)$ 的边，此时对 $u$ 的所有出边 $u\rightarrow w$，因为有 $\deg(u) \leq \deg(w)$，所以 $\sqrt{m} < \deg(w)$。这样的 $w$ 只有 $\mathcal{O}(\sqrt{m})$ 个，所以枚举 $u$ 的其他出边的复杂度还是 $\mathcal{O}(\sqrt{m})$。故总复杂度为 $\mathcal{O}(m\sqrt{m})$。
 
 2. 这道题比赛的时候写的做法是，枚举每条边 $(u,v)$，然后设 $u$ 为二者中度数较小的，枚举 $(u,w)$，判断是否存在边 $(w,v)$。复杂度不好证明（似乎复杂度有误）。
 
