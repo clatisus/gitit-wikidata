@@ -21,3 +21,9 @@
 # zhongzihao
 
 [线性筛](template/zhongzihao/shai)
+
+[FFT](template/zhongzihao/fft)
+
+[二维FFT](template/zhongzihao/fft_2d)
+
+[CRT](template/zhongzihao/crt)
