@@ -33,3 +33,4 @@ void FFT(std::complex <double> *a, int length, int type){
 		a[i] /= length;
 	}
 }
+```
