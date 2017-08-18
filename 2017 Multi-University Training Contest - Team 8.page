@@ -51,6 +51,26 @@ $$
 
 **题解**：我们将这 $n$ 个人按照 $d_i$ 排序，用双向链表维护。显然每次相遇只可能发生在相邻的两人之间。我们用一个优先队列维护相邻两人相遇的时间（相对于时刻 $0$），每次取出一个事件，然后删除掉一个点即可。
 
+## E. Engineering of the Clones
+
+**题目大意**：给你一个 $A=p_{1}^{r_{1}}p_{2}^{r_{2}}\cdots p_{n}^{r_{n}}$ ，且 $|r_{i}-r_{j}|\le 1(\forall i, j\in[1,n])$ ，求 $\frac{1}{A-1}$ 在 $\prod_{i=1}^{n}p_{i}$ 进制下小数点后的第 $k$ 位数。
+
+**题解**：比赛摸鱼害死人，明明想到了的。
+
+记 $\text{base}=\prod_{i=1}^{n}p_{i},\max=\max\limits_{i=1}^n\{r_i\}$ ，显然有 $\frac{1}{A-1}=\frac{1}{1-\frac{1}{A}}-1=\sum_{i=1}^{\infty}\frac{1}{A^{i}}$ 。而 $\displaystyle \frac{1}{A}=\frac{\prod_{i=1}^{n}p_{i}[r_{i}<\max]}{\text{base}^{\max}}$ ，显然有 $t=\prod_{i=1}^{n}p_{i}[r_{i}<\max]<\text{base}$，所以 $\frac{1}{A}$ 在 $\text{base}$ 进制下为 $0.\underbrace{0\cdots 0}_{\max-1}t$。由于题目保证了 $k<\max^{2}$ ，所以 $\sum\limits_{i=\max+1}^{\infty}\frac{1}{A^i}$ 对第 $k$ 位无影响，下证：
+
+显然有 $\prod_{i=1}^{n}p_{i}[r_{i}<\max]\leq\frac{\text{base}}{2}$ ，故
+$$
+\begin{aligned}\\
+\sum_{i=\max+1}^{\infty}\frac{1}{A^{i}}=&\frac{1}{A^{\max+1}}\cdot\frac{1}{1-\frac{1}{A}}\\
+=&\frac{(\prod_{i=1}^{n}p_{i}[r_{i}<\max])^{\max+1}}{\text{base}^{\max(\max+1)}}\cdot\frac{\text{base}^{\max}}{\text{base}^{\max}-\prod_{i=1}^{n}p_{i}[r_{i}<\max]}\\
+\le&\frac{1}{2^{\max}\text{base}^{\max^{2}-1}}\\
+<&\frac{1}{\text{base}^{\max^{2}-1}}\\
+\end{aligned}\\
+$$
+
+而观察容易知道， $\forall i\in[1,\max]$ 的 $\frac{1}{A^{i}}$ 的各个非零位置是互不相同的，也即每个位置最多只有一个 $\frac{1}{A^i}$ 有贡献。于是在第 $k$ 位非零的就只有 $\displaystyle \frac{1}{A^{\lceil\frac{k}{\max}\rceil}}$ 。所以答案就是 $\left(\prod_{i=1}^{n}p_{i}[r_{i}<\max]\right)^{\lceil\frac{k}{\max}\rceil}$ 在 $\text{base}$ 进制下的第 $\lceil\frac{k}{\max}\rceil\cdot \max-k$ 位。然后快速幂加上 NTT+CRT 或者拆系数 FFT 就行了。复杂度 $\mathcal{O}(\max\log \max)$ 。
+
 ## F. Fleet of the Eternal Throne
 
 **题目大意**：给你 $n(n\leq 10^5)$ 个长度总和不超过 $10^5$ 的字符串 $\{s_i \}$。再给你 $m(1\leq m\leq 100)$ 次询问，每次询问 $(x,y)$，要求找到串 $s_x, s_y$ 的最长公共子串 $sub$，并且 $sub$ 是某个 $s_i$ 的前缀。输出最长长度。
