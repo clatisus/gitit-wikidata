@@ -69,7 +69,7 @@ $$
 \end{aligned}\\
 $$
 
-而观察容易知道， $\forall i\in[1,\max]$ 的 $\frac{1}{A^{i}}$ 的各个非零位置是互不相同的，也即每个位置最多只有一个 $\frac{1}{A^i}$ 有贡献。于是在第 $k$ 位非零的就只有 $\displaystyle \frac{1}{A^{\lceil\frac{k}{\max}\rceil}}$ 。所以答案就是 $\left(\prod_{i=1}^{n}p_{i}[r_{i}<\max]\right)^{\lceil\frac{k}{\max}\rceil}$ 在 $\text{base}$ 进制下的第 $\lceil\frac{k}{\max}\rceil\cdot \max-k$ 位。然后快速幂加上 NTT+CRT 或者拆系数 FFT 就行了。复杂度 $\mathcal{O}(\max\log \max)$ 。
+而观察容易知道， $\forall i\in[1,\max]$ 的 $\frac{1}{A^{i}}$ 的各个非零位置是互不相同的，也即每个位置最多只有一个 $\frac{1}{A^i}$ 有贡献。于是在第 $k$ 位非零的就只有 $\displaystyle \frac{1}{A^{\displaystyle \lceil\frac{k}{\max}\rceil}}$ 。所以答案就是 $\displaystyle \left(\prod_{i=1}^{n}p_{i}[r_{i}<\max]\right)^{\displaystyle \lceil\frac{k}{\max}\rceil}$ 在 $\text{base}$ 进制下的第 $\lceil\frac{k}{\max}\rceil\cdot \max-k$ 位。然后快速幂加上 NTT+CRT 或者拆系数 FFT 就行了。复杂度 $\mathcal{O}(\max\log \max)$ 。
 
 ## F. Fleet of the Eternal Throne
 
