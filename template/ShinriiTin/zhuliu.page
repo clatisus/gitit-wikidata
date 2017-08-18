@@ -11,7 +11,7 @@ namespace ZhuLiu{
         while(true){
             for(i=1;i<=n;++i)in[i]=inf;
             for(i=1;i<=m;++i)
-            if(e[i].u!=e[i].v&&e[i].w<in[e[i].v])
+                if(e[i].u!=e[i].v&&e[i].w<in[e[i].v])
                     in[e[i].v]=e[i].w,pre[e[i].v]=e[i].u;
             in[rt]=0;
             for(i=1;i<=n;++i)if(in[i]==inf)return -1;//无解时返回-1
