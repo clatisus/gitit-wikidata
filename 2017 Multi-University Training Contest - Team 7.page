@@ -6,6 +6,43 @@ date 2017.08.15 12:00-17:00
 
 # Solutions
 
+## A. All Kill
+
+**题目大意**：给你一个数列 $\{x_{i}\}$ ，定义 $y_{i,j}=x_{i}\cdot x_{j} \text{ mod } 32677$ 。问有多少个六元组 $(a,b,c,d,e,f)$ 满足 $gcd(y_{a,b},y_{c,d})=gcd(y_{c,d},y_{e,f})=gcd(y_{e,f},y_{a,b})=1$ 。
+
+**题解**：首先求出 $[0,32676]$ 中取每个值的 $y$ 有多少个，分解 $32677$ 得到它等于 $41\times 797$ ，显然我们可以分别计算两个质数然后用 CRT 合并。我们有 $\text{numy}_{u,v}=\displaystyle \sum_{i_1i_2\equiv u(\text{mod }41)}\sum_{j_1j_2\equiv v(\text{mod }797)}\text{numx}_{i_1,j_1}\text{numx}_{i_2,j_2}$ 。其中 $\text{numx}_{u,v},\text{numy}_{u,v}$ 分别表示模 $41$ 余 $u$，模 $797$ 余 $v$ 的 $x_i$ 和 $y_{i,j}$ 的个数。这里下标的乘法可以利用原根的性质转化为对指数的加法，这样就变成我们熟悉的卷积形式了，可以用二维 FFT 加速。注意模 $41,797$ 其中之一为 $0$ 的数是需要单独讨论的。
+
+求得 $\text{numy}$ 之后，我们要求的东西就是： 
+
+$$
+\text{ans}=\displaystyle \sum_{i=0}^{32676}\sum_{j=0}^{32676}\sum_{k=0}^{32676}[\gcd(i,j)=\gcd(j,k)=\gcd(k,i)=1]\text{numy}_i\cdot \text{numy}_j\cdot \text{numy}_k
+$$
+
+注意到如果 $(i,j,k)$ 中有 $0$ ，则必须恰有 $1$ 个 $0$ 和 $2$ 个 $1$ 才满足条件，对于正的部分，容斥一下有：
+
+$$
+\begin{aligned}\\
+\text{ans}&=\sum_{u=1}^{32676}\mu(u)\sum_{u|i}\sum_{u|j}\sum_{k=1}^{32676}[\gcd(j,k)=\gcd(k,i)=1]\text{numy}_i\cdot \text{numy}_j\cdot \text{numy}_k\\
+&=\sum_{u=1}^{32676}\sum_{v=1}^{32676}\mu(u)\mu(v)\sum_{u|i}\sum_{uv|j}\sum_{v|k}[\gcd(k,i)=1]\text{numy}_i\cdot \text{numy}_j\cdot \text{numy}_k\\
+&=\sum_{u=1}^{32676}\sum_{v=1}^{32676}\sum_{w=1}^{32676}\mu(u)\mu(v)\mu(w)\sum_{uw|i}\sum_{uv|j}\sum_{vw|k}\text{numy}_i\cdot \text{numy}_j\cdot \text{numy}_k\\
+&\text{记 }\text{sum}(d)=\sum_{d|i}\text{numy}_i\text{，则有}\\
+ans&=\sum_{u=1}^{32676}\sum_{v=1}^{32676}\sum_{w=1}^{32676}\mu(u)\mu(v)\mu(w)\cdot \text{sum}(\text{lcm}(u,v))\cdot \text{sum}(\text{lcm}(v,w))\cdot \text{sum}(\text{lcm}(w,u))\\
+\end{aligned}\\
+$$
+
+注意到 $\text{lcm}(u,v)\le 32676$ 的 $(u,v)$ 不会很多，这是因为
+
+$$
+\begin{aligned}\\
+\text{lcm}(u,v)&=\frac{uv}{\gcd(u,v)}\le32676\\
+\frac{v}{\gcd(u,v)}&\le \frac{32676}{u}\\
+\text{cnt}&\le \sum_{i=1}^{32676}\frac{32676\cdot \sigma(i)}{i}\\
+&=\mathcal{O}(32676\cdot \log^{2}32676)
+\end{aligned}
+$$
+
+在去掉 $\mu$ 为 $0$ 的数（含平方因子的数）以后，这个数字会变得更小，实际打表得到有用的数对大约只有 $10^{5}$ 级别。这样以后，我们就可以用找三元环的方法暴力找出所有对答案有贡献的 $(u,v,w)$ ，然后就容易计算答案了。找三元环的方法见本场的 D 题。
+
 ## B. Build a tree
 
 **题目大意**：给定一个 $n$ 个点的有根树，标号从 $0$ 到 $n-1$。$i$ 号点的父亲为 $\lfloor \frac{i-1}{k} \rfloor$，求所有节点的子树大小的异或和。
