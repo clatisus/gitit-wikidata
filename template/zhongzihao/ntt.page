@@ -1,5 +1,4 @@
-```c++
-#include<bits/stdc++.h>
+```c++#include<bits/stdc++.h>
 
 typedef long long ll;
 
@@ -15,6 +14,7 @@ int powermod(int a, int exp, int moder){
 }
 
 void NTT(int *a, int length, int type, int moder, int root){
+	if (length == 1) return;
 	int len = -1;
 	for (int x = length; x; ++ len, x >>= 1);
 	for(int i = 1, j = 0; i < length - 1; ++ i){
