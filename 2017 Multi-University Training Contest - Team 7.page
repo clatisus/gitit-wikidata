@@ -132,6 +132,53 @@ $$
 
 整个算法的时空复杂度都是 $\mathcal{O}(m\times2^m)$。
 
+## H. Hard challenge
+
+签到题，把直线在平面上转 $180^{\circ}$ 暴力计算答案即可。
+
+## I. Inverse of sum
+
+**题目大意**：给你 $n$ 个整数 $\{a_i \}$ 和一个质数 $p$ ，求满足 $\frac{1}{a_{i}+a_{j}}\equiv\frac{1}{a_{i}}+\frac{1}{a_{j}}\pmod p$ 的 $(i,j)$ 数。
+
+**题解**：
+法一：化简式子：
+
+$$
+\begin{aligned}\\
+\frac{1}{a_{i}+a_{j}}&\equiv\frac{1}{a_{i}}+\frac{1}{a_{j}}\pmod p\\
+a_{i}a_{j}&\equiv a^{2}_{i}+2a_{i}a_{j}+a^{2}_{j}\pmod p\\
+(a_{i}-a_{j})(a^{2}_{i}+a_{i}a_{j}+a^{2}_{j})&\equiv 0\pmod p\\
+a^{3}_{i}&\equiv a^{3}_{j}\pmod p\\
+\end{aligned}\\
+$$
+
+然后就轻松愉快了，注意 $p=3$ 时 $a_i\equiv a_j\pmod p$ 满足条件，而其它时候不满足。
+
+法二：
+
+$$
+\begin{aligned}\\
+&a^{2}_{i}+a_{i}a_{j}+a^{2}_{j}\equiv 0\pmod p\\
+&a_{j}\equiv\frac{-1\pm\sqrt{-3}}{2}a_{i}\pmod p\\
+\end{aligned}\\
+$$
+
+求一下 $-3$ 的二次剩余就好了，注意 $p=2,p=3$ 时要单独讨论， $-3$ 是二次非剩余时答案为 $0$ 。
+
+## J. Just do it
+
+**题目大意**：定义一次变换将 $a_{i}$ 变成 $\bigoplus\limits_{j=1}^{i}a_{j}$ ，问 $m$ 次变换以后的 $a$ 数列。
+
+**题解**：易知 $m$ 次变换后， $a_{i}$ 变为 $\bigoplus\limits_{j=1}^{i}\left( {{i-j+m-1}\choose {m-1}}\text{ mod }2 \right) a_{j}$ ，而我们知道 ${n\choose m}\text{ mod }2=!(m\And(\sim n))$ 。考虑 $m$ 为 $2$ 的幂的情况，设 $m=2^{k}$ ，根据前面的式子易知 ${{i-j+m-1}\choose {m-1}}\text{ mod }2=1$，当且仅当 $2^k|(i-j)$ ，那么就变成了 $a_{i}=\bigoplus\limits_{2^k|(i-j)}a_{j}$ ，就是一个以 $2^k$ 为步长的前缀异或和了。
+
+---
+
+coldwater's comment
+
+还有一个推导的方向是，设 $f[i][j]$ 表示第 $i$ 次变换之后的第 $j$ 项。那么有 $f[i][j] = f[i-1][j]\oplus f[i][j-1]$。展开之后变为 $f[i][j] = f[i-2^k][j]\oplus f[i][j-2^k]$。跟上面最后一句话就是一样的了。
+
+另外，${n\choose m}\text{ mod }2=1$，考虑意义的话，就是当且仅当 $m$ 在二进制下是 $n$ 的子集。用 Lucas 定理很容易证明。
+
 # Replay and Summary
 
 ## Replay
