@@ -34,6 +34,18 @@ date 2017.08.17 12:00-17:00
 
 **题解**：我们将所有的边权乘以 $10^4$，然后将所有从 $x$ 到 $n$ 的边的边权再加上 $10^4-x$，然后直接跑最大树形图的朱刘算法就行了。得到朱刘算法的结果$res$，则最大树形图的边权和为 $\lfloor\frac{res}{10^4}\rfloor$，最小的 $n$ 的父亲编号为 $10^4-(res\text{ mod }10^4)$。
 
+## K. Killer Names
+
+**题目大意**：每个人的名字是两个长度为 $n$ 的串，字符集 $\mid \Sigma\mid=m$。要求每个人的名字满足两个串中没有相同的字符。问最多能给多少人命名。
+
+**题解**：令 $f_i(1\leq i\leq m)$ 表示恰用 $i$ 种字符组成一个长度为 $n$ 的串的方案数。$f_i = i^n - \sum\limits_{j=1}^{i-1}{i\choose j}\cdot f_j$，那么答案为：
+
+$$
+\sum\limits_{i=1}^m \left(\sum\limits_{j=1}^{m-i} {{m-i}\choose j}\cdot f_j \right)\cdot {m\choose i}\cdot f_i
+$$
+
+直接 $\mathcal{O}(nm)$ 计算即可。
+
 # Replay and Summary
 
 ## Replay
