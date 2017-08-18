@@ -12,6 +12,39 @@ date 2017.08.17 12:00-17:00
 
 **题解**：用 splay 启发式合并自下向上计算 $ans_u$，那么就只用考虑插入一个 $a$ 对这个集合的答案的影响：会使得答案增加 $(a+\sum\limits_{x\in S\land x\leq a}x+\sum\limits_{x\in S\land x>a}a)$。然后就只用维护一下 splay 的子树和与子树大小就行了。启发式合并的时候需要简单的写一下内存回收，就中序遍历一下较小的 splay，把指针扔到一个 `vector` 里即可。
 
+## B. Battlestation Operational
+
+**题目大意**：算个式子。
+
+**题解**：
+
+$$
+\begin{aligned}\\
+&\sum_{i=1}^{n}\sum_{j=1}^{i}\lceil\frac{i}{j}\rceil[\gcd(i,j)=1]\\
+=&\sum_{i=1}^{n}\sum_{d|i}\mu(d)\sum_{j=1}^{\frac{i}{d}}\lceil\frac{\frac{i}{d}}{j}\rceil\\
+=&\sum_{i=1}^{n}\sum_{d|i}\mu(d)(\frac{i}{d}+\sum_{j=1}^{\frac{i}{d}-1}\sigma(j))
+\end{aligned}\\
+$$
+
+其中 $\mu(d)$ 和 $\sigma(j)$ 可以 $\mathcal{O}(n)$ 预处理，复杂度 $\mathcal{O}(n\log n)$ 。
+
+---
+
+coldwater's comment
+
+令 $f(i)=\sum\limits_{j=1}^i\lceil \frac{i}{j} \rceil[\gcd(i,j)=1]$，令 $g(i)=\sum\limits_{d|i}f(d)$，那么有：
+
+$$
+\begin{aligned}
+g(i)&=\sum_{d|i}\sum_{j=1}^d\lceil \frac{d}{j}\rceil [\gcd(d, j)=1]\\
+&=\sum_{j=1}^i \lceil\frac{i}{j} \rceil
+\end{aligned}
+$$
+
+第二个等号是因为对每个 $\lceil\frac{i}{j} \rceil$，令 $d=\frac{i}{\gcd(i,j)}, j'=\frac{j}{\gcd(i,j)}$，有 $\lceil \frac{d}{j'}\rceil$ 作贡献。再由莫比乌斯反演得到，$f(i)=\sum\limits_{d|i}\mu(d)g(\frac{i}{d})$。
+
+另外，$\sum\limits_{i=1}^n\lfloor \frac{n}{i} \rfloor=\sum\limits_{i=1}^n \sigma(i)$，并且 $\lfloor \frac{n}{i} \rfloor = \lceil \frac{n-1}{i}\rceil +1$。
+
 ## D. Death Podracing
 
 **题目大意**：长度为 $L$ 的环上有 $n$ 个人赛跑，每个人初始位置为 $d_i(0\leq d_i < L)$，速度为 $v_i(|v_i|\leq 10^9)$。每个人的位置互不相同，速度也互不相同。第 $i$ 个人的力量值为 $i$，当两个人相遇的时候，力量值较小的人会被淘汰。问经过多长时间最后剩下一个人。
