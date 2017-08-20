@@ -6,6 +6,63 @@ date 2017.08.19 12:00-17:00
 
 # Solutions
 
+## F. Subsequence Count
+
+**题目大意**：给定一个长度为 $n$ 的 $0/1$ 串，和 $q$ 次操作，操作分为两种：
+
+- 翻转 $[l,r]$ 中的每一位
+- 计算 $[l,r]$ 中本质不同的子序列个数
+
+**题解**：我们先考虑怎么计算 $[1,n]$ 的本质不同的子序列个数。我们令 $dp[i][0/1]$ 表示到第 $i$ 位为止，以 $0/1$ 结尾的本质不同的子序列的个数。如果第 $i$ 位是 $0/1$，那么显然有：
+
+$$
+\begin{aligned}
+dp[i][0/1] &= dp[i-1][0] + dp[i-1][1] + 1\\
+dp[i][1/0] &= dp[i-1][1/0]
+\end{aligned}
+$$
+
+其中 $dp[0][0]=dp[0][1]=0$。容易发现第 $i$ 位从 $i-1$ 位而来的转移方程，只与第 $i$ 位是 $0$ 还是 $1$有关，我们用矩阵乘法来表示这个状态转移：
+
+$$
+\left( \begin{array}{ccc}
+dp_{i-1,0} & dp_{i-1,1} & 1
+\end{array} \right) \cdot \mathbf{M_{0/1}}=
+\left( \begin{array}{ccc}
+dp_{i,0} & dp_{i,1} & 1
+\end{array} \right)
+$$
+
+其中 $\mathbf{M_0},\mathbf{M_1}$ 分别表示第 $i$ 位是 $0/1$ 的转移矩阵。
+
+$$
+\mathbf{M_0} =
+\left( \begin{array}{ccc}
+1 & 0 & 0 \\
+1 & 1 & 0 \\
+1 & 0 & 1
+\end{array} \right),
+\mathbf{M_1} =
+\left( \begin{array}{ccc}
+1 & 1 & 0 \\
+0 & 1 & 0 \\
+0 & 1 & 1
+\end{array} \right)
+$$
+
+那么我们每次询问区间 $[l,r]$ 的时候，只需要知道 $\mathbf{A}=\prod_{i=l}^r \mathbf{M_{s[i]}}$，那么有：
+
+$$
+\left( \begin{array}{ccc}
+0 & 0 & 1
+\end{array} \right) \cdot \mathbf{A}=
+\left( \begin{array}{ccc}
+dp_{r,0} & dp_{r,1} & 1
+\end{array} \right)
+$$
+
+我们用一个线段树来维护这个乘积即可。对于修改操作，我们只需要将对应的矩阵的前两列交换，再将前两行交换即可。
+
 ## K. Convolution Layer
 
 **题目大意**：给你两个四维矩阵 $I\in {\{-1, 1\}}^{n\times c\times h_i\times w_i}$ 和 $W\in {\{-1, 1\}}^{m\times c\times h_w\times w_w}$。让你求 $O\in \mathbb{R}^{n\times m\times h_o\times w_o}$，其中 $h_o=h_i-h_w+1,w_o=w_i-w_w+1$，并且有：
