@@ -7,6 +7,7 @@
 ##证明
 
 **必要性**：显然，如果 $\exists S(S\subseteq X \land |S|>\left|\bigcup\limits_{x\in S}T(x)\right|)$，那么一定存在点 $x\in S$ 无法被匹配。
+
 **充分性**：假设二分图 $G(X,Y)$ （假设$|X|\le|Y|$）满足 $\displaystyle\forall S(S\subseteq X \to\left|S\right|\le\left|\bigcup\limits_{x\in S}T(x)\right|)$，且不存在完备匹配。
 设图 $G$ 的一个最大匹配为 $A\to B$，$A\subseteq X$，$B\subseteq Y$，且 $|A|=|B|<|X|$。
 那么一定存在 $x_1\in X-A$，且有 $|T(x_1)|\ge1$。
