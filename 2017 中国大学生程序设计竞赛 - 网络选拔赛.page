@@ -85,6 +85,59 @@ $$
 
 我们就得到了一个二次方程，它的两个根恰好是 $r_{i-1}$ 和 $r_{i+1}$ ，所以根据韦达定理有 $\displaystyle \frac{1}{r_{i+1}}=\frac{2}{r}+\frac{2}{r_{i}}-\frac{2}{R}-\frac{1}{r_{i-1}}$ 。由于 $T\cdot n$ 太大，直接计算完 $n$ 会超时，所以当小圆很小时（具体来说，应该比精度限制还要小，因为如果在当前圆停止计算，精度误差应该是剩下的所有小圆的面积和），要停止计算。
 
+## J. Graph Of Zhuper
+
+**题目大意**：求 $\displaystyle \sum\limits_{G为n阶有标号简单无向图}Zhu(G)$ 。其中 $Zhu(G)=\gcd(size_{1},\cdots,size_{k})$ ， $size_{1},\cdots,size_{k}$ 表示 $G$ 的 $k$ 个连通块的大小。
+
+**题解**：
+法一：
+先计算连通图的数量。设 $f(n)$ 表示 $n$ 阶有标号连通简单无向图的个数。则有（减去枚举编号为 $1$ 的点所在连通块的大小 $i$）：
+
+$$
+\begin{aligned}\\
+f(n)&=2^{n\choose 2}-\sum_{i=1}^{n-1}{{n-1}\choose {i-1}}\cdot f(i)\cdot2^{{n-i}\choose 2}\\
+&=2^{n\choose 2}-(n-1)!\sum_{i=1}^{n-1}\frac{f(i)}{(i-1)!}\cdot\frac{2^{{n-i}\choose 2}}{(n-i)!}
+\end{aligned}\\
+$$
+
+可以用分治乘法加 FFT 来计算。
+
+设 $g_d(n)$ 表示所有连通块大小都能被 $d$ 整除的 $nd$ 阶有标号简单无向图的方案数，则所求为：
+
+$$
+\begin{aligned}\\
+\text{ans}&=\sum_{i=1}^ni \sum_{G}[Zhu(G)=i]\\
+&=\sum_{i=1}^{n}i\sum_{i|d}\mu(\frac{d}{i})g_{d}(\frac{n}{d})\\
+&=\sum_{d=1}^{n}g_{d}(\frac{n}{d})\sum_{i|d}\mu(\frac{d}{i})i\\
+&=\sum_{d=1}^{n}\varphi(d)g_{d}(\frac{n}{d})\\
+&=\sum_{d|n}\varphi(d)g_{d}(\frac{n}{d}),(g_d(\frac{n}{d})=0 \text{ iff } d\nmid n)\\
+\end{aligned}\\
+$$
+
+对每个 $n$ 的约数 $d$ ，我们考虑 $g_{d}(n)$ 如何计算，有（加上枚举编号为 $1$ 的点所在连通块是 $d$ 的倍数 $i$）：
+
+$$
+\begin{aligned}\\
+g_{d}(n)&=f(nd)+\sum_{i=1}^{n-1}{{nd-1}\choose {id-1}}f(id)g_{d}(n-i)\\
+&=f(nd)+(nd-1)!\sum_{i=1}^{n-1}\frac{f(id)}{(id-1)!}\cdot\frac{g_{d}(n-i)}{(nd-id)!}\\
+\end{aligned}\\
+$$
+
+仍然可以分治乘法加 FFT 解决，复杂度 $\mathcal{O}(\sigma_{1}(n)\log^{2}n)$ 。
+
+法二：（icpc-camp 题解做法）：求 $g_{d}(n)$ 可以使用生成函数来解决。
+
+$$
+\begin{aligned}\\
+g_{d}(n)&=\sum_{i=1}^{n}\frac{1}{i!}\sum_{k_{1}+\cdots+k_{i}=n}\frac{(nd)!}{(k_{1}d)!\cdots(k_{i}d)!} f(k_{1}d) \cdots  f(k_{i}d)\\
+&=(nd)!\sum_{i=1}^{n}\frac{1}{i!}\sum_{k_{1}+\cdots+k_{i}=n}\frac{f(k_{1}d)}{(k_{1}d)!} \cdots  \frac{f(k_{i}d)}{(k_{i}d)!}
+\end{aligned}\\
+$$
+
+我们令 $\displaystyle h(x)=\sum_{i=1}^{n}\frac{f(id)}{(id)!}x^{i}$ ，则答案就是 $\displaystyle \sum_{i=1}^{n}\frac{h^{i}(x)}{i!}$ 的第 $n$ 项系数乘以 $(nd)!$ 。注意到 $i=0$ 和 $i>n$ 的 $\displaystyle \frac{h^{i}(x)}{i!}$ 对答案没有影响，所以我们可以转化为计算 $\displaystyle \sum_{i=0}^{\infty}\frac{h^{i}(x)}{i!}=e^{h(x)}$ 。
+
+这样这部分的复杂度就变成了 $\mathcal{O}(\sigma_{1}(n)\log n)$ ，但是由于多项式 exp 巨大的常数，实测和我的解法时间似乎差不多，稍微快一点点。
+
 ## K. Convolution Layer
 
 **题目大意**：给你两个四维矩阵 $I\in {\{-1, 1\}}^{n\times c\times h_i\times w_i}$ 和 $W\in {\{-1, 1\}}^{m\times c\times h_w\times w_w}$。让你求 $O\in \mathbb{R}^{n\times m\times h_o\times w_o}$，其中 $h_o=h_i-h_w+1,w_o=w_i-w_w+1$，并且有：
