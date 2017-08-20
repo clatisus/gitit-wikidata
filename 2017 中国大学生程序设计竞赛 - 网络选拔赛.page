@@ -6,6 +6,10 @@ date 2017.08.19 12:00-17:00
 
 # Solutions
 
+## E. CaoHaha's staff
+
+签到题，找规律打表即可。
+
 ## F. Subsequence Count
 
 **题目大意**：给定一个长度为 $n$ 的 $0/1$ 串，和 $q$ 次操作，操作分为两种：
@@ -62,6 +66,24 @@ dp_{r,0} & dp_{r,1} & 1
 $$
 
 我们用一个线段树来维护这个乘积即可。对于修改操作，我们只需要将对应的矩阵的前两列交换，再将前两行交换即可。
+
+## G. Palindrome Function
+
+签到题，数位 dp 。
+
+## I. The Designer
+
+**题目大意**：给你两个内切的圆，然后在它们相切的缝隙中依次添加一些小圆和已有的圆相切（具体见题图），求添加 $n$ 个小圆的总面积。
+
+![](http://acm.hdu.edu.cn/data/images/C779-1009-1.png)
+
+**题解**：为讨论方便，只考虑一侧的小圆。设较大的圆半径为 $R$ ，较小的圆半径为 $r$ ，第 $i$ 个小圆半径为 $r_{i}$ 。根据 [Descartes' theorem](https://en.wikipedia.org/wiki/Descartes%27_theorem)，和这三个圆都相切的圆的半径 $x$ 满足：
+
+$$
+(\frac{1}{r}+\frac{1}{x}+\frac{1}{r_{i}}-\frac{1}{R})^{2}=2(\frac{1}{r^2}+\frac{1}{x^2}+\frac{1}{r_{i}^2}+\frac{1}{R^2})
+$$ 
+
+我们就得到了一个二次方程，它的两个根恰好是 $r_{i-1}$ 和 $r_{i+1}$ ，所以根据韦达定理有 $\displaystyle \frac{1}{r_{i+1}}=\frac{2}{r}+\frac{2}{r_{i}}-\frac{2}{R}-\frac{1}{r_{i-1}}$ 。由于 $T\cdot n$ 太大，直接计算完 $n$ 会超时，所以当小圆很小时（具体来说，应该比精度限制还要小，因为如果在当前圆停止计算，精度误差应该是剩下的所有小圆的面积和），要停止计算。
 
 ## K. Convolution Layer
 
