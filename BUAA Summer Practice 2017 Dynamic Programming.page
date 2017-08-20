@@ -3,3 +3,44 @@
 [practice link](https://cn.vjudge.net/contest/178833)
 
 # Solutions
+
+## C. Andryusha and Nervous Barriers
+
+**题目大意**：给你一个有障碍的网格，一些小球从顶部落下来，每个小球碰到障碍就会分裂成两个，从障碍的两边掉下去，但是如果小球下落的高度太高，它会穿过障碍而不会分裂。问网格底部会有多少个小球。
+
+**题解**：我们把相同位置，相同高度的小球合并成一种，由于障碍是连续的一段，并且每行至多只有一个障碍，因此分裂出的新球只会有 $\mathcal{O}(n)$ 种，所以小球总共只会有 $\mathcal{O}(n+w)$ 种，也就是说我们可以直接模拟小球下落的过程。注意到每次新产生的小球高度最低，而高度越低的小球越容易被障碍挡住，所以我们可以考虑用 $w$ 个栈维护每列不同高度小球的个数。从高到低考虑每个障碍，暴力地处理每种碰到障碍的小球，把它出栈，然后分裂成两种新的小球放入两边的栈即可。现在的问题是如何快速地找出会被障碍挡住的小球，我们可以用一棵线段树维护 $w$ 个栈的栈顶元素的高度的最小值，显然要么 $[l,r]$ 中高度最小的那个会被挡住，要么所有小球都不会被挡住。复杂度 $\mathcal{O}((n+w)\log(n+w))$ 。
+
+## H. Karen and Supermarket
+
+**题目大意**：给你 $n$ 个物品，每种的价格为 $c_{i}$ ，对每种物品都有一张折扣券，可以减少 $d_{i}$ 的价格，但是要使用第 $i\ge 2$ 张折扣券，必须先使用第 $x_{i}$ 这张折扣券。给你 $b$ 的预算，问最多能买到多少物品。
+
+**题解**：树上 dp 。设 $dp[i][j][k]$ 表示考虑 $i$ 的子树中购买 $j$ 件物品，$k=1/0$ 分别表示使用$\text{/}$不使用第 $i$ 张折扣券的状态下的最小花费。则答案为 $\displaystyle \max\limits_{dp[1][j][1/0]\le b}j$ 。状态转移方程为：
+
+$$
+\begin{aligned}\\
+&dp[i][j][0]=\min \{c_i+\min_{\left[ \sum\limits_{i\to u}j_{u}=j-1\right]} \{\sum_{i\to u}dp[u][j_{u}][0] \},\min_{\left[\sum\limits_{i\to u}j_{u}=j\right]}\{ \sum_{i\to u}dp[u][j_{u}][0] \} \}\\
+&dp[i][j][1]=c_i-d_i+\min_{\left[\sum\limits_{i\to u}j_{u}=j-1\right]} \{\sum_{i\to u}dp[u][j_{u}][1/0] \}\\
+\end{aligned}\\
+$$
+
+## I. Bear and Company
+
+**题目大意**：给你一个字符串，每次操作可以交换两个相邻的字符，问最少多少次操作可以让字符串中不含有 `VK` 作为子串。
+
+**题解**：设 $dp[v][k][x][1/0]$ 表示将前 $v$ 个 `V` ， $k$ 个 `K` ， $x$ 个其它字符移到最前面，最后一个字符为/不为 `V`，且不包含 `VK` 所需的最小操作。设 $\text{numv}[i],\text{numk}[i],\text{numx}[i]$ 分别表示 $[1,i]$ 中 `V` ， `K` 和其他字符的个数。 $\text{sitv}[i], \text{sitk}[i], \text{sitx}[i]$ 分别表示第 $i$ 个`V` ， `K` 或其它字符的位置。显然同一种字符之间的相对位置不会发生改变。则状态转移方程为：
+
+$$
+\begin{aligned}\\
+dp[v][k][x][0]=\min\{&dp[v][k-1][x][0]+g(\text{numv}[\text{sitk}[k]]-v)+g(\text{numx}[\text{sitk}[k]]-x),\\
+&dp[v][k][x-1][1/0]+g(\text{numv}[\text{sitx}[x]]-v)+g(\text{numk}[\text{sitx}[x]]-k)\}\\
+dp[v][k][x][1]=\min\{&dp[v-1][k][x][1/0]+g(\text{numk}[\text{sitv}[v]]-k)+g(\text{numx}[\text{sitv}[v]]-x)\}\\
+\end{aligned}
+$$
+
+其中，$g(x)=\max\{0,x\}$。
+
+## K. Bash Plays with Functions
+
+**题目大意**：算个东西。
+
+**题解**：易知 $f(n)=2^{w(n)}$ ，其中 $w(n)$ 表示 $n$ 的质因子个数。显然 $f$ 是一个积性函数，而 $\displaystyle f_{r}(n)=\sum\limits_{d|n}\frac{f_{r-1}(d)+f_{r-1}(\frac{n}{d})}{2}=\sum\limits_{d|n}f_{r-1}(d)$ ，故 $f_{r}=f_{r-1}*I$ ，这是一个狄利克雷卷积，所以 $f_r$ 也是积性函数，所以我们只需要对质数的幂计算答案即可。显然 $f_{r}(p^{n})=\sum_{i=0}^{n}f_{r-1}(p^{i})$ ，由于本题中质数的幂不会超过 $20$ ，所以可以直接递推计算。
