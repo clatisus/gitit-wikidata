@@ -3,3 +3,15 @@
 ##定理内容
 
 左部为 $X$，右部为 $Y$ 的二分图 $G=(X+Y,E)$ 中（不妨假设$|X|\le|Y|$），存在完备匹配的充分必要条件是：$\displaystyle\forall S(S\subseteq X \to\left|S\right|\le\left|\bigcup\limits_{x\in S}T(x)\right|)$，其中 $T(x)=\{y|y\in Y\land\left[(x,y)\in E\right]\}$。
+
+##证明
+
+**必要性**：显然，如果 $\exists S(S\subseteq X \land |S|>\left|\bigcup\limits_{x\in S}T(x)\right|)$，那么一定存在点 $x\in S$ 无法被匹配。
+**充分性**：假设二分图 $G(X,Y)$ （假设$|X|\le|Y|$）满足 $\displaystyle\forall S(S\subseteq X \to\left|S\right|\le\left|\bigcup\limits_{x\in S}T(x)\right|)$，且不存在完备匹配。
+设图 $G$ 的一个最大匹配为 $A\to B$，$A\subseteq X$，$B\subseteq Y$，且 $|A|=|B|<|X|$。
+那么一定存在 $x_1\in X-A$，且有 $|T(x_1)|\ge1$。
+若存在 $y_1\in T(x_1)\land y1\not\in B$，则$A\cup\{x_1\}\to B\cup\{y_1\}$ 是一个更大的匹配，与 $A\to B$ 是最大匹配矛盾；否则一定存在 $y_1\in T(x_1)$，令 $(x_2,y_1)$ 是匹配 $A\to B$ 中的一条边，满足 $\exists y_2(y_2\in T(x_2)\land y_2\not\in\{y_1\})$（否则 $\left|\bigcup\limits_{x\in A\cup\{x_1\}}T(x)\right|<|A|+1$，与假设矛盾）。
+若 $\exists y_2(y_2\in T(x_2)\land y_2\not\in B)$，那么就找到了一条增广路，与 $A\to B$ 是最大匹配矛盾；否则同理我们一定能找到一个 $y_2$ 满足 $(y_2\in T(x_2)\land y_2\not\in\{y_1\})$，并且令 $(x_3,y_2)$ 是匹配 $A\to B$ 中的一条边，满足 $\exists y_3(y_3\in T(x_3)\land y_3\not\in\{y_1,y_2\})$。
+依次类推，如果一直没有推出矛盾，我们得到一条交错路 $x_1\to y_1\to\cdots\to x_i$，且一定存在 $y_i\in T(x_i)\land y_i\not\in\{y_1,y_2,\cdots,y_{i-1}\}$，若存在 $y_i$ 满足上述条件且 $y_i\not\in B$，则找到了一条增广路，与 $A\to B$ 是最大匹配矛盾；否则一定能找到一个合法的 $y_i$ 满足上述条件且令 $(x_{i+1},y_i)$ 是匹配 $A\to B$ 中的一条边，满足 $\exists y_{i+1}(y_{i+1}\in T(x_{i+1})\land y_{i+1}\not\in\{y_1,y_2,\cdots,y_i\})$ （否则 $\left|\bigcup\limits_{x\in A\cup\{x_1\}}T(x)\right|<|A|+1$，与假设矛盾）。
+一直到最后当 $i=|A|+1$ 时，这时一定能找到一条增广路，与 $A\to B$ 是最大匹配矛盾。
+综上所述，若二分图 $G(X,Y)$ （假设$|X|\le|Y|$）满足 $\displaystyle\forall S(S\subseteq X \to\left|S\right|\le\left|\bigcup\limits_{x\in S}T(x)\right|)$，则二分图 $G(x,y)$ 存在完备匹配。
