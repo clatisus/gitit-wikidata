@@ -2,4 +2,4 @@
 
 ##定理内容
 
-左部为 $X$，右部为 $Y$ 的二分图中（不妨假设$|X|\le|Y|$），存在完备匹配的充分必要条件是：$\displaystyle\forall S(S\subseteq X \to\left|S\right|\le\left|\bigcup\limits_{x\in S}T(x)\right|)$，其中 $T(x)=\{y|y\in Y\land\text{图中存在 $x$ 到 $y$ 的边}\}$。
+左部为 $X$，右部为 $Y$ 的二分图中（不妨假设$|X|\le|Y|$），存在完备匹配的充分必要条件是：$\displaystyle\forall S(S\subseteq X \to\left|S\right|\le\left|\bigcup\limits_{x\in S}T(x)\right|)$，其中 $T(x)=\{y|y\in Y\land\left[\text{图中存在 $x$ 到 $y$ 的边}\right]\}$。
