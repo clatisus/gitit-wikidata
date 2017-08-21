@@ -13,12 +13,16 @@ struct SAM{
 	bool accept[MAXN << 1];
 	ll same[MAXN << 1];
 	
-	SAM():tot(0){ root = last = newnode(0); }
+	void init(){
+		tot = 0;
+		root = last = newnode(0);
+	}
 	
 	int newnode(int ml){
 		maxlen[++ tot] = ml;
 		memset(go[tot], 0, sizeof go[tot]);
 		par[tot] = 0;
+		accept[tot] = 0;//
 		same[tot] = 1;//
 		return tot;
 	}
