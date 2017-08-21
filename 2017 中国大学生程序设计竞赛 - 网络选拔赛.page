@@ -27,6 +27,12 @@ date 2017.08.19 12:00-17:00
 
 于是，我们可以枚举 $A'$ 的子集 $set$，递推的计算出$\sum\limits_{y\in B'}[\exists x(x\in set\land (x\to y)\in E)]$。令 $go[set]$ 表示与 $set$ 相连的 $B'$ 中的点集。先预处理出与每个点相连的 $B'$ 中的点集，之后递推的转移方程为 $go[set]=go[set\setminus \text{lowbit}(set)]\cup go[\text{lowbit}(set)]$。然后我们枚举集合 $set$ 验证其是否合法，因为不合法的状态有传递性，所以只需要验证它的大小为 $\mid set\mid -1$ 的子集即可。另一边的情况类似。时间复杂度为 $\mathcal{O}(q(n2^n+m2^m))$，空间复杂度为 $\mathcal{O}(2^n+2^m)$。
 
+## C. Friend-Graph
+
+**题目大意**：给你一个简单无向图，让你判断是否存在三元环，或者反图是否存在三元环。
+
+**题解**：由 Ramsey's theorem 我们知道 $R(3,3)=6$，所以当 $n\geq 6$ 的时候一定存在。只需要暴力判断 $n<6$ 的情况即可。
+
 ## E. CaoHaha's staff
 
 签到题，找规律打表即可。
