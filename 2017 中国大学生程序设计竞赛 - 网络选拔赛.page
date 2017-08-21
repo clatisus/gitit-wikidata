@@ -6,6 +6,16 @@ date 2017.08.19 12:00-17:00
 
 # Solutions
 
+## B. Party
+
+**题目大意**：给出一个$A$ 到 $B$ 的二分图，$A$ 中每个点权值为 $a_i$，$B$ 中每个点权值为 $b_i$。有 $q$ 次询问，每次询问给出一个正整数 $g$，问只考虑标号是 $g$ 的倍数的子图，有多少非空的顶点的子集 $V$ ，使得存在一个匹配盖住 $V$（可以多覆盖不在 $V$ 中的点）。$|A|,|B|\le20,q\le10$。
+
+**题解**：由广义 Hall 引理，如果存在一个匹配 $\text{Match}(X)$ 能覆盖点集 $X\subseteq A$，并且也存在一个匹配 $\text{Match}(Y)$ 能覆盖点集 $Y\subseteq B$，那么一定存在一个匹配 $\text{Match}(X+Y)$ 能覆盖 $X+Y$。于是，问题可以转化为对于每一组询问，分别计算原图对应的子图中两部分顶点集的合法（存在匹配能够覆盖）的子集数量。
+
+又根据 Hall 婚配定理，二分图 $G=(A'+B',E)$ 存在一种匹配 $\text{Match}(X)$ 能覆盖点集 $X\subseteq A'$ 的充要条件为：对 $\forall X'$，如果 $X'\subseteq X$，那么 $|X'|\le\sum\limits_{y\in B'}[\exists x(x\in X'\land (x\to y)\in E])$（任意大小为 $k$ 的子集连接至少 $k$ 个点）。
+
+于是，我们可以枚举 $A'$ 的子集 $set$，递推的计算出$\sum\limits_{y\in B'}[\exists x(x\in set\land (x\to y)\in E)]$。令 $go[set]$ 表示与 $set$ 相连的 $B'$ 中的点集。先预处理出与每个点相连的 $B'$ 中的点集，之后递推的转移方程为 $go[set]=go[set\setminus \text{lowbit}(set)]\cup go[\text{lowbit}(set)]$。然后我们枚举集合 $set$ 验证其是否合法，因为不合法的状态有传递性，所以只需要验证它的大小为 $\mid set\mid -1$ 的子集即可。另一边的情况类似。时间复杂度为 $\mathcal{O}(q(n2^n+m2^m))$，空间复杂度为 $\mathcal{O}(2^n+2^m)$。
+
 ## E. CaoHaha's staff
 
 签到题，找规律打表即可。
