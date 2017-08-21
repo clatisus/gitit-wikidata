@@ -1,7 +1,7 @@
 # trie 图
 
 ```c++
-struct AC_DFS{
+struct AC_DFA{
 	int go[MAXNODE][DICSIZE], fail[MAXNODE];
 	int sz, root;
 	
