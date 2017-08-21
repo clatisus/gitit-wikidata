@@ -18,6 +18,10 @@
 
 [后缀自动机](template/coldwater/sam)
 
+## 数据结构
+
+[可持久线段树](template/coldwater/pst)
+
 # ShinriiTin
 
 [link-cut tree](template/ShinriiTin/link-cut-tree)
