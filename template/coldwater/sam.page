@@ -47,7 +47,7 @@ struct SAM{
 	    		
 	    		memcpy(go[nq], go[q], sizeof go[q]);
 	    		same[nq] = 0;//
-	    		first_endpos[nq] = first_endpos[q];//
+	    		first_endpos[nq] = first_endpos[q];//dfs parent-tree, sum of subtree is all endpos.(this may be not need).
 	    		
 	    		par[nq] = par[q];
 	    		par[np] = par[q] = nq;
