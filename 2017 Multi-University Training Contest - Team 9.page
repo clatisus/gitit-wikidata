@@ -6,6 +6,28 @@ date 2017.08.22 12:00-17:00
 
 # Solutions
 
+## E. FFF at Valentine
+
+**题目大意**：给定一个简单有向图，随机选择两个不同的点 $u,v$，问你是否一定存在从 $u\to v$ 的路径，或者存在从 $v\to u$ 的路径。
+
+**题解**：其实等价于判断整个图是否是一个链。我们先对这个图强联通分量缩点，DAG 是否为一个链等价于是否存在路径数为 $1$ 的路径覆盖，我们求最长路就行了。
+
+比赛的时候，我是在正反图上各做了一次压位 dp，求出了每个点能到达的点集，和到达它的点集。
+
+## J. Two strings
+
+**题目大意**：给出两个串 $S_1,S_2$，串 $S_1$ 只由大小写字母组成。串 $S_2$ 只由大小写字母、 `.` 以及 `*` 组成。问你两个串是否完全匹配。其中 `.` 可以单个任何字符，`*` 表示其前一个字母出现若干次（可以 $0$ 次）。
+
+**题解**：我们令 $dp[i][j]$ 表示 $S_1[1...i]$ 和 $S_2[1...j]$ 是否能完全匹配。转移方程为：
+
+* 若 $S_2[j] = `.`$，那么 $dp[i][j] = dp[i][j] \lor dp[i-1][j-1]$
+* 若 $S_2[j]$ 为大小写字母，那么 $dp[i][j]=dp[i][j] \lor \Big(dp[i-1][j-1]\land \big[S_1[i]=S_2[j]\big]\Big)$
+* 若 $S_2[j]=`*`$，我们还要分
+    - 若 $S_2[j-1]=`.`$，那么 $\displaystyle dp[i][j]=dp[i][j]\lor \bigvee_{0\leq k}\Big(dp[i-k][j-2]\land \big[\forall p(p\in [i-k+1,i) \to [S_1[p]=S_1[i]])\big]\Big)$
+    - 若 $S_2[j-1]$ 为大小写字母，那么 $\displaystyle dp[i][j]=dp[i][j]\lor \bigvee_{0\leq k}\Big(dp[i-k][j-2]\land \big[\forall p(p\in [i-k+1,i] \to [S_1[p]=S_2[j-1]])\big]\Big)$
+
+朴素的转移是 $\mathcal{O}(n^3)$ ，我们注意到 $\displaystyle \bigvee_{0\leq k}\Big(dp[i-k][j-2]\land \big[\forall p(p\in [i-k+1,i) \to [S_1[p]=S_1[i]])\big]\Big)$ 这个条件可以用滑窗优化，所以最后复杂度为 $\mathcal{O}(n^2)$。
+
 # Replay and Summary
 
 ## Replay
