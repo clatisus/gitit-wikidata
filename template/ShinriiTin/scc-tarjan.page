@@ -1,0 +1,32 @@
+```c++
+#define rpt(i,l,r) for(int i=(l),R=(r);i<=R;++i)
+
+const int max_N=5e3,max_M=1e5;
+
+namespace SCC{
+	int n;
+	std::stack<int>st;
+	std::vector<int>vec[max_N+21];
+	int dfn[max_N+21],low[max_N+21],cnt;
+	int sccno[max_N+21],scc_cnt;
+	inline void init(int N){
+		n=N;
+		rpt(i,1,n){
+			vec[i].clear();
+			dfn[i]=low[i]=sccno[i]=0;
+		}
+		cnt=scc_cnt=0;
+	}
+	void Tarjan(int x){
+		st.push(x);
+		dfn[x]=low[x]=++cnt;
+		for(auto&y:vec[x])
+			if(!dfn[y])Tarjan(y),low[x]=std::min(low[x],low[y]);
+			else if(!sccno[y])low[x]=std::min(low[x],dfn[y]);
+        if(dfn[x]==low[x]){
+			for(sccno[x]=++scc_cnt;st.top()!=x;st.pop())sccno[st.top()]=scc_cnt;
+			st.pop();
+        }
+	}
+};
+```
