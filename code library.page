@@ -28,6 +28,8 @@
 
 [tarjan无向图连通](template/ShinriiTin/undirected-tarjan)
 
+[tarjan强连通分量](template/ShinriiTin/scc-tarjan)
+
 [spfa费用流](template/ShinriiTin/spfa_cost_flow)
 
 [朱刘算法最小树形图](template/ShinriiTin/zhuliu)
