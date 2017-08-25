@@ -4,10 +4,6 @@
 #include<bits/stdc++.h>
 #define ll long long
 
-const ll N = 1e18;
-const int MOD = 1000;
-const int T = 1;
-
 // 产生一个 [0, n) 的随机数 
 int randint(int n){
 	return (rand() << 15 | rand()) % n;
