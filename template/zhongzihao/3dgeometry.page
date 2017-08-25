@@ -92,14 +92,14 @@ Point Rotate(Point a, Point b, double angle) {
     y2 = x1 * sin(angle) + y1 * cos(angle);
     return e3 * lens + e1 * y2 + e2 * x2;
 }
-/*
+/**
    绕任意轴（过原点）逆时针旋转（注意要把轴向量归一化，不然会在“点在轴上”这个情况下出问题）
    rotate x y z d 
    | (1-cos(d))*x*x+cos(d)     (1-cos(d))*x*y+sin(d)*z   (1-cos(d))*x*z-sin(d)*y   0 |
    | (1-cos(d))*y*x-sin(d)*z   (1-cos(d))*y*y+cos(d)     (1-cos(d))*y*z+sin(d)*x   0 |
    | (1-cos(d))*z*x+sin(d)*y   (1-cos(d))*z*y-sin(d)*x   (1-cos(d))*z*z+cos(d)     0 |
    |           0                          0                           0            1 |
-*/
+**/
 double mix(const Point &a, const Point &b, const Point &c) {
     return a % (b ^ c);
 }
@@ -150,8 +150,6 @@ void add(int v) {
 int Find() {
     for (int i = 2; i < n; ++ i) {
         Point ndir = (info[0] - info[i]) ^ (info[1] - info[i]);
-
-
         if (ndir == Point())
             continue;
         swap(info[i], info[2]);
