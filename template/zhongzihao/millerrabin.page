@@ -1,6 +1,6 @@
 ```c++
-// miller rabin 模板
-// 该算法为随机算法，若要调整准确率，请修改 millerrabin(T n) 中的 const int S 以调节判断次数，S 越大，准确率越高，速度越慢
+// Miller-Rabin 模板
+// 该算法为随机算法，若要调整准确率，请修改 solve(T n) 中的 const int S 以调节判断次数，S 越大，准确率越高，速度越慢
 
 #include<bits/stdc++.h>
 #include"random.cpp"
