@@ -46,6 +46,8 @@
 
 [二维FFT](template/zhongzihao/2dfft)
 
+[立体几何](template/zhongzihao/3dgeometry)
+
 [大整数](template/zhongzihao/bignum)
 
 [BSGS](template/zhongzihao/bsgs)
@@ -59,6 +61,8 @@
 [分数](template/zhongzihao/fraction)
 
 [FWT](template/zhongzihao/fwt)
+
+[平面几何](template/zhongzihao/geometry)
 
 [线性筛](template/zhongzihao/shai)
 
