@@ -1,5 +1,4 @@
 ```c++
-//»ØÎÄÊ÷£¬O(n) 
 const int MAXN=50010;
 const int ALPHA=26;
 char a[MAXN];
