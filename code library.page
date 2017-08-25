@@ -44,17 +44,19 @@
 
 # zhongzihao
 
+[二维FFT](template/zhongzihao/2dfft)
+
+[大整数](template/zhongzihao/bignum)
+
+[bsgs](template/zhongzihao/bsgs)
+
 [线性筛](template/zhongzihao/shai)
 
 [FFT](template/zhongzihao/fft)
 
-[二维FFT](template/zhongzihao/2dfft)
-
 [CRT](template/zhongzihao/crt)
 
 [NTT](template/zhongzihao/ntt)
-
-[大整数](template/zhongzihao/bignum)
 
 [二次剩余和三次剩余](template/zhongzihao/remain)
 
