@@ -56,11 +56,13 @@
 
 [FFT](template/zhongzihao/fft)
 
-[FWT](template/zhongzihao/fwt)
-
 [分数](template/zhongzihao/fraction)
 
+[FWT](template/zhongzihao/fwt)
+
 [线性筛](template/zhongzihao/shai)
+
+[矩阵](template/zhongzihao/matrix)
 
 [NTT](template/zhongzihao/ntt)
 
