@@ -1,5 +1,6 @@
 ```c++
-// 线性筛模板
+// 线性筛模板 
+// sigma 是约数个数函数 
 
 #include<bits/stdc++.h>
 
