@@ -1,6 +1,6 @@
 ```c++
-// ¶þÎ¬FFTÄ£°å
-// ÇóÁ½¸ö¶þÎ¬¶àÏîÊ½µÄ³Ë»ý
+// 二维FFT模板
+// 求两个二维多项式的乘积
 
 #include<bits/stdc++.h>
 #include"fft.cpp"
@@ -22,9 +22,9 @@ void FFT_2D(std::complex <double> (*a)[1 << MAX], int lengthx, int lengthy, int 
 	}
 }
 
-// a[i][j]±íÊ¾¶þÎ¬¶àÏîÊ½ a µÄ (x^i)*(y^j) ÏîµÄÏµÊý
-// lengthax ±íÊ¾ x µÄ´ÎÊý½ç£¬lengthay ±íÊ¾ y µÄ´ÎÊý½ç
-// ¼ÆËã½á¹û·µ»Øµ½ a ÖÐ 
+// a[i][j]表示二维多项式 a 的 (x^i)*(y^j) 项的系数
+// lengthax 表示 x 的次数界，lengthay 表示 y 的次数界
+// 计算结果返回到 a 中 
 void mult(double (*a)[1 << MAX], int lengthax, int lengthay, double (*b)[1 << MAX], int lengthbx, int lengthby){
 	static std::complex <double> aux[2][1 << MAX][1 << MAX];
 	memset(aux, 0, sizeof(aux));
