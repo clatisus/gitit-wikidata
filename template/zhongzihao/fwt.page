@@ -63,8 +63,4 @@ void FWT_OR(int *a, int length, int type){
 		}
 	}
 }
-
-int main(){
-	return 0;
-}
 ```
