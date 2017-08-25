@@ -48,7 +48,7 @@
 
 [大整数](template/zhongzihao/bignum)
 
-[bsgs](template/zhongzihao/bsgs)
+[BSGS](template/zhongzihao/bsgs)
 
 [CRT](template/zhongzihao/crt)
 
@@ -63,6 +63,8 @@
 [线性筛](template/zhongzihao/shai)
 
 [矩阵](template/zhongzihao/matrix)
+
+[Miller-Rabin](template/zhongzihao/millerrabin)
 
 [NTT](template/zhongzihao/ntt)
 
