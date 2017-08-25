@@ -1,0 +1,107 @@
+```c++
+#include <bits/stdc++.h>
+
+#define MAXN (1 << 14)
+
+int n, tot;
+std::vector<std::pair<int, int> > vec[MAXN];
+struct node{
+	int u, v, w;
+}edge[MAXN];
+int fa[MAXN], sz[MAXN], dep[MAXN], top[MAXN], son[MAXN], ind[MAXN];
+int seg[MAXN << 1];
+
+void insert(int sit, int c){
+	seg[sit += MAXN - 1] = c;
+	for(sit >>= 1; sit; sit >>= 1){
+		seg[sit] = std::max(seg[sit << 1], seg[sit << 1 | 1]);
+	}
+}
+
+int query(int l, int r){
+	int ret = INT_MIN;
+	for(l += MAXN - 1, r += MAXN; l < r; l >>= 1, r >>= 1){
+		if(l & 1) ret = std::max(ret, seg[l ++]);
+		if(r & 1) ret = std::max(ret, seg[-- r]);
+	}
+	return ret;
+}
+
+void dfs(int u){
+	sz[u] = 1; dep[u] = dep[fa[u]] + 1; son[u] = 0;
+	for(auto p : vec[u]){
+		int v = p.first;
+		if(v == fa[u]) continue;
+		fa[v] = u;
+		dfs(v);
+		sz[u] += sz[v];
+		if(sz[v] > sz[son[u]]) son[u] = v;
+	}
+}
+
+void build(int u, int tp){
+	ind[u] = ++ tot; top[u] = tp;
+	if(son[u]) build(son[u], tp);
+	for(auto p : vec[u]){
+		int v = p.first;
+		if(v == fa[u] || v == son[u]) continue;
+		build(v, v);
+	}
+}
+
+int getans(int u, int v){
+	int ret = INT_MIN, ut = top[u], vt = top[v];
+	while(ut != vt){
+		if(dep[ut] < dep[vt]) std::swap(ut, vt), std::swap(u, v);
+		ret = std::max(ret, query(ind[ut], ind[u]));
+		u = fa[ut]; ut = top[u];
+	}
+	if(u == v) return ret;
+	if(dep[u] < dep[v]) std::swap(u, v);
+	return std::max(ret, query(ind[son[v]], ind[u]));
+}
+
+int main(){
+	int test;
+	scanf("%d", &test);
+	while(test --){
+		scanf("%d", &n);
+		
+		for(int i = 1; i <= n; ++ i) vec[i].clear();
+		tot = 0;
+		memset(seg, 0, sizeof seg);
+		memset(dep, 0, sizeof dep);
+		memset(fa , 0, sizeof fa);
+		
+		for(int i = 1; i < n; ++ i){
+			int u, v, w;
+			scanf("%d%d%d", &u, &v, &w);
+			vec[u].push_back({v, w});
+			vec[v].push_back({u, w});
+			edge[i] = (node){u, v, w};
+		}
+		
+		dfs(1);
+		build(1, 1);
+		for(int i = 1; i < n; ++ i){
+			if(dep[edge[i].u] > dep[edge[i].v]){
+				std::swap(edge[i].u, edge[i].v);
+			}
+			insert(ind[edge[i].v], edge[i].w);
+		}
+		
+		char opt[10];
+		int a, b;
+		while(scanf("%s", opt) != EOF && opt[0] != 'D'){
+			scanf("%d%d", &a, &b);
+			if(opt[0] == 'Q'){
+				printf("%d\n", getans(a, b));
+			}
+			else{
+				insert(ind[edge[a].v], b);
+			}
+		}
+	}
+	return 0;
+}
+```
