@@ -54,8 +54,11 @@ $B_{0} = \frac{1}{2}, \sum_{i = 0}^{m}C_{m+1}^{i}B_{i}=0.$ 伯努利数的指数
 
 ## 球面几何
 设球冠的高为 $h$ ，半径为 $R$ ，则表面积为 $2\pi Rh$ 。
+
 球面三角形的面积为 $(A+B+C-\pi)R^{2}$ 。
+
 球面正弦定理：$\frac{\sin A}{a} = \frac{\sin B}{b} = \frac{\sin C}{c}$
+
 球面余弦定理：$\cos a=\cos b\cos c+\sin b\sin c\cos A$
 
 ## 其它
