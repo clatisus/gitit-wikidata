@@ -18,9 +18,9 @@ $$n!\sim\sqrt{2\pi n}(\frac{n}{e})^{n}$$
 
 ## n维球
 
-$n$维球的体积公式：$\frac{\pi^{\frac{n}{2}}}{\Gamma(\frac{n}{2}+1)}r^{n}$
+$n$维球的体积公式：$\displaystyle{\frac{\pi^{\frac{n}{2}}}{\Gamma(\frac{n}{2}+1)}r^{n}}$
 
-$n$维球的表面积公式：$\frac{2\pi^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}r^{n-1}$
+$n$维球的表面积公式：$\displaystyle{\frac{2\pi^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}r^{n-1}}$
 
 # 组合数学
 
