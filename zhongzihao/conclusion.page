@@ -20,7 +20,7 @@ $$n!\sim\sqrt{2\pi n}(\frac{n}{e})^{n}$$
 
 $n$维球的体积公式：$\displaystyle{\frac{\pi^{\frac{n}{2}}}{\Gamma(\frac{n}{2}+1)}r^{n}}$
 
-$n$维球的表面积公式：$\displaystyle{\frac{2\pi^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}r^{n-1}=V_{n+1}'(r)}$
+$n$维球的表面积公式：$\displaystyle{\frac{2\pi^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}r^{n-1}=V_{n}'(r)}$
 
 其中伽马函数 $\Gamma(z)=\int_{0}^{\infty}x^{z-1}e^{-x}\mathbb{d}x$ ，满足
 
