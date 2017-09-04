@@ -18,6 +18,7 @@ int main(){
             phi[i] = i - 1;
             cnt[i] = 1;
             mu[i] = -1;
+            min[i] = i;
         }
         for (int j = 0, k, sz = (int) prime.size(); j < sz && i * prime[j] < N; ++ j){
             min[k = i * prime[j]] = prime[j];
