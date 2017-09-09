@@ -15,7 +15,7 @@ void dfs(int x){
 			dfs(y);
 			low[x]=std::min(low[x],low[y]);
 		}
-		else if(!bccno[y]){
+		else if(!sccno[y]){
 			low[x]=std::min(low[x],dfn[y]);	
 		}
 	}
