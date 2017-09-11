@@ -8,7 +8,7 @@ private:
 	T x, y;
 
 public:	
-	frac <T>() : x(0), y(0){}
+	frac <T>() : x(0), y(1){}
 	frac <T>(T x) : x(x), y(1){}
 	
 	frac <T>(T x, T y){
