@@ -25,7 +25,7 @@ namespace fastIO{
 		while(blank(ch = nc()) || ch == '-') if(ch == '-') f = -1;
 		if(IOerror) return;
 		for(x = ch - '0'; (ch = nc()) >= '0' && ch <= '9'; x = x * 10 + ch - '0');
-		x *= -1;
+		x *= f;
 	}
 	#undef BUF_SIZE
 };
