@@ -21,9 +21,11 @@ namespace fastIO{
 	
 	inline void read(int &x){
 		char ch;
-		while(blank(ch = nc()));
+		int f = 1;
+		while(blank(ch = nc()) || ch == '-') if(ch == '-') f = -1;
 		if(IOerror) return;
 		for(x = ch - '0'; (ch = nc()) >= '0' && ch <= '9'; x = x * 10 + ch - '0');
+		x *= -1;
 	}
 	#undef BUF_SIZE
 };
