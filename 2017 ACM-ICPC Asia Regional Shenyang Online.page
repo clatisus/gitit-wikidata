@@ -18,6 +18,12 @@ date 2017.09.10 12:00-17:00
 
 整个算法的时间复杂度为$\mathcal{O}((m+q)\log{n}+q\log^2{n})$，空间复杂度为 $\mathcal{O}(n)$。由于要记录的信息较少，特别是不需要花额外的开销去计算 $\text{lca}$，只需要 20M 的内存就可以轻松过掉这题。
 
+## H. transaction transaction transaction
+
+**题目大意**：给出一个 $n\le10^5$ 个点的树，点 $i$ 的点权为 $p_i$，每条边 $e$ 还有一个边权 $w(e)$。从点 $u$ 到点 $v$ 的收益为 $\displaystyle p_v-p_u-\sum\limits_{e \in \text{path}(u,v)} w(e)$。现在让你选择一个起点和一个终点，求最大的收益。
+
+**题解**：直接树分治即可，但是需要注意优化一下常数，或者使用靠谱的读入优化。
+
 # Replay and Summary
 
 ## Replay
