@@ -6,6 +6,11 @@ date 2017.08.24 12:00-17:00
 
 # Solutions
 
+## B. Array Challenge
+
+**题目大意**：略。
+
+**题解**：见官方题解，感觉凑数字挺没意思的。猜到是线性递推以后可以用 BM 算法直接莽。
 
 # Replay and Summary
 
