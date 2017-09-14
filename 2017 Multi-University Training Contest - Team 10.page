@@ -12,6 +12,24 @@ date 2017.08.24 12:00-17:00
 
 **题解**：见官方题解，感觉凑数字挺没意思的。猜到是线性递推以后可以用 BM 算法直接莽。
 
+## C. Boring Game
+
+**题目大意**：给你一个 $n\times n$ 的网格，每个格子中有一枚硬币，硬币的朝向以 $m$ 个矩形的方式给出（矩形内的硬币朝上）。两人轮流操作，每次操作选取一个右下角硬币朝上的矩形，把这个矩形中所有硬币翻面，不能操作者负。问先手胜还是后手胜。
+
+**题解**：这道题需要用到 [nim积的结论](https://wiki-heynihao.icpc-camp.org/zhongzihao/conclusion#nim-积)。
+
+根据一个显然的结论和 Tartan 定理，一个局面的 $sg$ 值等于所有朝上格子单一存在时的 $sg$ 值的 nim 和，而每个格子的 $sg$ 值等于一维情况下它的行和列分别的 $sg$ 值的 nim 积。由于全体非负整数在 nim 和和 nim 积下成一域，所以这道题我们就可以跟普通的矩形面积并一样用扫描线 + 线段树做了。一维情况下是 Ruler 博弈，第 $i$ 个格子单一朝上时的 $sg$ 值是 $\text{lowbit}(i)$。
+
+再考虑求 $\bigoplus\limits_{i=1}^{n}\text{lowbit}(i)$。$[1,n]$ 的 $\text{lowbit}$ 中 $2^{j}$ 出现的位置为 $(2t+1)\cdot 2^j(0\leq t)$，那么出现奇数次也即 $(2\cdot (2k)+1)\cdot 2^j\leq n < (2\cdot (2k+1)+1)\cdot 2^j$。综上， $2^j$ 的个数为:
+$$
+\begin{cases}
+\text{odd}, &(2^{j}\le (n\text{ mod }2^{j+2}) < 3\cdot 2^{j})\\
+\text{even}, &(\text{others})\\
+\end{cases}
+$$
+
+也就是说，有奇数个 $2^{j}$ 等价于 $n$ 的第 $j+1$ 位和第 $j$ 位有且仅有一个 $1$，故所求为 $n\oplus \lfloor\frac{n}{2}\rfloor$ 。
+
 # Replay and Summary
 
 ## Replay
