@@ -4,7 +4,15 @@
 有两堆石子，两人轮流取，每次可以从一堆中取若干颗石子，也可以从两堆中取一样多的石子。负态为$\{\lfloor k\cdot\frac{1+\sqrt{5}}{2}\rfloor, k+\lfloor k\cdot\frac{1+\sqrt{5}}{2}\rfloor\}(k = 0,1,2,\cdots)$
 
 ## Nim 积
-$a\otimes b=\text{mex}\{(a'\otimes b)\oplus(a\otimes b')\oplus(a'\otimes b')|a'<a,b'<b\}$ 满足交换律，结合律，对 nim 和（异或）满足分配律。全体非负整数在 nim 和和 nim 积下成一域。Tartan Games（即二维硬币游戏）的 $sg$ 值是对应行列的 nim 积。
+$a\otimes b=\text{mex}\{a'\otimes b\oplus a\otimes b'\oplus a'\otimes b'|0\le a'<a,0\le b'<b\}$ 满足交换律，结合律，对 nim 和（异或）满足分配律。全体非负整数在 nim 和和 nim 积下成一域。Tartan Games（即二维硬币游戏）的 $sg$ 值是对应行列的 nim 积。
+
+nim积还具有如下的性质：
+
+- 对全体自然数 $n$ ， $[0,2^{2^{n}}-1]$ 中的自然数在 nim 和和 nim 积下成一域
+- 对全体自然数 $n$ ， $2^{2^{n}}\otimes x=2^{2^{n}}\times x(0\le x<2^{2^{n}})$
+- 对全体自然数 $n$ ， $2^{2^{n}}\otimes 2^{2^{n}}=\frac{3}{2}\cdot2^{2^{n}}=2^{2^{n}}\oplus2^{2^{n}-1}$
+
+关于这些性质的说明和计算 nim 积的算法见[这里](https://wiki-heynihao.icpc-camp.org/zhongzihao/nimprod)
 
 # 数学分析
 
