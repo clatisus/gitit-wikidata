@@ -51,7 +51,7 @@ vector存边
 ```c++
 namespace MCMF{
 	#define pb push_back
-	const int max_N=500;
+	const int max_N=500,inf=0x7f7f7f7f;
 	struct edge{int v,w,c,f;};
 	std::vector<edge>G;
 	std::vector<int>vec[max_N+21];
@@ -60,7 +60,7 @@ namespace MCMF{
 	bool vis[max_N+21];
 	inline bool spfa(){
 		std::queue<int>q;
-		rpt(i,1,n)d[i]=-inf,p[i]=-1;
+		rpt(i,1,n)d[i]=inf,p[i]=-1;
 		d[s]=0;
 		q.push(s),vis[s]=1;
 		while(!q.empty()){
@@ -68,7 +68,7 @@ namespace MCMF{
 			for(auto&i:vec[x]){
 				auto&e=G[i];
 				if(e.c==e.f)continue;
-				if(d[e.v]<d[x]+e.w){
+				if(d[e.v]>d[x]+e.w){
 					d[e.v]=d[x]+e.w;
 					p[e.v]=i;
 					if(vis[e.v])continue;
