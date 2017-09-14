@@ -12,8 +12,6 @@ nim积还具有如下的性质：
 - 对全体自然数 $n$ ， $2^{2^{n}}\otimes x=2^{2^{n}}\times x(0\le x<2^{2^{n}})$
 - 对全体自然数 $n$ ， $2^{2^{n}}\otimes 2^{2^{n}}=\frac{3}{2}\cdot2^{2^{n}}=2^{2^{n}}\oplus2^{2^{n}-1}$
 
-关于这些性质的说明和计算 nim 积的算法见[这里](https://wiki-heynihao.icpc-camp.org/zhongzihao/nimprod)
-
 # 数学分析
 
 ## Wallis公式
