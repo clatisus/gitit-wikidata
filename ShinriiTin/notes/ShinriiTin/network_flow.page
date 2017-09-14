@@ -15,4 +15,4 @@ $step4.$ 对附加弧进行合并：对于原图中每个点 $i$ 记录 $d[i]=\s
 $step5.$ 求改造后的网络的 $s-t$ 最大流，当且仅当所有的附加弧满载时源网络有可行流。
 
 #### 例题
-[Reactor Cooling](https://vjudge.net/problem/20757)
+[Reactor Cooling](https://vjudge.net/problem/20757)：[My Solution](http://paste.ubuntu.com/25532638/)
