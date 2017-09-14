@@ -34,6 +34,8 @@
 
 [tarjan强连通分量](template/ShinriiTin/scc-tarjan)
 
+[dinic最大流](template/ShinriiTin/dinic)
+
 [spfa费用流](template/ShinriiTin/spfa_cost_flow)
 
 [朱刘算法最小树形图](template/ShinriiTin/zhuliu)
