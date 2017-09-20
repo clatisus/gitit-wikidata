@@ -103,6 +103,12 @@ $S(n,k)$ 表示有 $n$ 个元素的集合划分为 $k$ 个集合的方案数。 
 ## Polya 定理
 设 $\bar{G}$ 是 $n$ 个对象的一个置换群，用 $m$ 种颜色涂染这 $n$ 个对象，则不同染色的方案数为 $l=\frac{1}{|\bar{G}|}(m^{c(\bar{a_{1}})}+m^{c(\bar{a_{2}})}+\cdots+m^{c(\bar{a_{g}})})$ ，其中 $c(\bar{a_{i}})$ 表示置换 $\bar{a_{i}}$ 的循环节数。
 
+## 切比雪夫多项式
+第一类切比雪夫多项式为 $T_{n}(\cos x)=\cos nx$ ，满足 $[x^{m}]T_{n}=(-1)^{\frac{n-m}{2}}\frac{n}{m}{\frac{n+m}{2}-1\choose m-1}2^{m-1}$ 。第二类切比雪夫多项式为 $U_{n}(\cos x)=\frac{\sin(n+1)x}{\sin x}$ ，满足 $[x^{m}]U_{n}=(-1)^{\frac{n-m}{2}}{\frac{n+m}{2}\choose \frac{n-m}{2}}2^{m}$ 。
+
+## 其它
+$\sum{n\choose2k}{k\choose m}=\frac{n}{n-m}{n-m\choose n-2m}2^{n-2m-1}$
+
 # 数论
 
 # 抽象代数
