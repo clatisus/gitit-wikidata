@@ -56,6 +56,26 @@ ps:  这道题真的很原题啊，但是 Z 居然看都没看一眼，简直智
 
 用同样的方法考虑，一个划分中，三个不同的数给答案贡献了$6$ 倍它们个数之积，两个不同的数给答案贡献了 $3t_{1}^{2}t_{2}+3t_{1}t_{2}^{2}(t_{1},t_{2}是它们的个数)$ ，一个数给答案贡献了个数的三次方。$P(x)\Sigma_{0}^{3}(x)$ 正好贡献完了三个不同的数，给两个不同的数贡献了 $\frac{3t_{1}(t_{1}-1)}{2}\cdot t_{2}+\frac{3t_{2}(t_{2}-1)}{2}\cdot t_{1}$ ，给一个数贡献了 $\frac{t(t-1)(t-2)}{6}$(t为个数)的答案。 $3P(x)\Sigma_{0}(x)\Sigma_{1}(x)$ 给两个不同的数贡献了 $\frac{3t_{1}(t_{1}+1)}{2}\cdot t_{2}+\frac{3t_{2}(t_{2}+1)}{2}\cdot t_{1}$ ，给三个不同的数贡献了 $\frac{t(t+1)(t-1)}{2}$ 。$P(x)\Sigma_{2}(x)$ 给三个不同的数贡献了 $\frac{t(t+1)(2t+1)}{6}$ 的答案，这样正好贡献完了所有的答案，所求即为 $[x^{n}]\left(P(x)(\Sigma_{0}^{3}(x)+3\Sigma_{0}(x)\Sigma_{1}(x)+\Sigma_{2}(x))\right)$ 。
 
+## F. Function Counting
+
+**题目大意**：求满足下列条件的函数 $f(x)$ 的个数：
+
+- $f:M\to M,(M=\{0,\pm1,\dots,\pm n\})$
+- $\forall x\in M,f_k(x)=-x,\left(f_0(x)=x,f_i=f(f_{i-1})(i=1,2,\dots)\right)$
+- $\forall x\in M,\left| (|f(x)|-|x|) \right|\leq 2$
+
+单组数据 $n\cdot k\leq 10^9$，$\sum n\cdot k\leq 4\cdot 10^9$
+
+**题解**：我们构造一个有向图，将 $x$ 向 $f(x)$ 连边，显然每个点的出度为 $1$，还要满足题目的第二个条件，不难发现图的每个联通块是一个环。显然有 $f(0)=0$ 是一个自环。我们考虑在某个环中，$\forall x$ 走 $a$ 步会第一次到达点 $-x(a\mid k,\frac{k}{a} \text{ is odd})$，那么环长显然为 $2a$。结合第三个条件，我们将环分为几类：
+
+- $a=1$，只有 $1$ 种连边方案。
+- $a=2$，此时的环可能为 $x\to x-i\to -x\to -x+i\to x(i=1,2)$。当 $i=1$ 的时候，$x,x-1$ 是连续的两个绝对值，有 $2$ 种连边方案。当 $i=2$ 的时候，我们可以考虑四个连续的绝对值，一共有 $4$ 种连边方案。
+- $a\geq 3$，其中有两对相邻点的绝对值之差为 $1$，其他均为 $2$，对应 $2^a$ 种连边方案。
+
+于是我们可以写出 dp 方程：$\displaystyle dp[i]=\left(\sum\limits_{a\mid k,\frac{k}{a}\text{ is odd}}dp[i-a]\cdot 2^a\right)+dp[i-4]\cdot 4\cdot [\frac{k}{2}\text{ is odd}]$。最终的答案即为 $dp[n]$。直接 dp 的复杂度为 $\mathcal{O}(n\tau(k))=\mathcal{O}(n\sqrt k)$。用矩阵快速幂加速递推的复杂度为 $\mathcal{O}(k^3\log n)$，我们根据输入判断用哪种方法即可。
+
+tls 说矩阵快速幂的时候可以做到 $\mathcal{O}(k^2\log n)$，还没弄明白。
+
 ## G. Jacana Number
 
 **题目大意**：比较 $n\uparrow\uparrow a$ 和 $m\uparrow\uparrow b$ 的大小。$1\leq  n, a, m, b \leq 10^9$。
