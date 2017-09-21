@@ -102,6 +102,31 @@ $$
 
 判断要求是否被满足，我们只需要知道每个点到根的路径上，有多少个坏点，就可以知道 $u,v$ 的路径上是否有坏点。每次破坏点的时候，将子树整体 $+1$，用树状数组维护区间修改，单点查询即可。
 
+## K. triangulation triangulation triangulation
+
+**题目大意**：给你一个有标号的正 $n$ 边形，求满足如下条件的三角剖分方案数：在这 $n-2$ 个三角形中，存在一个三角形的面积严格大于剩余的每一个（$n-3$ 个）三角形。
+
+**题解**：感谢tls的题解。
+
+设第 $i$ 个点的坐标为 $\left(\cos\frac{2\pi(i-1)}{n},\sin\frac{2\pi(i-1)}{n}\right)$ ，假设一个三角形的两边分别跨过了 $x$ 和 $y$ 条边，则它的面积为
+
+$$
+\begin{aligned}\\
+&\text{abs}\left((\cos\frac{2\pi x}{n}-1,\sin\frac{2\pi x}{n})\times(\cos\frac{2\pi(x+y)}{n}-1,\sin\frac{2\pi(x+y)}{n})\right)\cdot \frac{1}{2}\\
+=&\text{abs}\left(\cos\frac{2\pi x}{n}\sin\frac{2\pi (x+y)}{n}-\sin\frac{2\pi x}{n}\cos\frac{2\pi (x + y)}{n}-\sin\frac{2\pi(x+y)}{n}+\sin\frac{2\pi x}{n}\right)\cdot \frac{1}{2}\\
+=&\text{abs}\left(\sin\frac{2\pi x}{n}+\sin\frac{2\pi y}{n}-\sin\frac{2\pi (x+y)}{n}\right)\cdot \frac{1}{2}\\
+\end{aligned}\\
+$$
+
+我们枚举最大的三角形三条边中跨越边数较小的两条边，容易发现剩下的三个（两个或一个）部分互不干扰。我们只需要 dp 出这个三角形的三边分别跨越 $k_1,k_2,k_3$ 条边的部分，划分为严格小于枚举的面积的三角形的方案数。这个 dp 的状态转移，只需要枚举一个顶点与原三角形分割的那条边组成三角形，就能转化为两个子问题。状态转移方程为：
+$$
+\begin{cases}
+dp[1]=1\\
+dp[i]=\sum_{j=1}^{i-1}dp[j]\cdot dp[i-j]\cdot [\text{area}[i][j-i]<S]
+\end{cases}
+$$
+容易发现，如果枚举的三条边互不相同，答案要乘以 $2n$ ，如果两条边相同而和另一条边不同，答案要乘以 $n$ ，如果三条边都相同，答案要乘以 $\frac{n}{3}$ 。
+
 # Replay and Summary
 
 ## Replay
