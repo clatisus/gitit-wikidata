@@ -34,6 +34,12 @@ date 2017.09.10 12:00-17:00
 
 既然这样，就说明这种方案的表示次数一定小于等于所有其它的方案，是最小的。这样以后我们就容易知道： $F_{2k+3}-1$ 不能被 $k$ 个斐波那契数表示，而比它小的数都可以。
 
+---
+
+coldwater's comment
+
+跟 [这题](https://wiki-heynihao.icpc-camp.org/2013%20ACM-ICPC%20Asia%20Changchun%20Regional%20Contest#b.-golden-radio-base) 很像。相关 wiki：[黄金进制](https://zh.wikipedia.org/wiki/%E9%BB%84%E9%87%91%E8%BF%9B%E5%88%B6)。
+
 ## G. mustedge mustedge mustedge
 
 **题目大意**：给出一个简单无向图，有 $n\le10^5$ 个点和 $m\le10^5$ 条边。之后给出 $q\le10^5$ 次操作，每次操作添加一条新的无向边连接点 $u$ 和 $v$（可能重边），或者询问从点 $u$ 到 $v$ 的所有路径中，有多少条边是必须经过的($1\le u\not=v\le n$)。
