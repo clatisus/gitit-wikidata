@@ -22,7 +22,7 @@ struct SuffixArray{
     template<typename T>
     inline void sais(T s,int*sa,int len,bool*type,int*bucket,int*bucket1,int sigma) {
         register int i,j,x;
-		int bucketSize=0,cnt=0,p=-1,*cntbuf=bucket+sigma;
+        int bucketSize=0,cnt=0,p=-1,*cntbuf=bucket+sigma;
         type[len-1]=1;
         for(i=len-2;~i;--i)type[i]=s[i]<s[i+1]||s[i]==s[i+1]&&type[i+1];
         for(i=1;i<len;++i)if(type[i]&&!type[i-1])bucket1[bucketSize++]=i;
@@ -36,7 +36,7 @@ struct SuffixArray{
                 else if(j>0&&(isLMS(x+j,type)||isLMS(p+j,type)))break;
             }
             x=(~x&1?x>>1:x-1>>1);
-			sa[bucketSize+x]=cnt-1;
+            sa[bucketSize+x]=cnt-1;
         }
         for(i=j=len-1;i>=bucketSize;--i)if(~sa[i])sa[j--]=sa[i];
         int *s1=sa+len-bucketSize,*bucket2=bucket1+bucketSize;
@@ -47,7 +47,7 @@ struct SuffixArray{
     }
     template<typename T>
     inline void getHeight(T s,int len,int*sa){
-    	register int i,j,k;
+        register int i,j,k;
         for(i=k=0;i<len;++i){
             if(!rk[i])k=0;
             else{
