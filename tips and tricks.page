@@ -1,3 +1,5 @@
+2017.09.23 cin.eof()和 scanf()判断 EOF 的位置不一样，记得多组数据测试样例时一定要 Ctrl + Z 试一试
+
 2017.08.22 注意不要对 $0$ 取 `log` ，可能会导致错误
 
 2017.08.09 对 `long long` 需使用 `__builtin_popcountll`
