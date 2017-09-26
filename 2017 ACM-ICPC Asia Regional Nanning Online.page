@@ -6,8 +6,87 @@ date 2017.09.24 12:00-17:00
 
 # Solutions
 
+## A. Weather Patterns
+
+**题目大意**：某市有 $4$ 种天气：$1,2,3,4$。假设每天只会出现一种天气，并且已知天气之间的转移矩阵 $\{a_{i,j}\}$，$a_{i,j}$ 表示在已知某天天气为 $i$ 的条件下，第二天天气为 $j$ 的概率。现在有两种询问（每种询问各两组）。第一种询问，给出序列 $s_1,s_2,\cdots,s_k$，求在已知第一天的天气为 $s_1$ 的条件下，观测到的后续天气序列为 $s_2,\cdots,s_k$ 的概率是多少？第二种询问，已知第一天的天气为 $i$ 的条件下，问连续都是天气 $i$ 的天数的期望值是多少？
+
+**题解**: 
+$$
+\begin{align}
+\text{ans}_1 &=\prod\limits_{i=1}^{k-1} a_{s_i,s_i+1} \\
+\text{ans}_2 &=1+\lim\limits_{n\to\infty}\sum\limits_{j=1}^{n} j \cdot (a_{i,i})^j\cdot (1-a_{i,i})\\
+&=1+\frac{a_{i,i}}{1-a_{i,i}}=\frac{1}{1-a_{i,i}}
+\end{align}
+$$。
+
+## B. Train Seats Reservation
+
+**题目大意**：给定一趟列车每个人的上下站，求最少要多少个座位。
+
+**题解**：差分线段覆盖。
+
+## C. Auction Bidding
+
+模拟题。
+
+## D. Path Search with Constraints
+
+傻逼题。
+
+## E. Visible Surface
+
+**题目大意**：给一个三维凸包和一个定点，对凸包的每个面，问能不能从定点看到。
+
+**题解**：显然一个面能被看到等价于定点与凸包在该面所在平面的异侧，用法向量判一下就好了。
+
+## F. Overlapping Rectangles
+
+**题目大意**：求矩形面积并。
+
+**题解**：扫描线。
+
+## G. Finding the Radius for an Inserted Circle
+
+**题目大意**：给你三个半径相同且相互外切的圆，然后在它们中间的缝里填进小圆，依次与已有的圆相切，问第 $k$ 个小圆的半径。
+
+**题解**：反演圆笛卡尔定理，答案是 $\frac{R}{5}(\frac{1}{4k-2+2\sqrt{3}}-\frac{1}{4k+2+2\sqrt{3}})$ 。
+
+## H. A Cache Simulator
+
+**题目大意**：模拟 CPU 的 direct mapped cache。
+
+**题解**：模拟。
+
+## I. GSM Base Station Identification
+
+**题目大意**：二维平面上密铺了 $400$ 个正六边形，给出十个点的坐标，问每个点在哪个正六边形中。
+
+**题解**：推一下坐标直接暴力。
+
+## J. Minimum Distance in a Star Graph
+
+爆搜题。
+
+## K. Line Segments Clipped by Windows
+
+**题目大意**：给了两个平行于坐标轴，且嵌套包含的两个矩形，以及很多线段。求这些线段在外部矩形以内，且没有被内部矩形遮挡的部分。输出可以看到的部分。
+
+**题解**：[Cohen–Sutherland algorithm](https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm)。被内部矩形遮挡求一下补集即可。
+
+## L. The Heaviest Non-decreasing Subsequence Problem
+
+**题目大意**：给出一个数列，每个数有一个权值，求权值最大的不下降子序列。
+
+**题解**：树状数组做就行。
+
+## M. Frequent Subsets Problem
+
+**题目大意**：给你一个集合和它的一些子集，以及一个定值 $\alpha$ ，问该集合的所有子集中，被给定子集包含的比例超过 $\alpha$ 的有多少个。
+
+**题解**：压位暴力。
+
 # Replay and Summary
 
 ## Replay
 
-垃圾出题人
+垃圾出题人，钱这么好赚吗？
