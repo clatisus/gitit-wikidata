@@ -1,6 +1,6 @@
 # Todo List
 
-二分栈、决策单调性
+二分栈
 
 cdq 分治
 
@@ -15,3 +15,5 @@ cdq 分治
 dp 套 dp
 
 广义后缀自动机
+
+[dp 的优化](http://codeforces.com/blog/entry/8219)
