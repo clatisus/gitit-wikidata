@@ -61,12 +61,12 @@ $$
 
 $$
 G[i][j]=\begin{cases}
-&\sum\limits_{k=1}^{j-1}G[i-1][k],&j<2i\\
-&0,&j\ge2i\\
+&\sum\limits_{k=1}^{j-1}G[i-1][k],&j<2i-1\\
+&0,&j\ge2i-1\\
 \end{cases}
 $$
 
-而 $g[k]=\sum_{j=1}^{2k-1}G[k][j]$ 。
+注意为了保证满足 good 数列的定义，$j$ 不能取到 $2i-1$ 。而 $g[k]=\sum_{j=1}^{2k-1}G[k][j]$ 。
 
 ## E. Mirror Rice Cake
 
