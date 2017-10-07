@@ -1,1 +1,6 @@
-。
+最大生成树将 Manhattan 距离转为 Chebyshev 距离，然后加入 $\mathcal{O}(4n)$ 条边。
+
+最小生成树：
+
+```c++
+```
