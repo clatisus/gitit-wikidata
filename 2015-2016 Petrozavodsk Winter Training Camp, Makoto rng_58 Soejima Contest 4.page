@@ -16,9 +16,16 @@ date: 2017.10.04 13:15-18:15
 
 ## B. Airports
 
-**题目大意** ：求曼哈顿距离最大生成树。
+**题目大意** ：求曼哈顿距离最大生成树的最小边。
 
-**题解** ：Boruvka 算法。已加入[模板](/template/coldwater/manhattan-st)。 
+**题解** ：Manhattan 距离转 Chebyshev 距离。我们将点 $(x,y)$  变为 $(\frac{x+y}{2}, \frac{y-x}{2})$ ，那么后者的 Chebyshev 距离为：
+
+$$
+\max\left(\left|\frac{x_1+y_1-x_2-y_2}{2}\right|,\left|\frac{y_1-x_1-y_2+x_2}{2}\right|\right)\\
+=\frac{1}{2}\max\left(\left|(x_1+y_1)-(x_2+y_2)\right|,\left|(x_1-y_1)-(x_2-y_2)\right|\right)
+$$
+
+我们知道前者的 Manhattan 距离是上式的两倍。那么我们将所有点按照 $x+y$ 从小到大排序，然后枚举每个点，将它与最小的点，和最大的点连边。再对 $x-y$ 也做一次同样的操作。我们只需要在这些边上做一次最大生成树就可以了。证明大概就是，如果需要使用中间两个点 $i,j(i<j)$ 的边，那么这两个点一定已经通过 $i\to n\to 1\to j$ 连通了。
 
 ## C. Jump
 
