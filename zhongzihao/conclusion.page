@@ -137,7 +137,7 @@ $\sum{n\choose2k}{k\choose m}=\frac{n}{n-m}{n-m\choose n-2m}2^{n-2m-1}$
 
 球面正弦定理：$\frac{\sin A}{a} = \frac{\sin B}{b} = \frac{\sin C}{c}$
 
-球面余弦定理：$\cos a=\cos b\cos c+\sin b\sin c\cos A$
+球面余弦定理：$\cos a=\cos b\cos c+\sin b\sin c\cos A$, $\cos A=-\cos B\cos C+\sin B\sin C\cos a$
 
 ## 其它
 简单多边形中的抛物线长度可以用有向线段来计算
