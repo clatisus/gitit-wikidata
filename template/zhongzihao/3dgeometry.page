@@ -1,3 +1,227 @@
 ```c++
-//待完成
+#include<bits/stdc++.h>
+
+const double eps = 1e-9;
+const double PI = acos(-1);
+const double INF = 1e100;
+
+inline int sig(double p){return (p > eps) - (p < -eps);}
+inline double sqr(double p){return p * p;}
+
+class P{
+public:
+	double x, y, z;
+	P (double x = 0, double y = 0, double z = 0):x(x), y(y), z(z){}
+	P operator + (const P &p)const &{return P (x + p.x, y + p.y, z + p.z);}
+	P operator - (const P &p)const &{return P (x - p.x, y - p.y, z - p.z);}
+	P operator * (const double &p)const &{return P (x * p, y * p, z * p);}
+	P operator / (const double &p)const &{return P (x / p, y / p, z / p);}
+	double operator % (const P &p)const &{return x * p.x + y * p.y + z * p.z;}
+	P operator ^ (const P &p)const &{return P (y * p.z - z * p.y, z * p.x - x * p.z, x * p.y - y * p.x);}
+	double abs2()const &{return *this % *this;}
+	double abs()const &{return std::sqrt(abs2());}
+	
+	void read(){
+		scanf("%lf%lf%lf", &x, &y, &z);
+	}
+	
+	bool operator < (const P &p)const &{
+		if (sig(x - p.x)) return x < p.x;
+		if (sig(y - p.y)) return y < p.y;
+		return z < p.z;
+	}
+	
+	bool operator == (const P &p)const &{
+		return !sig(x - p.x) && !sig(y - p.y) && !sig(z - p.z);
+	}
+};
+
+class L{
+public:
+	P p, v;
+	
+	L (){}
+	L (P p1, P p2):p(p1), v(p2 - p1){}
+	
+	P point (double t){return p + v * t;}
+};
+
+class F{
+public:
+	P p, o;
+	
+	F (){}
+	F (P p, P o):p(p), o(o){}
+	F (P p1, P p2, P p3):p(p1), o((p2 - p1) ^ (p3 - p1)){}
+};
+
+P projPF(P p, F f){
+	double t = (f.o % (f.p - p)) / (f.o % f.o);
+	return p + f.o * t;
+}
+
+double isLF(L l, F f){
+	P u = f.p - l.p;
+	return (u % f.o) / (l.v % f.o);
+}
+
+double area(P p1, P p2, P p3){
+	return ((p2 - p1) ^ (p3 - p1)).abs();
+}
+
+bool inTri(P p1, P p2, P p3, P q){
+	double area1 = area(q, p1, p2);
+	double area2 = area(q, p2, p3);
+	double area3 = area(q, p3, p1);
+	return !sig(area1 + area2 + area3 - area(p1, p2, p3));
+}
+
+double mix(P p1, P p2, P p3){
+	return p1 % (p2 ^ p3);
+}
+
+double isLL(L l1, L l2){ //共面时使用
+	P u = l2.p - l1.p;
+	P cross = u ^ l2.v, delta = l1.v ^ l2.v;
+	if (sig(delta.z)) return cross.z / delta.z;
+	if (sig(delta.y)) return cross.y / delta.y;
+	if (sig(delta.x)) return cross.x / delta.x;
+	return INF;
+}
+
+L isFF(F f1, F f2){
+	P e = f1.o ^ f2.o;
+	P v = f1.o ^ e;
+	double d = f2.o % v;
+	if (!sig(d)) return L ({INF, INF, INF}, {INF, INF, INF});
+	P q = f1.p + v * ((f2.o % (f2.p - f1.p)) / d);
+	return L (q, q + e);
+}
+
+P rotate(P a, P b, double angle){
+	P e1, e2, e3;
+	b = b / b.abs(), e3 = b;
+	double lens = a % e3;
+	e1 = a - e3 * lens;
+	if (sig(e1.abs()) > 0){
+		e1 = e1 / e1.abs();
+	}
+	else{
+		return a;
+	}
+	e2 = e1 ^ e3;
+	double x1 = a % e2, y1 = a % e1, x2, y2;
+	x2 = x1 * cos(angle) - y1 * sin(angle);
+	y2 = x1 * sin(angle) + y1 * cos(angle);
+	return e3 * lens + e1 * y2 + e2 * x2;
+}
+
+/*绕任意轴（过原点）逆时针旋转（注意要把轴向量归一化，不然点在轴上时会出问题） 
+    rotate x y z d 
+   | (1-cos(d))*x*x+cos(d)     (1-cos(d))*x*y+sin(d)*z   (1-cos(d))*x*z-sin(d)*y   0 |
+   | (1-cos(d))*y*x-sin(d)*z   (1-cos(d))*y*y+cos(d)     (1-cos(d))*y*z+sin(d)*x   0 |
+   | (1-cos(d))*z*x+sin(d)*y   (1-cos(d))*z*y-sin(d)*x   (1-cos(d))*z*z+cos(d)     0 |
+   |           0                          0                           0            1 |
+*/
+
+std::vector <P> convexHull2D(std::vector <P> &ps, P o){
+	auto onLeft = [o](L l, P p){ // >0表示 q 在 l 左边 
+		return mix(p - l.p, l.v, o);
+	};
+	const int N = 100010;
+	static P stack[N];
+	int n = ps.size(), top = 0;
+	for (int i = 0; i < n; ++ i){
+		while (top > 1 && sig(onLeft(L (stack[top - 2], stack[top - 1]), ps[i])) <= 0){
+			-- top;
+		}
+		stack[top ++] = ps[i];
+	}
+	int tmp = top;
+	for (int i = n - 2; i >= 0; -- i){
+		while (top > tmp && sig(onLeft(L (stack[top - 2], stack[top - 1]), ps[i])) <= 0){
+			-- top;
+		}
+		stack[top ++] = ps[i];
+	}
+	if (n > 1) -- top;
+	std::vector <P> ret;
+	for (int i = 0; i < top; ++ i){
+		ret.push_back(stack[i]);
+	}
+	return ret;
+}
+
+std::vector <std::vector <P>> convecHull(std::vector <P> &ps){ // ps 可能被改变 
+	auto volume = [ps](int a, int b, int c, int d){
+		return mix(ps[b] - ps[a], ps[c] - ps[a], ps[d] - ps[a]);
+	};
+	int n = ps.size();
+	std::vector <std::vector <int>> vis(n + 5);
+	for (auto &u : vis){
+		u.resize(n + 5);
+	}
+	std::vector <std::vector <int>> pre;
+	pre.push_back({0, 1, 2});
+	pre.push_back({2, 1, 0});
+	for (int i = 3; i < n; ++ i){
+		std::vector <std::vector <int>> now;
+		for (auto &u : pre){
+			int v = volume(0, i, 1, 2) < 0 ? -1 : 1;
+			if (v < 0) now.push_back(u);
+			for (int j = 0; j < 3; ++ j){
+				if (!vis[u[(j + 1) % 3]][u[j]]){
+					vis[u[j]][u[(j + 1) % 3]] = v;
+				}
+				else{
+					if (vis[u[(j + 1) % 3]][u[j]] != v){
+						if (v > 0) now.push_back({u[j], u[(j + 1) % 3], i});
+						else now.push_back({u[(j + 1) % 3], u[j], i});
+					}
+					vis[u[(j + 1) % 3]][u[j]] = 0;
+				}
+			}
+		}
+		pre = now;
+	}
+	std::vector <std::vector <P>> ret;
+	for (auto &u : pre){
+		std::vector <P> pss;
+		for (int j = 0; j < 3; ++ j){
+			pss.push_back(ps[u[j]]);
+		}
+		ret.push_back(pss);
+	}
+	return ret;
+}
+
+std::vector <std::vector <P>> cutCon(std::vector <std::vector <P>> &ps, F f){
+	std::vector <std::vector <P>> ret;
+	std::vector <P> sec;
+	for (auto &u : ps){
+		int n = u.size();
+		std::vector <P> qs;
+		bool dif = false;
+		for (int i = 0; i < n; ++ i){
+			P p1 = u[i], p2 = u[(i + 1) % n];
+			int d1 = sig(f.o % (p1 - f.p));
+			int d2 = sig(f.o % (p2 - f.p));
+			if (d1 <= 0) qs.push_back(p1);
+			if (d1 * d2 < 0){
+				P q = isLF(L (p1, p2), f);
+				qs.push_back(q);
+				sec.push_back(q);
+			}
+			if (!d1) sec.push_back(p1);
+			else dif = true;
+			dif = dif || sig(mix(f.o, p2 - p1, u[(i + 2) % n] - p1)) < 0;
+		}
+		if (qs.size() > 0 && dif) ret.push_back(qs);
+	}
+	if (sec.size() > 0) ret.push_back(convexHull2D(sec, f.o));
+	return ret;
+}
+
+int main(){
+}
 ```
