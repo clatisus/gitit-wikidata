@@ -11,7 +11,7 @@ inline double sqr(double p){return p * p;}
 class P{
 public:
 	double x, y, z;
-	P (double x = 0, double y = 0, double z = 0):x(x), y(y), z(z){}
+	explicit P (double x = 0, double y = 0, double z = 0):x(x), y(y), z(z){}
 	P operator + (const P &p)const &{return P (x + p.x, y + p.y, z + p.z);}
 	P operator - (const P &p)const &{return P (x - p.x, y - p.y, z - p.z);}
 	P operator * (const double &p)const &{return P (x * p, y * p, z * p);}
@@ -65,6 +65,11 @@ double isLF(L l, F f){
 	return (u % f.o) / (l.v % f.o);
 }
 
+// 返回有向距离，q 在法向量方向为正 
+double disFP(F f, P p){
+	return f.o % (p - f.p) / f.o.abs();
+}
+
 double area(P p1, P p2, P p3){
 	return ((p2 - p1) ^ (p3 - p1)).abs();
 }
@@ -93,7 +98,7 @@ L isFF(F f1, F f2){
 	P e = f1.o ^ f2.o;
 	P v = f1.o ^ e;
 	double d = f2.o % v;
-	if (!sig(d)) return L ({INF, INF, INF}, {INF, INF, INF});
+	if (!sig(d)) return L (P (INF, INF, INF), P (INF, INF, INF));
 	P q = f1.p + v * ((f2.o % (f2.p - f1.p)) / d);
 	return L (q, q + e);
 }
@@ -126,10 +131,11 @@ P rotate(P a, P b, double angle){
 
 std::vector <P> convexHull2D(std::vector <P> &ps, P o){
 	auto onLeft = [o](L l, P p){ // >0表示 q 在 l 左边 
-		return mix(p - l.p, l.v, o);
+		return mix(o, p - l.p, l.v);
 	};
 	const int N = 100010;
 	static P stack[N];
+	std::sort(ps.begin(), ps.end());
 	int n = ps.size(), top = 0;
 	for (int i = 0; i < n; ++ i){
 		while (top > 1 && sig(onLeft(L (stack[top - 2], stack[top - 1]), ps[i])) <= 0){
@@ -152,45 +158,113 @@ std::vector <P> convexHull2D(std::vector <P> &ps, P o){
 	return ret;
 }
 
-std::vector <std::vector <P>> convecHull(std::vector <P> &ps){ // ps 可能被改变 
-	auto volume = [ps](int a, int b, int c, int d){
+std::vector <std::vector <P>> convexHull(std::vector <P> &ps){
+	auto area = [ps](int a, int b, int c){
+		return ((ps[b] - ps[a]) ^ (ps[c] - ps[a])).abs();
+	};
+	auto volume = [&](int a, int b, int c, int d){
 		return mix(ps[b] - ps[a], ps[c] - ps[a], ps[d] - ps[a]);
 	};
+	struct Face{
+		int a[3];
+		
+		Face(){}
+		Face(int x, int y, int z){
+			a[0] = x, a[1] = y, a[2] = z;
+		}
+		int &operator [](int k){
+			return a[k];
+		}
+	};
+	std::vector <Face> face;
+	std::sort(ps.begin(), ps.end());
+	ps.erase(std::unique(ps.begin(), ps.end()), ps.end());
+	std::random_shuffle(ps.begin(), ps.end());
 	int n = ps.size();
-	std::vector <std::vector <int>> vis(n + 5);
-	for (auto &u : vis){
-		u.resize(n + 5);
-	}
-	std::vector <std::vector <int>> pre;
-	pre.push_back({0, 1, 2});
-	pre.push_back({2, 1, 0});
-	for (int i = 3; i < n; ++ i){
-		std::vector <std::vector <int>> now;
-		for (auto &u : pre){
-			int v = volume(0, i, 1, 2) < 0 ? -1 : 1;
-			if (v < 0) now.push_back(u);
-			for (int j = 0; j < 3; ++ j){
-				if (!vis[u[(j + 1) % 3]][u[j]]){
-					vis[u[j]][u[(j + 1) % 3]] = v;
-				}
-				else{
-					if (vis[u[(j + 1) % 3]][u[j]] != v){
-						if (v > 0) now.push_back({u[j], u[(j + 1) % 3], i});
-						else now.push_back({u[(j + 1) % 3], u[j], i});
-					}
-					vis[u[(j + 1) % 3]][u[j]] = 0;
+	auto find = [&](){
+		int ret = -1;
+		for (int i = 2; i < n; ++ i){
+			P dir = F (ps[i], ps[0], ps[1]).o;
+			if (dir == P ()) continue;
+			std::swap(ps[i], ps[2]);
+			ret = 0;
+			for (int j = i + 1; j < n; ++ j){
+				if (sig(volume(0, 1, 2, j))){
+					std::swap(ps[j], ps[3]);
+					face.emplace_back(0, 1, 2);
+					face.emplace_back(0, 2, 1);
+					return 1;
 				}
 			}
 		}
-		pre = now;
-	}
+		return ret;
+	};
 	std::vector <std::vector <P>> ret;
-	for (auto &u : pre){
-		std::vector <P> pss;
-		for (int j = 0; j < 3; ++ j){
-			pss.push_back(ps[u[j]]);
+	int state = find();
+	if (state == 1){
+		std::vector <std::vector <int>> mark(n + 5);
+		for (auto &u : mark){
+			u.resize(n + 5);
 		}
-		ret.push_back(pss);
+		int cnt = 0;
+		for (int i = 3; i < n; ++ i){
+			std::vector <Face> tmp;
+			++ cnt;
+			for (auto u : face){
+				int a = u[0], b = u[1], c = u[2];
+				if (sig(volume(i, a, b, c)) < 0){
+					mark[a][b] = mark[b][a] = mark[b][c] = mark[c][b] = mark[c][a] = mark[a][c] = cnt;
+				}
+				else{
+					tmp.push_back(u);
+				}
+			}
+			face = tmp;
+			for (int j = 0, sz = tmp.size(); j < sz; ++ j){
+				int a = face[j][0], b = face[j][1], c = face[j][2];
+				if (mark[a][b] == cnt) face.emplace_back(b, a, i);
+				if (mark[b][c] == cnt) face.emplace_back(c, b, i);
+				if (mark[c][a] == cnt) face.emplace_back(a, c, i);
+			}
+		}
+		typedef std::pair <P, Face> Faces;
+		std::vector <Faces> faces;
+		for (auto u : face){
+			P p = F(ps[u[1]], ps[u[0]], ps[u[2]]).o;
+			p = p / p.abs();
+			faces.push_back({p, u});
+		}
+		std::sort(faces.begin(), faces.end(), [](const Faces &f1, const Faces &f2){return f1.first < f2.first;});
+		std::vector <P> pss;
+		for (int i = 0, sz = faces.size(); i <= sz; ++ i){
+			if (i == sz || i > 0 && !(faces[i].first == faces[i - 1].first)){
+				ret.push_back(convexHull2D(pss, faces[i - 1].first));
+				pss.clear();
+			}
+			if (i < sz){
+				pss.push_back(ps[faces[i].second[0]]);
+				pss.push_back(ps[faces[i].second[1]]);
+				pss.push_back(ps[faces[i].second[2]]);
+			}
+		}
+	}
+	else if (!state){
+		ret.push_back(convexHull2D(ps, F (ps[0], ps[1], ps[2]).o));
+	}
+	else{
+		if (ps.size() < 2){
+			ret.push_back(ps);
+		}
+		else{
+			P dir = ps[1] - ps[0], o;
+			if (sig(dir.x)){
+				o = P (-dir.y, dir.x, 0);
+			}
+			else{
+				o = P (0, -dir.z, dir.y);
+			}
+			ret.push_back(convexHull2D(ps, o));
+		}
 	}
 	return ret;
 }
@@ -208,7 +282,9 @@ std::vector <std::vector <P>> cutCon(std::vector <std::vector <P>> &ps, F f){
 			int d2 = sig(f.o % (p2 - f.p));
 			if (d1 <= 0) qs.push_back(p1);
 			if (d1 * d2 < 0){
-				P q = isLF(L (p1, p2), f);
+				L l(p1, p2);
+				double t = isLF(l, f);
+				P q = l.point(t);
 				qs.push_back(q);
 				sec.push_back(q);
 			}
