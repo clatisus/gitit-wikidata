@@ -25,7 +25,7 @@ $surreal\;number$ 的加法法则为 $x+y=\{X_{L}|X_{R}\}+\{Y_{L}|Y_{R}\}=\{X_{L
 
 $surreal\;number$ 的取反法则为 $-x=-\{X_{L}|X_{R}\}=\{-X_{R}|-X_{L}\}$ 
 
-$surreal\;number$ 的乘法法则为 $，，xy=\{X_{L}|X_{R}\}\{Y_{L}|Y_{R}\}=\{X_{L}y+xY_{L}-X_{L}Y_{L}，X_{R}y+xY_{R}-X_{R}Y_{R}|X_{L}y+xY_{R}-X_{L}Y_{R}，xY_{L}+X_{R}y-X_{R}Y_{L}\}$
+$surreal\;number$ 的乘法法则为 $xy=\{X_{L}|X_{R}\}\{Y_{L}|Y_{R}\}=\{X_{L}y+xY_{L}-X_{L}Y_{L}，X_{R}y+xY_{R}-X_{R}Y_{R}|X_{L}y+xY_{R}-X_{L}Y_{R}，xY_{L}+X_{R}y-X_{R}Y_{L}\}$
 
 $surreal\;number$ 的取逆法则为 $\displaystyle{\frac{1}{y}=\{0,\frac{1+(y^{R}-y)(\frac{1}{y})^{L}}{y^{R}},\frac{1+(y^{L}-y)(\frac{1}{y})^{R}}{y^{L}}|\frac{1+(y^{L}-y)(\frac{1}{y})^{L}}{y^{L}},\frac{1+(y^{R}-y)(\frac{1}{y})^{R}}{y^{R}}\}}$ ，其中 $y^{L}>0,y^{R}>0$
 
