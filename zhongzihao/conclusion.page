@@ -149,3 +149,36 @@ $\sum{n\choose2k}{k\choose m}=\frac{n}{n-m}{n-m\choose n-2m}2^{n-2m-1}$
 # 其它
 ## 拉格朗日插值法
 对某个多项式函数，已知有给定的 $k+1$ 个取值点： $(x_{0},y_{0}),\cdots,(x_{k},y_{k})$ ，则有 $L(x)=\sum\limits_{j=0}^{k}y_{j}l_{j}(x)$ ，其中每个 $l_{j}(x)$ 为拉格朗日基本多项式，其表达式为 $l_{j}(x)=\prod\limits_{i=0,i\neq j}^{k}\frac{x-x_{i}}{x_{j}-x_{i}}$
+
+## Stern-Brocut tree
+
+设有一棵无限的区间树，根结点所表示的区间为$[\frac{0}{1}, \frac{1}{0}]$ ，设父结点所表示的区间为 $[\frac{a}{b},\frac{c}{d}]$ ，则它的左右孩子分别表示 $[\frac{a}{b},\frac{a+c}{b+d}]$ 和 $[\frac{a+c}{b+d},\frac{c}{d}]$ ，这棵树不重不漏地表示了所有正的既约的有理数。
+
+## Tree of primitive Pythagorean triples
+
+设有一棵无限的满三叉树，根结点表示列向量 $(3,4,5)^{T}$ ，设有三个矩阵
+$$
+A=\begin{pmatrix}
+1&-2&2\\
+2&-1&2\\
+2&-2&3\\
+\end{pmatrix}
+$$
+
+$$
+B=\begin{pmatrix}
+1&2&2\\
+2&1&2\\
+2&2&3\\
+\end{pmatrix}
+$$
+
+$$
+C=\begin{pmatrix}
+-1&2&2\\
+-2&1&2\\
+-2&2&3\\
+\end{pmatrix}
+$$
+
+设父结点的向量为 $\alpha$ ，则它从左到右的三个孩子的向量分别为 $A\alpha, B\alpha, C\alpha$ ，这棵树不重不漏地枚举完了所有毕达哥拉斯三元组（$a^{2}+b^{2}=c^{2}$）。
