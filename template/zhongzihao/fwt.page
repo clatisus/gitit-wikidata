@@ -4,11 +4,8 @@
 
 #include<bits/stdc++.h>
 
-const int N = 100010;
 const int moder = 1e9 + 7;
 const int inv2 = 5e8 + 4;
-
-int a[N], b[N], lena, lenb;
 
 int powermod(int a, int exp){
 	int ret = 1;
@@ -62,5 +59,9 @@ void FWT_OR(int *a, int length, int type){
 			}
 		}
 	}
+}
+
+int main(){
+	return 0;
 }
 ```
