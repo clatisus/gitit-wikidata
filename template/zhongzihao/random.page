@@ -58,4 +58,9 @@ void randBigInteger(int digit){
 		putchar('0' + (i ? randint(10) : randint(9) + 1));
 	}
 }
+
+int main(){
+	srand((unsigned) time(NULL));
+	return 0;
+}
 ```
