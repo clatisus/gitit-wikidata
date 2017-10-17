@@ -4,8 +4,6 @@
 #include<bits/stdc++.h>
 #include"ntt.cpp"
 
-typedef long long ll;
-
 class BigInteger{
 private:
 	const static int moder = (119 << 23) + 1, root = 3, invroot = 332748118;
@@ -271,13 +269,12 @@ public:
 			;
 		ret.resize(n);
 		ret.sig = sig * p.sig;
-		
 		return ret;
 	}
 
 	BigInteger operator * (const int &p)const &{
 		if (!p || !sig) return BigInteger(base);
-		BigInteger ret(*this, length + 15);
+		BigInteger ret(*this, length + 40);
 		ll x = std::abs(p), remain = 0;
 		for (int i = 0; i < length; ++ i){
 			remain += ret.a[i] * x;
@@ -407,4 +404,8 @@ public:
 		return ret;
 	}
 };
+
+int main(){
+	return 0;
+}
 ```
