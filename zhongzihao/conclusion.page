@@ -37,7 +37,7 @@ $surreal\;number$ 的取逆法则为 $\displaystyle{\frac{1}{y}=\{0,\frac{1+(y^{
 
 类似于 $Nim$ 和游戏，若有 $n$ 个不平等游戏 $P_{1},\cdots,P_{n}$ ，它们分别对应的 $surreal\;number$ 为 $x_{1},\cdots,x_{n}$ ，则 $P_{1}+\cdots+P_{n}$ 对应的 $surreal\;number$ 为 $x_{1}+\cdots+x_{n}$ 。
 
-最后给出一些无穷大和无穷小的 $surreal\;number
+最后给出一些无穷大和无穷小的 $surreal\;number$
 
 $$
 \begin{aligned}\\
