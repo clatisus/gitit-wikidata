@@ -1,6 +1,8 @@
 ```c++
-int r[2][MAXN<<1];
-
+#define Odd 0
+#define Even 1
+//the center of the even string is the left one
+int r[2][MAXN];
 inline void manacher(char*S,int n,int rx){
 	register int i,j,k;
 	int*R=r[rx];
