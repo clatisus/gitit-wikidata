@@ -43,3 +43,48 @@ tips：还可以使用对偶的方法来做。如果将点 $(a,b)$ 对偶到直�
 ## J. Sort It!
 
 签到题
+
+## L. Triangle
+
+**题目大意**：给你 $n$ 条长度在 $[1,2,\cdots,C]$ 中的边，两两长度不同。问你用这些边能组合出的合法三角形中最小的面积。
+
+**题解**：我们设三条边为 $a,b,c$  ，且有 $a<b<c$ 。假设我们已经知道了 $c-b$ 的值，容易通过海伦公式证明，$b,c$ 固定时， $a$ 越小，面积越小； $a$ 固定时， $b,c$ 越小，面积越小。也就是说，我们只需要对每个 $c-b$ 的值，去寻找最小的 $a,b,c$ 即可。由于两边之差小于第三边，即 $a>c-b$ ，所以寻找 $a$ 可以用 two pointer 在 $\mathcal{O}(n)$ 中完成。对于最小的 $b,c$ ，首先我们可以用 `bitset` 找出所有满足 $c-b=\text{dif}$  的 $b,c$ ，然后再从 `bitset` 中寻找最小的 $b,c$ 就可以了。复杂度 $\mathcal{O}(\frac{C^{2}}{64})$ 。
+
+------
+
+coldwater's comment
+
+用 `unsigned` 类型指针访问 `bitset` 的黑科技：
+
+```c++
+int now = 1;
+double ans = INF;
+for (int dif = 1, sz = c + 2 >> 1; dif <= sz; ++ dif){ 
+	while (now <= c && (now <= dif || !set.test(now))){
+		++ now;
+	}
+	if (now > c) break;
+	std::bitset <M> x = set >> dif & set;
+	bool flag = false;
+	for (int i = now + 1, sz = (now >> 5) + 1 << 5; i < sz; ++ i){
+		if (x.test(i)){
+			ans = std::min(ans, calc(now, i, i + dif));
+			flag = true;
+			break;
+		}
+	}
+	if (flag) continue;
+	unsigned *p = (unsigned *) &x;
+	for (int i = (now >> 5) + 1, sz = (c >> 5) + 1; i <= sz; ++ i){
+		if (*(p + i)){
+			for (int j = 0; j < 32; ++ j){
+				if (x.test(i << 5 | j)){
+					ans = std::min(ans, calc(now, i << 5 | j, (i << 5 | j) + dif));
+					break;
+				}
+			}
+			break;
+		}
+	}
+}
+```
