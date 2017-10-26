@@ -8,14 +8,14 @@ public:
 	field2():x(0), y(0), a(0), p(0){}
 	field2(int x, int y, int a, int p):x(x), y(y), a(a), p(p){}
 	
-	field2 operator * (const field2 &f)const &{
+	field2 operator * (const field2 &f)const{
 		int retx = 1ll * x * f.x % p;
 		retx = (retx + 1ll * y * f.y % p * a) % p;
 		int rety = (1ll * x * f.y + 1ll * y * f.x) % p;
 		return field2(retx, rety, a, p);
 	}
 	
-	field2 powermod(int exp)const &{
+	field2 powermod(int exp)const{
 		field2 ret(1, 0, a, p), aux(*this);
 		for ( ; exp; exp >>= 1){
 			if (exp & 1){
@@ -34,7 +34,7 @@ public:
 	field3():x(0), y(0), z(0), a(0), p(0){}
 	field3(int x, int y, int z, int a, int p):x(x), y(y), z(z), a(a), p(p){}
 	
-	field3 operator * (const field3 &f)const &{
+	field3 operator * (const field3 &f)const{
 		int retx = 1ll * x * f.x % p;
 		retx = (retx + 1ll * y * f.z % p * a) % p;
 		retx = (retx + 1ll * z * f.y % p * a) % p;
@@ -45,7 +45,7 @@ public:
 		return field3(retx, rety, retz, a, p);
 	}
 	
-	field3 powermod(int exp)const &{
+	field3 powermod(int exp)const{
 		field3 ret(1, 0, 0, a, p), aux(*this);
 		for ( ; exp; exp >>= 1){
 			if (exp & 1){
@@ -112,7 +112,7 @@ std::vector <int> remain3(int a, int p){
 }
 
 int main(){
-	srand(time((unsigned) NULL));
+	srand((unsigned) time(NULL));
 	return 0;
 }
 ```
