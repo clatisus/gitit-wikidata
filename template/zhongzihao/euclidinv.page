@@ -6,15 +6,27 @@
 
 typedef long long ll;
 
+// x, y 满足 |x|+|y| 最小 
+template <typename T>
+T ex_euc(T a, T b, T &x, T &y){
+	if (!b){
+		x = 1, y = 0;
+		return a;
+	}
+	T ret = ex_euc(a, b, x, y), tmp = y;
+	y = x - a / b * y;
+	x = tmp;
+	return ret;
+}
+
 template <typename T>
 T inv(T a, T moder){
-	T gcd = a, x = 1, y = 0;
-	for (T b = moder, x1 = 0, y1 = 1, r, s; b; ){
-		r = x, s = y;
-		x = x1, y = y1, x1 = r - x1 * (gcd / b), y1 = s - y1 * (gcd / b);
-		r = gcd % b, gcd = b, b = r;
-	}
+	T x, y;
+	T gcd = ex_euc(a, moder, x, y);
 	if (gcd != 1) return -1;
 	return x + moder >= moder ? x : x + moder;
+}
+
+int main(){
 }
 ```
