@@ -75,14 +75,14 @@ public:
 	}
 	
 	// 相当于乘以 x ^ dis
-	poly operator << (const int &dis)const &{
+	poly operator << (const int &dis)const{
 		poly ret(length + dis, moder, root, invroot);
 		memcpy(ret.a + dis, a, sizeof(int) * (length + 1));
 		return ret;
 	}
 	
 	// 相当于除以 x ^ dis
-	poly operator >> (const int &dis)const &{
+	poly operator >> (const int &dis)const{
 		if (dis > length) return poly(-1, moder, root, invroot);
 		poly ret(length - dis, moder, root, invroot);
 		memcpy(ret.a, a + dis, sizeof(int) * (ret.length + 1));
@@ -98,7 +98,7 @@ public:
 		return ret;
 	}
 	
-	poly operator + (const poly &p)const &{
+	poly operator + (const poly &p)const{
 		if (!~length) return p;
 		if (!~p.length) return *this;
 		poly ret(*this, std::max(length, p.length));
@@ -111,7 +111,7 @@ public:
 		return ret;
 	}
 	
-	poly operator - (const poly &p)const &{
+	poly operator - (const poly &p)const{
 		if (!~length) return p;
 		if (!~p.length) return *this;
 		poly ret(*this, std::max(length, p.length));
@@ -124,7 +124,7 @@ public:
 		return ret;
 	}
 	
-	poly operator - ()const &{
+	poly operator - ()const{
 		poly ret(length, moder, root, invroot);
 		for (int i = 0; i <= length; ++ i){
 			ret.a[i] = a[i] ? moder - a[i] : 0;
@@ -132,7 +132,7 @@ public:
 		return ret;
 	}
 	
-	poly operator * (const poly &p)const &{
+	poly operator * (const poly &p)const{
 		if (!~length || !~p.length) return poly(-1, moder, root, invroot);
 		int n = length + p.length;
 		int lengthret = 1;
@@ -156,7 +156,7 @@ public:
 	}
 	
 	/*------------ 这是模数非NTT质数的模板，请按需取用~ ----------------------
-	poly operator *(const poly &p)const &{
+	poly operator *(const poly &p)const{
 		const int multmoder[2] = {(119 << 23) + 1, (479 << 21) + 1};
 		const int multroot[2] = {3, 3};
 		const int multinvroot[2] = {332748118, 334845270};
@@ -197,7 +197,7 @@ public:
 	}
 	------------------------------------------------------------------------*/
 	
-	poly operator * (const int &p)const &{
+	poly operator * (const int &p)const{
 		int q = (p % moder + moder) % moder;
 		if (!q) return poly(-1, moder, root, invroot);
 		poly ret(length, moder, root, invroot);
@@ -213,7 +213,7 @@ public:
 	poly &operator *= (const poly &p){*this = *this * p; return *this;}
 	poly &operator *= (const int &p){*this = *this * p; return *this;}
 	
-	poly inv(int n)const &{
+	poly inv(int n)const{
 		if (!a[0]) assert(("Invalid polynomial inv!", 0));
 		poly ret(1, moder, root, invroot);
 		ret.a[0] = powermod(a[0], moder - 2, moder);
@@ -229,7 +229,7 @@ public:
 		return ret;
 	}
 	
-	poly der()const &{
+	poly der()const{
 		if (!~length) return poly(-1, moder, root, invroot);
 		poly ret(length - 1, moder, root, invroot);
 		for (int i = 0; i < length; ++ i){
@@ -238,7 +238,7 @@ public:
 		return ret;
 	}
 	
-	poly integral()const &{
+	poly integral()const{
 		int *aux = new int [length + 3];
 		aux[0] = 0, aux[1] = 1;
 		for (int i = 2; i <= length + 1; ++ i){
@@ -252,7 +252,7 @@ public:
 		return ret;
 	}
 	
-	poly operator / (const poly &p)const &{
+	poly operator / (const poly &p)const{
 		if (!~p.length) assert(("Invalid polynomial division!", 0));
 		if (p.length > length) return poly(-1, moder, root, invroot);
 		poly ret(p.inv(length - p.length + 1));
@@ -262,11 +262,11 @@ public:
 		return ret;
 	}
 	
-	poly operator % (const poly &p)const &{return *this - *this / p * p;}
+	poly operator % (const poly &p)const{return *this - *this / p * p;}
 	poly &operator /= (const poly &p){*this = *this / p; return *this;}
 	poly &operator %= (const poly &p){*this = *this % p; return *this;}
 	
-	poly log(int n)const &{
+	poly log(int n)const{
 		if (a[0] != 1) assert(("Invalid polynomial log!", 0));
 		poly aux(*this, n - 1);
 		poly ret(aux.der() * aux.inv(n));
@@ -274,7 +274,7 @@ public:
 		return ret.integral();
 	}
 	
-	poly exp(int n)const &{
+	poly exp(int n)const{
 		if (a[0]) assert(("Invalid polynomial exp!", 0));
 		poly ret(0, moder, root, invroot);
 		ret.a[0] = 1;
@@ -290,7 +290,7 @@ public:
 	}
 	
 	template <typename T>
-	poly power(T exp)const &{
+	poly power(T exp)const{
 		poly ret(0, moder, root, invroot), aux(*this);
 		ret.a[0] = 1;
 		for ( ; exp; exp >>= 1){
