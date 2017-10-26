@@ -3,6 +3,7 @@
 
 const double eps = 1e-9;
 const double PI = acos(-1.0);
+const double INF = 1e100;
 
 inline int sig(double p){
 	return (p > eps) - (p < -eps);
@@ -14,34 +15,42 @@ class P{
 public:
 	double x, y;
 	explicit P (double x = 0, double y = 0): x(x), y(y){}
-	P operator + (const P &p)const &{return P (x + p.x, y + p.y);}
-	P operator - (const P &p)const &{return P (x - p.x, y - p.y);}
-	P operator * (const double &p)const&{return P (x * p, y * p);}
+	P operator + (const P &p)const{return P (x + p.x, y + p.y);}
+	P operator - (const P &p)const{return P (x - p.x, y - p.y);}
+	P operator * (const double &p)const{return P (x * p, y * p);}
 	friend P operator * (const double &d, const P &p){return P (d * p.x, d * p.y);}
-	P operator / (const double &p)const &{return P (x / p, y / p);}
-	double operator ^ (const P &p)const &{return x * p.y - y * p.x;}
-	double operator % (const P &p)const &{return x * p.x + y * p.y;}
-	double abs2()const &{return *this % *this;}
-	double abs()const &{return std::sqrt(abs2());}
-	double angle()const &{return std::atan2(y, x);}
+	P operator / (const double &p)const{return P (x / p, y / p);}
+	double operator ^ (const P &p)const{return x * p.y - y * p.x;}
+	double operator % (const P &p)const{return x * p.x + y * p.y;}
+	double abs2()const{return *this % *this;}
+	double abs()const{return std::sqrt(abs2());}
+	double angle()const{return std::atan2(y, x);}
 	
 	// 逆时针旋转 rad 弧度 
-	P rot(const double &rad)const &{
+	P rot(const double &rad)const{
 		double sin = std::sin(rad), cos = std::cos(rad);
 		return P (x * cos - y * sin, x * sin + y * cos);
 	}
 	
-	bool operator < (const P &p)const &{
-		if (!sig(x - p.x)) return sig(y - p.y) < 0;
-		return sig(x - p.x) < 0;
+	P rot90()const{
+		return P (-y, x);
 	}
 	
-	bool operator == (const P &p)const &{
+	bool operator < (const P &p)const{
+		if (sig(x - p.x)) return x < p.x;
+		return y < p.y;
+	}
+	
+	bool operator == (const P &p)const{
 		return !sig(x - p.x) && !sig(y - p.y);
 	}
 	
 	void read(){
 		scanf("%lf%lf", &x, &y);
+	}
+	
+	void write(){
+		printf("%.10lf %.10lf\n", x, y);
 	}
 };
 
@@ -53,7 +62,7 @@ public:
 	L (){}
 	L (P a, P b):p(a), v(b - a){angle = std::atan2(v.y, v.x);}
 	
-	bool operator < (const L &l)const &{
+	bool operator < (const L &l)const{
 		return angle < l.angle;
 	}
 	
@@ -71,7 +80,7 @@ public:
 	C (P o, double r):o(o), r(r){}
 	
 	P point(double angle){
-		return P (o.x + std::cos(angle) * r, o.y + std::sin(angle) * r);
+		return P (o + P (std::cos(angle), std::sin(angle)) * r);
 	}
 };
 
@@ -80,8 +89,7 @@ double rad(P p1, P p2){
 }
 
 P normal(P p){
-	double len = p.abs();
-	return P (-p.y / len, p.x / len);
+	return p.rot90() / p.abs();
 }
 
 // v1 和 v2 是两直线的方向向量 
@@ -152,32 +160,28 @@ std::vector <double> isCL(C c1, L l){ // 以离 l.p 近为序
 
 // 重合:-1，内含:0，内切:1，相交:2，外切:3，相离:4 
 std::pair <int, std::vector <P>> isCC(C c1, C c2){
-	double d = (c1.o - c2.o).abs();
+	double d = (c1.o - c2.o).abs2();
 	if (!sig(d)){
 		if (!sig(c1.r - c2.r)){
 			return {-1, {}};
 		}
 		return {0, {}};
 	}
-	if (sig(c1.r + c2.r - d) < 0) return {4, {}};
-	if (sig(std::abs(c1.r - c2.r) - d) > 0) return {0, {}};
-	double a = (c2.o - c1.o).angle();
-	double p = (sqr(c1.r) + sqr(d) - sqr(c2.r)) / (2 * c1.r * d);
-	p = std::max(-1.0, std::min(1.0, p));
-	double da = acos(p);
-	P p1 = c1.point(a - da), p2 = c1.point(a + da);
-	std::vector <P> ret;
-	ret.push_back(p1);
-	if (!sig(da)){
-		return {!sig(c1.r + c2.r - d) ? 3 : 1, ret};
+	if (sig(c1.r + c2.r - std::sqrt(d)) < 0) return {4, {}};
+	if (sig(std::abs(c1.r - c2.r) - std::sqrt(d)) > 0) return {0, {}};
+	double x = ((sqr(c1.r) - sqr(c2.r)) / d + 1) / 2;
+	double y = std::max(sqr(c1.r) / d - sqr(x), 0.0);
+	P q1 = c1.o + (c2.o - c1.o) * x;
+	P q2 = ((c2.o - c1.o) * std::sqrt(y)).rot90(); 
+	if (!sig(y)){
+		return {!sig(c1.r + c2.r - std::sqrt(d)) ? 3 : 1, {q1}};
 	}
-	ret.push_back(p2);
-	return {2, ret};
+	return {2, {q1 - q2, q1 + q2}};
 }
 
 int isCs(std::vector <C> &c, double mid){
 	int n = c.size();
-	double left = -1e100, right = 1e100;
+	double left = -INF, right = INF;
 	for (int i = 0; i < n; ++ i){
 		if (sig(mid - c[i].o.x - c[i].r) > 0) return 1;
 		if (sig(c[i].o.x - c[i].r - mid) > 0) return 2;
@@ -203,7 +207,7 @@ int isCs(std::vector <C> &c, double mid){
 }
 
 bool isCs(std::vector <C> &c){
-	double right = -1e100, left = 1e100;
+	double right = -INF, left = INF;
 	for (auto u : c){
 		right = std::max(right, u.o.x + u.r);
 		left = std::min(left, u.o.x - u.r);
@@ -223,7 +227,7 @@ std::vector <P> tanCP(C c, P p){
 	double d = u.abs();
 	if (d < c.r) return {};
 	if (!sig(d - c.r)){
-		return {u.rot(PI / 2)};
+		return {u.rot90()};
 	}
 	double ang = asin(c.r / d);
 	std::vector <P> ret;
@@ -655,7 +659,7 @@ double areaisCs(std::vector <C> &ccs){
 		}
 		if (flag) cs.push_back(ccs[i]);
 	}
-	int n = ccs.size();
+	int n = cs.size();
 	typedef std::pair <double, double> pdd;
 	auto inter = [](const pdd &p1, const pdd &p2, std::vector <pdd> &vec){
 		pdd p = {std::max(p1.first, p2.first), std::min(p1.second, p2.second)};
@@ -704,9 +708,9 @@ double disConvexP(std::vector <P> &ps, P q){
 		return sig(p1 ^ q) >= 0 && sig(p2 ^ q) <= 0;
 	};
 	auto in = [pin](P p1, P p2, P p3, P p4, P q){
-		P o12 = (p1 - p2).rot(PI / 2);
-		P o23 = (p2 - p3).rot(PI / 2);
-		P o34 = (p3 - p4).rot(PI / 2);
+		P o12 = (p1 - p2).rot90();
+		P o23 = (p2 - p3).rot90();
+		P o34 = (p3 - p4).rot90();
 		return pin(o12, o23, q - p2) || pin(o23, o34, q - p3)
 				|| pin(o23, p3 - p2, q - p2) && pin(p2 - p3, o23, q - p3);
 	};
@@ -838,5 +842,7 @@ void work() {
 */
 
 int main(){
+	srand((unsigned) time(NULL)); 
+	return 0;
 }
 ```
