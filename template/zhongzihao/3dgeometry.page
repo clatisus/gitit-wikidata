@@ -2,7 +2,7 @@
 #include<bits/stdc++.h>
 
 const double eps = 1e-9;
-const double PI = acos(-1);
+const double PI = acos(-1.0);
 const double INF = 1e100;
 
 inline int sig(double p){return (p > eps) - (p < -eps);}
@@ -12,26 +12,30 @@ class P{
 public:
 	double x, y, z;
 	explicit P (double x = 0, double y = 0, double z = 0):x(x), y(y), z(z){}
-	P operator + (const P &p)const &{return P (x + p.x, y + p.y, z + p.z);}
-	P operator - (const P &p)const &{return P (x - p.x, y - p.y, z - p.z);}
-	P operator * (const double &p)const &{return P (x * p, y * p, z * p);}
-	P operator / (const double &p)const &{return P (x / p, y / p, z / p);}
-	double operator % (const P &p)const &{return x * p.x + y * p.y + z * p.z;}
-	P operator ^ (const P &p)const &{return P (y * p.z - z * p.y, z * p.x - x * p.z, x * p.y - y * p.x);}
-	double abs2()const &{return *this % *this;}
-	double abs()const &{return std::sqrt(abs2());}
+	P operator + (const P &p)const{return P (x + p.x, y + p.y, z + p.z);}
+	P operator - (const P &p)const{return P (x - p.x, y - p.y, z - p.z);}
+	P operator * (const double &p)const{return P (x * p, y * p, z * p);}
+	P operator / (const double &p)const{return P (x / p, y / p, z / p);}
+	double operator % (const P &p)const{return x * p.x + y * p.y + z * p.z;}
+	P operator ^ (const P &p)const{return P (y * p.z - z * p.y, z * p.x - x * p.z, x * p.y - y * p.x);}
+	double abs2()const{return *this % *this;}
+	double abs()const{return std::sqrt(abs2());}
 	
 	void read(){
 		scanf("%lf%lf%lf", &x, &y, &z);
 	}
 	
-	bool operator < (const P &p)const &{
+	void print(){
+		printf("%.10lf %.10lf %.10lf\n", x, y, z);
+	}
+	
+	bool operator < (const P &p)const{
 		if (sig(x - p.x)) return x < p.x;
 		if (sig(y - p.y)) return y < p.y;
 		return z < p.z;
 	}
 	
-	bool operator == (const P &p)const &{
+	bool operator == (const P &p)const{
 		return !sig(x - p.x) && !sig(y - p.y) && !sig(z - p.z);
 	}
 };
