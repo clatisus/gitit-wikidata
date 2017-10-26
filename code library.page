@@ -64,6 +64,8 @@
 
 [大整数](template/zhongzihao/bignum)
 
+[大整数（naive压位）](template/zhongzihao/bignumnaive)
+
 [BSGS](template/zhongzihao/bsgs)
 
 [CRT](template/zhongzihao/crt)
