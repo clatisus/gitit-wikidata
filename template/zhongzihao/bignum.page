@@ -59,7 +59,7 @@ private:
 	BigInteger(int length, int base, int type):a(nullptr), base(base), sig(1){apply(length);}
 	BigInteger(const BigInteger &p, int length):a(nullptr){InitBigInteger(p, length);}
 		
-	bool absgreaterequal(const BigInteger &q)const &{
+	bool absgreaterequal(const BigInteger &q)const{
 		if (length != q.length) return length > q.length;
 		for (int i = length - 1; ~i; -- i){
 			if (a[i] > q.a[i]) return true;
@@ -156,7 +156,7 @@ public:
 		return ret * sig;
 	}
 	
-	bool operator == (const BigInteger &p) const &{
+	bool operator == (const BigInteger &p)const{
 		if (sig != p.sig || length != p.length || base != p.base) return false;
 		for (int i = 0; i < length; ++ i){
 			if (a[i] != p.a[i])	return false;
@@ -164,7 +164,7 @@ public:
 		return true;
 	}
 	
-	bool operator > (const BigInteger &p) const &{
+	bool operator > (const BigInteger &p)const{
 		if (sig != p.sig) return sig > p.sig;
 		if (length != p.length) return length > p.length ^ sig == -1;
 		for (int i = length - 1; i >= 0; -- i){
@@ -196,7 +196,7 @@ public:
 	}
 	
 	// 右移和左移均为移动该大整数的进制位 
-	BigInteger operator << (const int &dis)const &{
+	BigInteger operator << (const int &dis)const{
 		if (!sig) return *this;
 		BigInteger ret(length + dis, base, 0);
 		memcpy(ret.a + dis, a, sizeof(int) * length);
@@ -204,7 +204,7 @@ public:
 		return ret;
 	}
 	
-	BigInteger operator >>(const int &dis)const &{
+	BigInteger operator >>(const int &dis)const{
 		if (dis >= length) return BigInteger();
 		BigInteger ret(length - dis, base, 0);
 		memcpy(ret.a, a + dis, sizeof(int) * ret.length);
@@ -212,7 +212,7 @@ public:
 		return ret;
 	}
 	
-	BigInteger operator + (const BigInteger &p)const &{
+	BigInteger operator + (const BigInteger &p)const{
 		if (!p.sig) return *this;
 		if (!sig) return p;
 		bool type = true, flag = sig > 0;
@@ -236,17 +236,17 @@ public:
 		return ret;
 	}
 	
-	BigInteger operator - ()const &{
+	BigInteger operator - ()const{
 		BigInteger ret(*this);
 		ret.sig = -ret.sig;
 		return ret;
 	}
 	
-	BigInteger operator - (const BigInteger &p)const &{
+	BigInteger operator - (const BigInteger &p)const{
 		return *this + (-p);
 	}
 	
-	BigInteger operator * (const BigInteger &p)const &{
+	BigInteger operator * (const BigInteger &p)const{
 		if (!sig || !p.sig) return BigInteger(base);
 		int n = length + p.length;
 		int lengthret = 1;
@@ -272,7 +272,7 @@ public:
 		return ret;
 	}
 
-	BigInteger operator * (const int &p)const &{
+	BigInteger operator * (const int &p)const{
 		if (!p || !sig) return BigInteger(base);
 		BigInteger ret(*this, length + 40);
 		ll x = std::abs(p), remain = 0;
@@ -293,7 +293,7 @@ public:
 		return ret;
 	}
 	
-	BigInteger operator / (const BigInteger &p)const &{
+	BigInteger operator / (const BigInteger &p)const{
 		if (!p.sig) assert(("Division by zero!", 0));
 		if (!sig || length < p.length) return BigInteger(base);
 		int num = 0, x = 1;
@@ -323,14 +323,14 @@ public:
 		return ret;
 	}
 	
-	BigInteger operator / (const int &p)const &{
+	BigInteger operator / (const int &p)const{
 		BigInteger ret(*this);
 		divide(ret, p);
 		ret.resize(ret.length);
 		return ret;
 	}
 	
-	BigInteger sqrt()const &{
+	BigInteger sqrt()const{
 		if (sig < 0) assert(("Sqrt a negative number!", 0));
 		if (!sig) return *this;
 		ll num = 0, x = 1;
@@ -358,12 +358,12 @@ public:
 		return ret;
 	}
 	
-	BigInteger operator % (const BigInteger &p)const &{
+	BigInteger operator % (const BigInteger &p)const{
 		if (!p.sig) assert(("Division by zero!", 0));
 		return *this - *this / p * p;
 	}
 	
-	int operator % (const int &p)const &{
+	int operator % (const int &p)const{
 		if (!p) assert(("Division by zero!", 0));
 		BigInteger aux(*this);
 		return divide(aux, p);
@@ -383,7 +383,7 @@ public:
 	BigInteger operator ++ (int){BigInteger aux(*this); ++ *this; return aux;}
 	BigInteger operator -- (int){BigInteger aux(*this); -- *this; return aux;}
 	
-	BigInteger tobase(int base)const &{
+	BigInteger tobase(int base)const{
 		if (this -> base == base) return *this;
 		if (!this -> sig) return BigInteger(base);
 		BigInteger *aux;
