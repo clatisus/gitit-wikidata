@@ -60,14 +60,14 @@ public:
 	}
 	
 	// 相当于乘以 x ^ dis
-	poly operator << (const int &dis)const &{
+	poly operator << (const int &dis)const{
 		poly ret(length + dis);
 		memcpy(ret.a + dis, a, sizeof(double) * (length + 1));
 		return ret;
 	}
 	
 	// 相当于除以 x ^ dis
-	poly operator >> (const int &dis)const &{
+	poly operator >> (const int &dis)const{
 		if (dis > length) return poly(-1);
 		poly ret(length - dis);
 		memcpy(ret.a, a + dis, sizeof(double) * (ret.length + 1));
@@ -83,7 +83,7 @@ public:
 		return ret;
 	}
 	
-	poly operator + (const poly &p)const &{
+	poly operator + (const poly &p)const{
 		if (!~length) return p;
 		if (!~p.length) return *this;
 		poly ret(*this, std::max(length, p.length));
@@ -95,7 +95,7 @@ public:
 		return ret;
 	}
 	
-	poly operator - (const poly &p)const &{
+	poly operator - (const poly &p)const{
 		if (!~length) return p;
 		if (!~p.length) return *this;
 		poly ret(*this, std::max(length, p.length));
@@ -107,7 +107,7 @@ public:
 		return ret;
 	}
 	
-	poly operator - ()const &{
+	poly operator - ()const{
 		poly ret(length);
 		for (int i = 0; i <= length; ++ i){
 			ret.a[i] = -a[i];
@@ -115,7 +115,7 @@ public:
 		return ret;
 	}
 	
-	poly operator * (const poly &p)const &{
+	poly operator * (const poly &p)const{
 		if (!~length || !~p.length) return poly(-1);
 		int n = length + p.length;
 		int lengthret = 1;
@@ -142,7 +142,7 @@ public:
 		return ret;
 	}
 	
-	poly operator * (const double &p)const &{
+	poly operator * (const double &p)const{
 		poly ret(length);
 		for (int i = 0; i <= length; ++ i){
 			ret.a[i] = a[i] * p;
@@ -156,7 +156,7 @@ public:
 	poly &operator *= (const poly &p){*this = *this * p; return *this;}
 	poly &operator *= (const double &p){*this = *this * p; return *this;}
 	
-	poly inv(int n)const &{
+	poly inv(int n)const{
 		if (std::abs(a[0]) < eps) assert(("Invalid polynomial inv!", 0));
 		poly ret(1);
 		ret.a[0] = 1 / a[0];
@@ -172,7 +172,7 @@ public:
 		return ret;
 	}
 	
-	poly der()const &{
+	poly der()const{
 		if (!~length) return poly(-1);
 		poly ret(length - 1);
 		for (int i = 0; i < length; ++ i){
@@ -181,7 +181,7 @@ public:
 		return ret;
 	}
 	
-	poly integral()const &{
+	poly integral()const{
 		poly ret(length + 1);
 		for (int i = 1; i <= length + 1; ++ i){
 			ret.a[i] = a[i - 1] / i;
@@ -189,7 +189,7 @@ public:
 		return ret;
 	}
 	
-	poly operator / (const poly &p)const &{
+	poly operator / (const poly &p)const{
 		if (!~p.length) assert(("Invalid polynomial division!", 0));
 		if (p.length > length) return poly(-1);
 		poly ret(p.inv(length - p.length + 1));
@@ -199,11 +199,11 @@ public:
 		return ret;
 	}
 	
-	poly operator % (const poly &p)const &{return *this - *this / p * p;}
+	poly operator % (const poly &p)const{return *this - *this / p * p;}
 	poly &operator /= (const poly &p){*this = *this / p; return *this;}
 	poly &operator %= (const poly &p){*this = *this % p; return *this;}
 	
-	poly log(int n)const &{
+	poly log(int n)const{
 		if (std::abs(a[0] - 1) >= eps) assert(("Invalid polynomial log!", 0));
 		poly aux(*this, n - 1);
 		poly ret(aux.der() * aux.inv(n));
@@ -211,7 +211,7 @@ public:
 		return ret.integral();
 	}
 	
-	poly exp(int n)const &{
+	poly exp(int n)const{
 		if (std::abs(a[0]) >= eps) assert(("Invalid polynomial exp!", 0));
 		poly ret(0);
 		ret.a[0] = 1;
@@ -227,7 +227,7 @@ public:
 	}
 	
 	template <typename T>
-	poly power(T exp)const &{
+	poly power(T exp)const{
 		poly ret(0), aux(*this);
 		ret.a[0] = 1;
 		for ( ; exp; exp >>= 1){
