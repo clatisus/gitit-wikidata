@@ -3,9 +3,9 @@
 
 typedef long long ll;
 
-struct BigInteger{ // ½öÖ§³Ö·Ç¸ºÕûÊý 
+struct BigInteger{ // 仅支持非负整数 
 	static const int N = 1000;
-	static const ll base = 1000000000000000000ll; // ÐÞ¸ÄËüÊ±¼ÇµÃÐÞ¸ÄÊä³ö¸ñÊ½ 
+	static const ll base = 1000000000000000000ll; // 修改它时记得修改输出格式 
 	ll a[N];
 	int length;
 	
