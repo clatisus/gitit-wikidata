@@ -16,7 +16,7 @@ struct MaxClique{
 		for(int i = 0; i < cur; ++ i){
 			if(tot + (cur - i) <= ans) return 0;
 			int u = alt[tot][i];
-			if(tot + nmax[u]   <= ans) return 0;
+			if(tot + nmax[u] <= ans) return 0;
 			
 			int nxt = 0;
 			for(int j = i + 1; j < cur; ++ j){
