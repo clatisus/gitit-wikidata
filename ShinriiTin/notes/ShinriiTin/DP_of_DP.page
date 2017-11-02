@@ -1,6 +1,6 @@
 # DP套DP学习笔记
 
-> 通过外层的DP来计算使得内层的DP方程（子DP）为给定值的输入方案数
+> 通过一个外层的DP来计算使得内层的DP方程（子DP）最终结果为特定值的输入数
 
 ## 例题
 
@@ -87,3 +87,140 @@ int main(){
 }
 ```
 
+### [HDU 5079 Square](http://acm.hdu.edu.cn/showproblem.php?pid=5079)
+
+**题目大意**：给出一个$n\times n(n\le8)$的棋盘，棋盘上每个位置最开始都是黑色的，有一些位置损坏了，你可以选择一些没有损坏的格子，染成白色，问对于$0\le i \le n$，有多少种不同的染色方案，使得染色后棋盘的最大白色子正方形的边长等于$i$。
+
+**题解**：
+
+根据子DP的不同，这道题的做法也有所不同。
+
+#### 方法1
+
+令$f[i][j]$表示以位置$(i,j)$作为右下角的最大白色正方形，则有转移方程如下(业界良心陈老师的WC讲稿上将min错写为了max)：
+$$
+f[i][j]=\begin{cases} \min(f[i-1][j],f[i][j-1],f[i-1][j-1])+1&,(i,j)\text{ is white}\\ 0 &,(i,j) \text{ is black}\\ \end{cases}
+$$
+然后考虑如何记录这个子DP的所有状态。我们考虑一行一行的$DP$，把每一行的$f$和全局最大的$f$一起状压成一个$n+1$位的$n+1$进制数。当$n=8$时最多有$13089$种不同的状态（开始按陈老师讲稿上说的一格一格转移，但是每一行第一列都要特殊处理，写起来很麻烦，状态也挺多的，就放弃了）。
+
+```c++
+#include <bits/stdc++.h>
+
+#define pb push_back
+
+struct sta{
+	int n,a[9];	
+	inline void decode(int n,int s){
+		this->n=n;
+		for(int i=0;i<=n;s/=(n+1),++i)a[i]=s%(n+1);	
+	}
+	inline int code(){
+		int s=0;
+		for(int i=n;~i;--i)s=s*(n+1)+a[i];
+		return s;	
+	}
+	inline sta trans(int set){
+		sta res; res.n=n,res.a[0]=a[0];
+		for(int i=1;i<=n;++i){
+			if((set>>(i-1))&1){
+				res.a[i]=i>1?std::min(res.a[i-1],std::min(a[i-1],a[i]))+1:1;
+			}
+			else res.a[i]=0;
+			if(res.a[i]>res.a[0])res.a[0]=res.a[i];
+		}
+		return res;
+	}
+};
+
+std::unordered_map<int,int>vis;
+
+int cnt;
+
+std::vector<int>vec,tmp;
+
+std::queue<int>q;
+
+inline bool check_new(int sta){
+	if(vis.count(sta))return 0;
+	vis[sta]=cnt++,vec.pb(sta);
+	return 1;
+}
+
+inline void push_queue(int sta){
+	if(check_new(sta))q.push(sta);
+}
+
+inline int pop_queue(){
+	int sta=q.front();
+	return q.pop(),sta;	
+}
+
+const int max_S=13100,mod=1e9+7;
+
+struct DFA{
+	std::vector<int>vec;
+	int m,trans[max_S][1<<8];
+}F[9];
+
+inline void init(int n){
+	vis.clear();
+	cnt=0,vec.clear();
+	while(!q.empty())q.pop();
+	push_queue(0);
+	for(int i=1;i<=n;++i){
+		tmp.clear();
+		while(!q.empty())tmp.pb(pop_queue());
+		for(auto&s:tmp){
+			sta cur; cur.decode(n,s);
+			for(int set=0,trans;set<(1<<n);++set){
+				trans=cur.trans(set).code();
+				push_queue(trans);
+				F[n].trans[vis[s]][set]=vis[trans];
+			}
+		}
+	}
+	F[n].m=cnt,F[n].vec=vec;
+//	printf("%d\n",cnt);
+}
+
+int T,n,m,s,cur,f[2][max_S],ans[10];
+
+char str[10];
+
+std::vector<int>trans;
+
+int main(){
+	for(int i=1;i<=8;++i)init(i);
+	scanf("%d\n",&T);
+	while(T--){
+		scanf("%d",&n);
+		m=F[n].m,s=1<<n;
+		memset(f[cur=0],0,sizeof(int)*m);
+		f[0][0]=1;
+		for(int i=1;i<=n;++i){
+			scanf("%s",str);
+			memset(f[cur^=1],0,sizeof(int)*m);
+			trans.clear();
+			for(int set=0;set<s;++set){
+				bool flag=1;
+				for(int j=0;j<n;++j)
+					if(set>>j&1)flag&= str[j]=='o';
+				if(flag)trans.pb(set);
+			}
+			for(int j=0,tmp;j<m;++j)if((tmp=f[cur^1][j])>0){
+				for(auto&set:trans){
+					int&res=f[cur][F[n].trans[j][set]];
+					if((res+=tmp)>=mod)res-=mod;
+				}
+			}
+		}
+		for(int i=0;i<=n;++i)ans[i]=0;
+		for(int i=0,tmp;i<m;++i)if((tmp=f[cur][i])>0){
+			int&res=ans[F[n].vec[i]%(n+1)];
+			if((res+=tmp)>=mod)res-=mod;
+		}
+		for(int i=0;i<=n;++i)printf("%d\n",ans[i]);
+	}
+	return 0;
+}
+```
