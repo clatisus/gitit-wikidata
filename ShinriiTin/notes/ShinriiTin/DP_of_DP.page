@@ -228,3 +228,150 @@ int main(){
 	return 0;
 }
 ```
+
+#### 方法2
+
+还是考虑**方法1**中的子DP。其实我们不需要多花一个位置来记录全局最优值，只需要换一种思路，做$n+1$次DP套DP，第$i$次限制只能由子DP值小于$i$的状态来做子DP，最后将$n+1$次计算的结果差分一下就得到了总的答案。因此，我们只需要用一个$n$位的$n+1$进制数来记录一行中每个位置的$f$值，这样对于$n\le8$的情况，最多就只有$3528$种不同的状态。
+
+```c++
+#include <bits/stdc++.h>
+
+#define pb push_back
+
+struct sta{
+	int n,a[8];	
+	inline void decode(int n,int s){
+		this->n=n;
+		for(int i=0;i<n;s/=(n+1),++i)a[i]=s%(n+1);	
+	}
+	inline int code(){
+		int s=0;
+		for(int i=n-1;~i;--i)s=s*(n+1)+a[i];
+		return s;	
+	}
+	inline sta trans(int set){
+		sta res; res.n=n;
+		for(int i=0;i<n;++i){
+			if(set>>i&1){
+				res.a[i]=i?std::min(res.a[i-1],std::min(a[i-1],a[i]))+1:1;
+			}
+			else res.a[i]=0;
+		}
+		return res;
+	}
+};
+
+std::unordered_map<int,int>vis;
+
+int cnt;
+
+std::vector<int>vec,tmp;
+
+std::queue<int>q;
+
+inline bool check_new(int sta){
+	if(vis.count(sta))return 0;
+	vis[sta]=cnt++,vec.pb(sta);
+	return 1;
+}
+
+inline void push_queue(int sta){
+	if(check_new(sta))q.push(sta);
+}
+
+inline int pop_queue(){
+	int sta=q.front();
+	return q.pop(),sta;	
+}
+
+const int max_S=4000,mod=1e9+7;
+
+struct DFA{
+	int m,limit[9],trans[max_S][1<<8];
+}F[9];
+
+inline void init(int n){
+	static int Trans[max_S][1<<8];
+	static int x[max_S],id[max_S],max[max_S],siz[10];
+	vis.clear();
+	cnt=0,vec.clear();
+	while(!q.empty())q.pop();
+	push_queue(0);
+	for(int i=1;i<=n;++i){
+		tmp.clear();
+		while(!q.empty())tmp.pb(pop_queue());
+		for(auto&s:tmp){
+			sta cur; cur.decode(n,s);
+			for(int set=0,trans;set<(1<<n);++set){
+				trans=cur.trans(set).code();
+				push_queue(trans);
+				Trans[vis[s]][set]=vis[trans];
+			}
+		}
+	}
+//	printf("%d\n",cnt);
+	for(int i=0;i<=n;++i)siz[i]=0;	
+	for(int i=0;i<cnt;++i){
+		sta cur; cur.decode(n,vec[i]);
+		max[i]=0;
+		for(int j=0;j<n;++j)
+			if(cur.a[j]>max[i])max[i]=cur.a[j];
+		++siz[max[i]];
+	}
+	for(int i=1;i<=n;++i)siz[i]+=siz[i-1];
+	for(int i=0;i<=n;++i)F[n].limit[i]=siz[i];
+	for(int i=cnt-1;~i;--i)x[id[i]=--siz[max[i]]]=i;
+	F[n].m=cnt;
+	for(int i=0;i<cnt;++i)
+		for(int set=0;set<(1<<n);++set){
+			F[n].trans[i][set]=id[Trans[x[i]][set]];
+		}
+}
+
+int T,n,f[2][max_S],ans[10];
+
+char str[10][10];
+
+std::vector<int>trans;
+
+inline int solve(int n,int k){
+	int cur=0,m=F[n].limit[k],s=1<<n;
+	memset(f[0],0,sizeof(int)*m);
+	f[0][0]=1;
+	for(int i=1;i<=n;++i){
+		memset(f[cur^=1],0,sizeof(int)*m);	
+		std::vector<int>trans;
+		for(int set=0;set<s;++set){
+			bool flag=1;
+			for(int j=0;j<n;++j)if(set>>j&1)flag&=str[i][j]=='o';
+			if(flag)trans.pb(set);
+		}
+		for(int j=0,tmp;j<m;++j)if((tmp=f[cur^1][j])>0){
+			for(auto&set:trans){
+				if(F[n].trans[j][set]>=m)continue;
+				int&res=f[cur][F[n].trans[j][set]];
+				if((res+=tmp)>=mod)res-=mod;	
+			}
+		}
+	}
+	int res=0;
+	for(int j=0,tmp;j<m;++j)if((tmp=f[cur][j])>0){
+		if((res+=tmp)>=mod)res-=mod;
+	}
+	return res;
+}
+
+int main(){
+	for(int i=1;i<=8;++i)init(i);
+	scanf("%d\n",&T);
+	while(T--){
+		scanf("%d",&n);
+		for(int i=1;i<=n;++i)scanf("%s",str[i]);
+		for(int i=0;i<=n;++i)ans[i]=solve(n,i);
+		for(int i=n;i;--i)if((ans[i]-=ans[i-1])<0)ans[i]+=mod;
+		for(int i=0;i<=n;++i)printf("%d\n",ans[i]);
+	}
+	return 0;
+}
+```
+
