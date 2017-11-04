@@ -222,43 +222,42 @@ bool isCs(std::vector <C> &c){
 	return false;
 }
 
-std::vector <P> tanCP(C c, P p){
-	P u = c.o - p;
-	double d = u.abs();
-	if (d < c.r) return {};
-	if (!sig(d - c.r)){
-		return {u.rot90()};
-	}
-	double ang = asin(c.r / d);
-	std::vector <P> ret;
-	ret.push_back(u.rot(ang));
-	ret.push_back(u.rot(-ang));
-	return ret;
+std::vector <P> tanCP(C c, P p){ // p在圆上时返回 p 点本身 
+	double d = (p - c.o).abs2();
+	double x = d - sqr(c.r);
+	if (sig(x) < 0) return {};
+	if (!sig(x)) return {p};
+	P q1 = (p - c.o) * sqr(c.r) / d;
+	P q2 = ((p - c.o) * -c.r * std::sqrt(x) / d).rot90();
+	return {c.o + q1 - q2, c.o + q1 + q2};
 }
 
 std::vector <L> tanCC(C c1, C c2){
-	if (c1.r < c2.r){
-		std::swap(c1, c2);
-	}
-	double d = (c1.o - c2.o).abs(), dr = c1.r - c2.r, sr = c1.r + c2.r;
-	if (sig(d - dr) < 0 || !sig(d) && !sig(dr)){
-		return {};
-	}
-	double base = (c2.o - c1.o).angle();
-	if (!sig(d - dr)){
-		return {L (c1.point(base), c2.point(base))};
-	}
 	std::vector <L> ret;
-	double ang = std::acos(dr / d);
-	ret.push_back(L (c1.point(base + ang), c2.point(base + ang)));
-	ret.push_back(L (c1.point(base - ang), c2.point(base - ang)));
-	if (!sig(d - sr)){
-		ret.push_back(L (c1.point(base), c2.point(base + PI)));
+	if (!sig(c1.r - c2.r)){
+		P dir = c2.o - c1.o;
+		dir = (dir * c1.r / dir.abs()).rot90();
+		ret.push_back(L (c1.o + dir, c2.o + dir));
+		ret.push_back(L (c1.o - dir, c2.o - dir));
 	}
-	else if (sig(d - sr) > 0){
-		ang = acos(sr / d);
-		ret.push_back(L (c1.point(base + ang), c2.point(base + ang + PI)));
-		ret.push_back(L (c1.point(base - ang), c2.point(base - ang + PI)));
+	else{
+		P p = (c1.o * -c2.r + c2.o * c1.r) / (c1.r - c2.r);
+		std::vector <P> ps = tanCP(c1, p);
+		std::vector <P> qs = tanCP(c2, p);
+		for (int i = 0; i < ps.size() && i < qs.size(); ++ i){
+			ret.push_back(L (ps[i], qs[i]));
+		}
+	}
+	P p = (c1.o * c2.r + c2.o * c1.r) / (c1.r + c2.r);
+	std::vector <P> ps = tanCP(c1, p);
+	std::vector <P> qs = tanCP(c2, p);
+	for (int i = 0; i < ps.size() && i < qs.size(); ++ i){
+		ret.push_back(L (ps[i], qs[i]));
+	}
+	for (auto &u : ret){
+		if (u.v == P (0, 0)){
+			u.v = (u.p - c1.o).rot90();
+		}
 	}
 	return ret;
 }
