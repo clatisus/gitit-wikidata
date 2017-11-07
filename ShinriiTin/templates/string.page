@@ -21,7 +21,7 @@ struct Manacher{
 # Kmp
 ```c++
 template<size_t size>
-struct kmp{
+struct Kmp{
 	//indexed from 0
 	int fail[size];
 	template<typename T>
