@@ -3,7 +3,7 @@
 //indexed from 1
 template<size_t size>
 struct Manacher{
-	//type:ODD 0,EVEN 1
+	//type:ODD 1,EVEN 0
 	//define the center of even string as the left one
 	int r[2][size];
 	template<typename T>
@@ -21,7 +21,7 @@ struct Manacher{
 //indexed from 0
 template<size_t size>
 struct Manacher{
-	//type:ODD 0,EVEN 1
+	//type:ODD 1,EVEN 0
 	//define the center of even string as the left one
 	int r[2][size];
 	template<typename T>
