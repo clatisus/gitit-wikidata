@@ -179,6 +179,8 @@ $\sum{n\choose2k}{k\choose m}=\frac{n}{n-m}{n-m\choose n-2m}2^{n-2m-1}$
 - 当 $l$ 为偶数时，第一个方程的全体解为 $x+y\sqrt{d}=\pm(p_{l-1}\pm q_{l-1}\sqrt{d})^{j},j=0,1,2,\cdots$ ，第二个方程无解
 - 当 $l$ 为奇数时，第一个方程的全体正解为 $x+y\sqrt{d}=\pm(p_{l-1}\pm q_{l-1}\sqrt{d})^{j},j=0,2,4,\cdots$ ，第二个方程的全体正解为 $x+y\sqrt{d}=\pm(p_{l-1}\pm q_{l-1}\sqrt{d})^{j},j=1,3,5,\cdots$
 
+## 指数循环节
+对 $\forall a, b, n \in N^{+}, b \ge \phi(n)$ ，有 $a ^ {b} \equiv a ^ {b \% \phi(n) + \phi(n)}\pmod{n}$ ，注意 $b \ge \phi(n)$ 是必要条件，以及式子中取模后指数必须加上 $\phi(n)$ ，否则结果可能会出错。
 
 # 抽象代数
 ## 有限群中元素的幂
