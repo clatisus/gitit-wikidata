@@ -20,6 +20,8 @@
 
 通过 ST 表预处理可以做到单次询问$O(\log{n})$。
 
+总的时间复杂度为$O(n\log{n})$，空间复杂度为$O(n\log{n})$。
+
 ```c++
 #include <bits/stdc++.h>
 
