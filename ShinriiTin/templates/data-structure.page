@@ -8,4 +8,4 @@ time complexity: O(nlogn)-O(1)
 
 space complexity: O(nlogn)
 
-## [MyCode] (templates/data-structure/sparse-table)
+## [MyCode](templates/data-structure/sparse-table)
