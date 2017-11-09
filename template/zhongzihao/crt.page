@@ -27,15 +27,17 @@ public:
 	T getremain(){return remain;}
 	T getmoder(){return moder;}
 	
-	modequa <T> crt(const modequa <T> &p){
+	modequa <T> crt(const modequa <T> &p)const{ // 保证所有运算在 lcm + max(p.moder, moder) 的数据范围内实现，注意不要让模数为 0
 		auto one = getone(remain);
+		modequa <T> p1 = *this, p2 = p;
+		if (p1.moder < p2.moder) std::swap(p1, p2); 
 		T x, y;
-		T gcd = ex_euc(moder, p.moder, x, y);
-		if ((p.remain - remain) % gcd) return modequa <T>(0, 0);
-		T lcm = moder / gcd * p.moder;
-		T ans = (p.remain - remain) / gcd;
-		ans = one * ans * x % lcm * moder % lcm;
-		ans += remain;
+		T gcd = ex_euc(p1.moder, p2.moder, x, y);
+		if ((p2.remain - p1.remain) % gcd) return modequa <T>(0, 0);
+		T lcm = p1.moder / gcd * p2.moder;
+		T ans = (p2.remain - p1.remain) / gcd;
+		ans = one * ans * x % (p2.moder / gcd) * p1.moder;
+		ans += p1.remain;
 		ans += ans < 0 ? lcm : ans >= lcm ? -lcm : 0;
 		return modequa <T>(ans, lcm);
 	}
