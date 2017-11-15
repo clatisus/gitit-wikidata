@@ -1,17 +1,17 @@
 # coldwater
 
-[物理公式](conclusion/coldwater/physics)
+[物理公式](coldwater/physics)
 
 # ShinriiTin
 
 ## 二分图匹配
 
-[Hall's marriage theorem](conclusion/ShinriiTin/Hall)
+[Hall's marriage theorem](ShinriiTin/Hall)
 
-[广义霍尔定理](conclusion/ShinriiTin/ex_Hall)
+[广义霍尔定理](ShinriiTin/ex_Hall)
 
-[对偶图最小生成树](conclusion/ShinriiTin/Plan_Mst)
+[对偶图最小生成树](ShinriiTin/Plan_Mst)
 
 # zhongzihao
 
-[结论](conclusion/zhongzihao/zhongzihao)
+[结论](zhongzihao/zhongzihao)
