@@ -1,23 +1,15 @@
 # Manacher
 
-type: ODD 1,EVEN 0
+使用时**type**要传入的参数奇串为$0$，偶串为$1$.
 
-define the center of even string as the left one
+偶回文串$S[l\cdots r]$的回文中心定义为$\lfloor \frac{l+r}{2} \rfloor$
 
-define r[type][x] as the max palindrom radius with the center x
-
-time complexity: O(n)
-
-space complexity: O(n)
+时空复杂度: O(n)
 
 [MyCode](templates/string/manacher)
 
 # Kmp
 
-define fail[x] as max i s.t. S[1...i]=S[(x-i+1)...x]
-
-time complexity: O(n)
-
-space complexity: O(n)
+时空复杂度: O(n)
 
 [MyCode](templates/string/kmp)
