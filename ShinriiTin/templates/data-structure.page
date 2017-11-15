@@ -1,11 +1,7 @@
 # SparseTable
 
-define bit[x] as the max k s.t. [(1<<k) <= x]
+时间复杂度: O(nlogn)-O(1)
 
-define max[i][j] as the max value in range [i,i+(1<<j)-1]
-
-time complexity: O(nlogn)-O(1)
-
-space complexity: O(nlogn)
+空间复杂度: O(nlogn)
 
 [MyCode](templates/data-structure/sparse-table)
