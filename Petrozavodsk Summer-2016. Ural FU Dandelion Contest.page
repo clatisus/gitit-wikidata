@@ -5,3 +5,15 @@ date: 2017.11.18 12:00-17:00
 [practice link](http://opentrains.snarknews.info/) - 1487
 
 # Solutions
+
+# Replay and Summary
+
+## Summary
+
+一次 debug 一定要从头至尾结束之后，再提交。不要发现一个错误就交一次。
+
+30 mins 策略尽量执行，让出人来，记住开新题优于一切。
+
+注意不要死抠**实现**上的常数，要考虑优化**算法**上的常数（$\mathcal{O}(nlogn + nlogn)$ vs. $\mathcal{O}(nlogn + n)$）。
+
+完整读题，包括 input，output，example（特别是 D，你画样例了吗），note，clarification。
