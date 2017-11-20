@@ -204,6 +204,9 @@ $\sum{n\choose2k}{k\choose m}=\frac{n}{n-m}{n-m\choose n-2m}2^{n-2m-1}$
 ## 拉格朗日插值法
 对某个多项式函数，已知有给定的 $k+1$ 个取值点： $(x_{0},y_{0}),\cdots,(x_{k},y_{k})$ ，则有 $L(x)=\sum\limits_{j=0}^{k}y_{j}l_{j}(x)$ ，其中每个 $l_{j}(x)$ 为拉格朗日基本多项式，其表达式为 $l_{j}(x)=\prod\limits_{i=0,i\neq j}^{k}\frac{x-x_{i}}{x_{j}-x_{i}}$
 
+## 牛顿迭代法
+$x_{n+1}=x_{n}-\frac{f(x_{n})}{f'(x_{n})}$
+
 ## Stern-Brocut tree
 
 设有一棵无限的区间树，根结点所表示的区间为$[\frac{0}{1}, \frac{1}{0}]$ ，设父结点所表示的区间为 $[\frac{a}{b},\frac{c}{d}]$ ，则它的左右孩子分别表示 $[\frac{a}{b},\frac{a+c}{b+d}]$ 和 $[\frac{a+c}{b+d},\frac{c}{d}]$ ，这棵树不重不漏地表示了所有正的既约的有理数。
