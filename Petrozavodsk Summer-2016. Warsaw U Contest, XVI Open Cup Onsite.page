@@ -9,3 +9,10 @@ date: 2017.11.26 13:40-18:40
 # Replay and Summary
 
 ## Summary
+
+stl容器使用尽量拍平，不要嵌套，可能带来时空上的常数。
+
+补题安排：
+Z：A
+W：CF
+D：EFI
