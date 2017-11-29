@@ -4,12 +4,22 @@
 
 偶回文串$S[l\cdots r]$的回文中心定义为$\lfloor \frac{l+r}{2} \rfloor$
 
-时空复杂度: O(n)
+时空复杂度: $O(n)$
 
 [MyCode](templates/string/manacher)
 
 # Kmp
 
-时空复杂度: O(n)
+时空复杂度: $O(n)$
 
 [MyCode](templates/string/kmp)
+
+# SuffixArray
+
+倍增法构造
+
+时间复杂度：$O(n\log{n})$
+
+空间复杂度：$O(n)$
+
+[MyCode](templates/string/sa_adding_doubling)
