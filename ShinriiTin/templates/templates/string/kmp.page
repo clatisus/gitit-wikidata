@@ -1,6 +1,5 @@
-Indexed from 0
-
 ```c++
+//字符串从0开始
 template<size_t size>
 struct Kmp{
 	int fail[size];
@@ -14,7 +13,6 @@ struct Kmp{
 	}
 	template<typename T>
 	inline int match(T A,int lenA,T B,int lenB){
-		//count how many times does B appear in A
 		get_fail(B,lenB);
 		int res=0;
 		for(int i=0,j=-1;i<lenA;++i){
@@ -26,9 +24,9 @@ struct Kmp{
 	}
 };
 ```
-Indexed from 1
 
 ```c++
+//字符串从1开始
 template<size_t size>
 struct Kmp{
 	int fail[size];
@@ -42,7 +40,6 @@ struct Kmp{
 	}
 	template<typename T>
 	inline int match(T A,int lenA,T B,int lenB){
-		//count how many times does B appear in A
 		get_fail(B,lenB);
 		int res=0;
 		for(int i=1,j=0;i<=lenA;++i){
