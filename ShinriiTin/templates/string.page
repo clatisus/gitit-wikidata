@@ -1,3 +1,9 @@
+# 最小表示法
+
+时空复杂度: $O(n)$
+
+[MyCode](templates/string/MinimumRepresentation)
+
 # Manacher
 
 使用时**type**要传入的参数奇串为$0$，偶串为$1$.
