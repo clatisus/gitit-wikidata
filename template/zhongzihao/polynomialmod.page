@@ -255,6 +255,9 @@ public:
 	poly operator / (const poly &p)const{
 		if (!~p.length) assert(("Invalid polynomial division!", 0));
 		if (p.length > length) return poly(-1, moder, root, invroot);
+		poly a(*this), b(p);
+		std::reverse(a.a, a.a + a.length + 1);
+		std::reverse(b.a, b.a + b.length + 1);
 		poly ret(p.inv(length - p.length + 1));
 		ret *= *this;
 		ret.setlength(length - p.length);
