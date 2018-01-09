@@ -1,0 +1,67 @@
+##[A. Modular Exponentiation](http://codeforces.com/contest/913/problem/A) 
+
+签到题，输出 $m \mod{2^n}$，m%pow(2.0,n) 居然`hack`不了。
+
+##[B. Christmas Spruce](http://codeforces.com/contest/913/problem/B)
+
+签到题，判断一棵有根树是否满足所有的非叶子节点都有至少3个叶子节点与它直接相连。
+
+##[C. Party Lemonade](http://codeforces.com/contest/913/problem/C)
+
+有$n\le30$种不同的物品，第$i$种物品的价值为$2^{i-1}$，花费为$1\le c_i\le10^9$。每种物品的数量可以认为是无穷的。
+问要得到价值和至少为$1\le L\le10^9$的物品，最小的花费是多少？
+
+令$f[i]$表示得到少价值和至为$2^i$的物品所需要的最小花费，则有$f[i] = \min(2\times f[i-1],c[i+1])$。
+
+做完之后再用$f[i] = \min(f[i], f[i-1])$更新一次。
+
+之后就递归计算最小花费$G(L)$:
+
+- 如果$L\ge 2^{n-1}$，则$G(L) = f[n-1]\times \lfloor \frac{L}{2^{n-1}} \rfloor + G(L \mod{2^{n-1}})$
+
+- 如果 $L = 2^{k}, 0\le k \le n-2$，则 $G(L) = f[k]$
+
+- 如果以上两条都不满足， $2^k< L < 2^{k+1}$，则 $G(L) = \min(f[k+1],f[k] + G(L - 2^k))$
+
+时间复杂度 $O(n)$
+
+```c++
+#include <bits/stdc++.h>
+
+template<typename T>inline void read(T&x){
+	register int f,c; f=1; 
+	while(!isdigit(c=getchar()))if(c=='-')f=-1;
+	for(x=c-48;isdigit(c=getchar());x=x*10+c-48);
+	x*=f;
+}
+
+using ll = long long;
+
+const int max_N = 40;
+
+int n,L,c[max_N];
+
+ll f[max_N];
+
+inline ll calc(int x){
+	if(!x)return 0;
+	if(x>=(1<<(n-1))){
+		return f[n-1]*(x/(1<<(n-1)))+calc(x%(1<<(n-1)));
+	}
+	int i=0; while((1<<i)<x)++i;
+	if((1<<i)==x)return f[i];
+	return std::min(f[i],f[i-1]+calc(x-(1<<(i-1))));
+}
+
+int main(){
+	scanf("%d%d",&n,&L);
+	for(int i=0;i<n;++i){
+		scanf("%d",c+i);
+		f[i]=c[i];
+		if(i)f[i]=std::min(f[i],f[i-1]<<1);
+	}
+	for(int i=n-2;~i;--i)f[i]=std::min(f[i],f[i+1]);
+	printf("%I64d\n",calc(L));
+	return 0;
+}
+```
