@@ -202,4 +202,10 @@ int main(){
 }
 ```
 
+## [E. Palindromes in a Tree](http://codeforces.com/contest/914/problem/E)
+
+**题目大意：**
+
+给出一棵$n\le2\times10^5$的树，每个节点都有且只有一个字符(小写字母$a-t$)。对每一个节点，询问有多少条经过它的路径（交换起点终点算同一条路径）组成的字符串是回文的。
+
 
