@@ -111,6 +111,8 @@ int main(){
 
 **题解：**
 
+**方法一：**
+
 考虑对边分块，取块大小$K=\sqrt{m}$，用并查集维护连通块大小，先找到每组询问答案所在块编号，再枚举答案判断。
 
 时间复杂度$O(q\sqrt{m}+n+m)$，空间复杂度$O(n+m+q)$.
@@ -180,6 +182,91 @@ int main(){
 			}
 		}
 		cur^=1;
+	}
+	for(int i=1;i<=q;++i)printf("%d\n",ans[i]);
+	return 0;
+}
+```
+
+**方法二：**
+
+单独考虑每组询问，显然可以二分答案，并查集判断。
+
+于是我们使用整体二分，但是每次重建并查集代价太高，可以考虑按`bfs`的顺序访问整体二分的树结构。
+
+这样每层的区间中点是有序的，按顺序加边即可，而进入新的一层的时候则需要重置并查集。
+
+因为二分的树结构只有$O(\log{n})$层，因此时间复杂度为$O(n\log{n})$.
+
+```c++
+#include <bits/stdc++.h>
+
+//#define debug
+
+const int max_N = 1e5 + 21;
+
+int n,m,q,cur,u[max_N],v[max_N];
+
+int x[max_N],y[max_N],z[max_N],ans[max_N];
+
+int f[max_N],siz[max_N];
+
+void dfu_init(){
+	for(int i=1;i<=n;++i)f[i]=i,siz[i]=1;
+}
+
+int find(int x){
+	return f[x]==x?x:f[x]=find(f[x]);
+}
+
+void merge(int x,int y){
+	x=find(x),y=find(y);
+	if(x==y)return;
+	if(siz[x]>siz[y])std::swap(x,y);
+	siz[y]+=siz[x],f[x]=y;
+}
+
+using star = struct node*;
+
+struct node{
+	int l,r;
+	std::vector<int>vec;
+}pool[max_N*20];
+
+star tail=pool;
+
+std::queue<star>Q;
+
+int main(){
+	scanf("%d%d",&n,&m);
+	for(int i=1;i<=m;++i)scanf("%d%d",u+i,v+i);
+	scanf("%d",&q);
+	star rt=tail++;
+	rt->l=1,rt->r=m,Q.push(rt);
+	for(int i=1;i<=q;++i){
+		scanf("%d%d%d",x+i,y+i,z+i);
+		rt->vec.push_back(i);
+	}
+	dfu_init();
+	while(!Q.empty()){
+		star it=Q.front(); Q.pop();
+		if(it->vec.empty())continue;
+		if(it->l==it->r){
+			for(auto&i:it->vec)ans[i]=it->l;
+			continue;
+		}
+		int mid=(it->l+it->r)>>1;
+		if(cur>mid)dfu_init(),cur=0;
+		while(cur<mid)++cur,merge(u[cur],v[cur]);
+		star lch=tail++,rch=tail++;
+		lch->l=it->l,lch->r=mid,rch->l=mid+1,rch->r=it->r;
+		for(auto&i:it->vec){
+			int fx=find(x[i]),fy=find(y[i]);
+			int sz=(fx==fy)?siz[fx]:siz[fx]+siz[fy];
+			if(sz>=z[i])lch->vec.push_back(i);
+			else rch->vec.push_back(i);
+		}
+		Q.push(lch),Q.push(rch);
 	}
 	for(int i=1;i<=q;++i)printf("%d\n",ans[i]);
 	return 0;
