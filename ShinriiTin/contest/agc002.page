@@ -1,4 +1,4 @@
-# [AtCoder Grand Contest 002](contest/agc002)
+# [AtCoder Grand Contest 002](https://agc002.contest.atcoder.jp)
 
 ## [A - Range Product](https://agc002.contest.atcoder.jp/tasks/agc002_a)
 
@@ -20,6 +20,48 @@ int main(){
 	if(a<=0&&0<=b)puts("Zero");
 	else if(a>0)puts("Positive");
 	else puts(((b-a)&1)?"Positive":"Negative");
+	return 0;
+}
+```
+
+## [B - Box and Ball](https://agc002.contest.atcoder.jp/tasks/agc002_b)
+
+**题目大意：**
+
+有$n\le10^5$个盒子，一开始$1$号盒子中有一个红球，其它每个盒子中有一个白球。
+
+接下来$m$次操作，每次操作从$x$号盒子中随机取出一个球放入$y$号盒子，保证$x\not=y$，且$x$号盒子此时至少有一个球。
+
+问最后有多少个盒子中可能存在红球。
+
+**题解：**
+
+令$f_i$表示$i$号盒子中可能有红球，$siz_i$为$i$号盒子中球的数量。
+
+则一开始$f_1=1,siz_i=1$，每次操作，$f^{'}_y=f_x|f_y$，如果操作后$siz_x=0$，则$f_x=0$，否则不变。
+
+最后扫一遍$f_i=1$的盒子数量即可，时间复杂度$O(n)$.
+
+```c++
+#include <bits/stdc++.h>
+
+const int max_N = 1e5 + 21;
+
+int n,m,ans,siz[max_N];
+
+bool f[max_N];
+
+int main(){
+	scanf("%d%d",&n,&m);
+	for(int i=1;i<=n;++i)siz[i]=1;
+	f[1]=1;
+	while(m--){
+		int x,y; scanf("%d%d",&x,&y);
+		++siz[y],f[y]|=f[x];
+		if(!--siz[x])f[x]=0;
+	}
+	for(int i=1;i<=n;++i)if(f[i])++ans;
+	printf("%d\n",ans);
 	return 0;
 }
 ```
