@@ -4,7 +4,7 @@
 
 **题目大意：**
 
-判断$\prod\limits_{i=a}^{b}i$的正负号或者是$0$，$-10^9\le a\le b\le10^9$.
+判断$\displaystyle\prod\limits_{i=a}^{b}i$的正负号或者是$0$，$-10^9\le a\le b\le10^9$.
 
 **题解：**
 
