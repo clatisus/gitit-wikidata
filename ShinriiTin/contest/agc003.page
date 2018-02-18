@@ -130,3 +130,141 @@ int main(){
 	return 0;
 }
 ```
+
+## [D - Anticube](https://agc003.contest.atcoder.jp/tasks/agc003_d)
+
+**题目大意：**
+
+给出一个长度为$n\le10^5$的整数数列$a$，$1\le a_i\le10^{10}$。
+
+要从数列中选出尽可能多的数，满足被选出的数中，任意两个数的乘积不是立方数。
+
+输出最多可以选出的数的数量。
+
+**题解：**
+
+定义$Norm(t)$为$t$去掉所有立方因子后剩余的部分，$Pair(t)$为令$t\times Pair(t)$为立方数的最小的数。
+
+那么$a\times b$为立方数当且仅当$Norm(a)=Pair(b)$，并且显然此时$Pair(a)=Norm(b)$也成立。
+
+如果知道每个数的$Norm$与$Pair$，则$\displaystyle ans=[|\{t|Norm(t)=x\}|>0]+\frac{\sum\limits_{x=2}\max(|\{t|Norm(t)=x\}|,|\{t|Pair(t)=x\}|)}{2}$.
+
+利用线性筛求出$10^{\frac{10}{3}}$以内的质数。
+
+$Norm(t)$直接枚举$t^{\frac{1}{3}}$以内的质数试除即可。
+
+$Pair(t)$同样枚举$t^{\frac{1}{3}}$以内的质数，这一部分需要补上的因子就计算完毕了，剩余的部分$s$至多只有两个质因子。
+
+当$s=1$或$s$为质数或$s=p\times q$时，这一部分需要补上的因子都是$s^2$，只有当$s=p^2$时，只需要补上$p$即可。
+
+因此直接对$s$开方判断其是否为平方数即可。
+
+时间复杂度为$O(maxA_i^{1/3}+\frac{n\times maxA_i^{1/3}}{\log{maxA_i}}+n\log{n})$.
+
+需要注意的是$Pair(t)$可能会很大，超出`long long int`的范围。
+
+但是因为$Norm(t)\le t\le10^10$，这样大的$Pair(t)$是找不到与其匹配的$Norm(t)$的。
+
+因此计算过程中简单判断一下是否会超出一个足够大的上限，会的话直接令其等于上限即可，不影响计算结果。
+
+```c++
+#include <bits/stdc++.h>
+ 
+using ll = long long;
+ 
+const int max_N = 1e5 + 21;
+
+const ll inf = 2e10 + 1;
+ 
+int n,ans;
+ 
+bool vis[max_N];
+
+int pri_tot,pri[max_N];
+ 
+ll Norm[max_N],Pair[max_N];
+
+int N_tot,P_tot,N_siz[max_N],P_siz[max_N];
+
+inline void jzp(int n){
+	for(int x=2;x<=n;++x){
+		if(!vis[x])pri[++pri_tot]=x;
+		for(int i=1;i<=pri_tot;++i){
+			int y=pri[i];
+			if((ll)x*y>n)break;
+			vis[x*y]=1;
+			if(!(x%y))break;
+		}
+	}
+}
+ 
+inline ll get_norm(ll x){
+	for(int i=1;i<=pri_tot;++i){
+		int y=pri[i];
+		ll z=1ll*y*y*y;
+		if(z>x)break;
+		while(!(x%z))x/=z;
+	}
+	return x;
+}
+ 
+inline ll get_pair(ll x){
+	ll res=1;
+	for(int i=1;i<=pri_tot;++i){
+		int y=pri[i];
+		ll z=(ll)y*y*y;
+		if(z<=x){
+			while(!(x%z))x/=z;
+			if(!(x%(y*y))){
+				res*=y,x/=(y*y);
+				if(res>=inf)return inf;
+			}
+			else if(!(x%y)){
+				res*=(y*y),x/=y;
+				if(res>=inf)return inf;
+			}
+		}
+		else break;
+	}
+	ll y=std::sqrt(x);
+	if(y*y==x){
+		res*=y;
+		return res>=inf?inf:res;
+	}
+	if(inf/x/x<res)return inf;
+	return res*x*x;
+}
+ 
+int main(){
+	jzp(1e5);
+	scanf("%d",&n);
+	for(int i=1;i<=n;++i){
+		ll s; scanf("%lld",&s);
+		Norm[i]=get_norm(s);
+		Pair[i]=get_pair(s);
+	}
+	std::sort(Norm+1,Norm+1+n);
+	std::sort(Pair+1,Pair+1+n);
+	for(int i=1;i<=n;++i){
+		if(Norm[i]!=Norm[i-1])Norm[++N_tot]=Norm[i];
+		++N_siz[N_tot];
+		if(Pair[i]!=Pair[i-1])Pair[++P_tot]=Pair[i];
+		++P_siz[P_tot];
+	}
+	int i=1,j=1;
+	while(i<=N_tot||j<=P_tot){
+		if(i<=N_tot&&j<=P_tot&&Norm[i]==Pair[j]){
+			if(Norm[i]!=1)ans+=std::max(N_siz[i],P_siz[j]);
+			++i,++j;
+		}
+		else if(i>N_tot||(j<=P_tot&&Norm[i]>Pair[j]))
+			ans+=P_siz[j++];
+		else
+			ans+=N_siz[i++];
+	}
+	ans>>=1;
+	if(Norm[1]==1)++ans;
+	printf("%d\n",ans);
+	return 0;
+}
+```
