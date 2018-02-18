@@ -40,7 +40,7 @@ Algorithm Detail
 
 动态构建 SAM 的时候，在每个真节点上记录当前位置在 $\{t_i\}$ 的哪个串中。然后从根开始 dfs 这棵 parent 树，对于每个真节点，在它的线段树对应位置（所属的串编号）加一，回溯的时候合并子树。
 
-还要记录串 $s$ 的每个前缀 $s_i$ 对应的节点 $\text{pos[i]}$，对于每个询问 $l,r,p_l,p_r$，我们从 $\text{pos[}p_r\text{]}$ 向上倍增查找到 $s[l\dots r]$ 所属节点，在它对应的线段树中询问 $l,r$。
+还要记录串 $s$ 的每个前缀 $s_i$ 对应的节点 $\text{pos[i]}$，对于每个询问 $l,r,p_l,p_r$，我们从 $\text{pos[}p_r\text{]}$ 向上倍增查找到 $s[p_l\dots p_r]$ 所属节点，在它对应的线段树中询问 $l,r$。
 
 ## G. Palindromic Border 
 
