@@ -242,3 +242,6 @@ C=\begin{pmatrix}
 $$
 
 设父结点的向量为 $\alpha$ ，则它从左到右的三个孩子的向量分别为 $A\alpha, B\alpha, C\alpha$ ，这棵树不重不漏地枚举完了所有基本毕达哥拉斯三元组（$a^{2}+b^{2}=c^{2}$）。
+
+## 最大反链
+给定一个非负整数数列 {t_{i}}，那么偏序集 \prod_{i=1}^{n}\{x|0\le x\le t_{i},x\in\mathbb{Z}\} 的最大反链的大小等于关于 x_{i} 的不定方程 \sum_{i=1}^{n}x_{i}=\lfloor\frac{\sum_{i=1}^{n}t_{i}}{2}\rfloor 的非负整数解的个数。
