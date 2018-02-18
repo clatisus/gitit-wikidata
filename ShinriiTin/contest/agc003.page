@@ -1,2 +1,39 @@
 # [AtCoder Grand Contest 003](https://agc003.contest.atcoder.jp)
 
+## [A - Wanna go back home](https://agc003.contest.atcoder.jp/tasks/agc003_a)
+
+**题目大意：**
+
+`Snuke`在无限大的二维坐标平面上从原点出发，进行了$n\le1000$的旅行，已知每天旅行的方向（为东南西北四个方向之一），但距离是任意的，问是否存在一种方案使得最后一天旅行后恰好回到原点。
+
+**题解：**
+
+显然不能回去当且仅当某个方向的旅行存在而其反方向的旅行不存在。
+
+```c++
+#include <bits/stdc++.h>
+
+const int max_N = 1e3 + 21;
+
+int n;
+
+bool vis[4];
+
+char s[max_N];
+
+int main(){
+	scanf("%s",s);
+	n=strlen(s);
+	for(int i=0;i<n;++i){
+		switch(s[i]){
+			case('N'): vis[0]=1; break;	
+			case('S'): vis[1]=1; break;
+			case('E'): vis[2]=1; break;
+			case('W'): vis[3]=1; break;
+		}
+	}
+	if((vis[0]^vis[1])||(vis[2]^vis[3]))puts("No");
+	else puts("Yes");
+	return 0;
+}
+```
