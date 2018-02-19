@@ -42,7 +42,7 @@ dp[i][j]=
 \left\{
 \begin{aligned}
 &1,&i=j=0\\
-&\sum_{k=0}^{j-1}dp[i-1][k]+[i\ge j]dp[i-1][j],&\mathrm{others}\\
+&\sum_{k=0}^{j-1}dp[i-1][k]+[i\le j]dp[i-1][j],&\mathrm{others}\\
 \end{aligned}
 \right.
 $$
