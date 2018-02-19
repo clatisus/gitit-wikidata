@@ -86,7 +86,7 @@ f &= \prod_{i = 1}^{n}\frac{1-x^{i(a_{i}+1)}}{1-x^{i}}\\
 &= \prod_{i = 1}^{n}(1-x^{i(a_{i}+1)})\cdot\frac{1}{\prod_{i = 1}^{\infty}(1-x^{i})}\cdot(1-\sum_{i=n+1}^{2n}x^{i})\\
 \end{aligned}\\$$
 
-注意到这个式子的中间部分即为划分数的生成函数，可以 $\mathcal{O}(n\sqrt{n})$ 预处理，而第一部分中，由于 $a_{i}$ 严格递增，故只有 $\mathcal{O}(\sqrt{n})$ 项模 $x^{2n+1}$ 不为 $1$，可将这 $\mathcal{O}(\sqrt{n})$ 项暴力地乘到划分数的生成函数上，这部分的总复杂度为 $\mathcal{O}(n\sqrt{n})$ 。再观察最后一个部分，除常数项外，它的项均连续出现且系数均为 $-1$ ，显然将前面与这部分相乘时可以用一个前缀和 $\mathcal{O}(n)$ 处理。总复杂度 $\mathcal{O}(n\sqrt{n})$ 。
+注意到这个式子的中间部分即为划分数的生成函数，可以 $\mathcal{O}(n\sqrt{n})$ 预处理，而第一部分中，由于 $a_{i}$ 严格递增，故只有 $\mathcal{O}(\sqrt{n})$ 项模 $x^{2n+1}$ 不为 $0$，可将这 $\mathcal{O}(\sqrt{n})$ 项暴力地乘到划分数的生成函数上，这部分的总复杂度为 $\mathcal{O}(n\sqrt{n})$ 。再观察最后一个部分，除常数项外，它的项均连续出现且系数均为 $-1$ ，显然将前面与这部分相乘时可以用一个前缀和 $\mathcal{O}(n)$ 处理。总复杂度 $\mathcal{O}(n\sqrt{n})$ 。
 
 ## K. KazaQ's Socks
 
