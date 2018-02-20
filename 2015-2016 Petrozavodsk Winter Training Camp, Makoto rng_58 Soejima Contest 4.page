@@ -143,7 +143,7 @@ $$
 g(n) = f(n)-\sum_{i=1}^{n-1}f(n-i)g(i)
 $$
 
-最后答案为 $4^{n}(n+1)-\sum\limits_{i\text{ is even}g(i)4^{n-i}(n-i+1)$ 。
+最后答案为 $4^{n}(n+1)-\sum\limits_{i\text{ is even}}g(i)4^{n-i}(n-i+1)$ 。
 
 ## I. Robots
 
