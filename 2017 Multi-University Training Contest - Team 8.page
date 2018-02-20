@@ -57,19 +57,21 @@ $$
 
 **题解**：比赛摸鱼害死人，明明想到了的。
 
-记 $\text{base}=\prod_{i=1}^{n}p_{i},\max=\max\limits_{i=1}^n\{r_i\}$ ，显然有 $\frac{1}{A-1}=\frac{1}{1-\frac{1}{A}}-1=\sum_{i=1}^{\infty}\frac{1}{A^{i}}$ 。而 $\displaystyle \frac{1}{A}=\frac{\prod_{i=1}^{n}p_{i}[r_{i}<\max]}{\text{base}^{\max}}$ ，显然有 $t=\prod_{i=1}^{n}p_{i}[r_{i}<\max]<\text{base}$，所以 $\frac{1}{A}$ 在 $\text{base}$ 进制下为 $0.\underbrace{0\cdots 0}_{\max-1}t$。由于题目保证了 $k<\max^{2}$ ，所以 $\sum\limits_{i=\max+1}^{\infty}\frac{1}{A^i}$ 对第 $k$ 位无影响，下证：
+记 $\text{base}=\prod_{i=1}^{n}p_{i},\max=\max\limits_{i=1}^n\{r_i\}$ ，显然有 $\frac{1}{A-1}=\frac{1}{1-\frac{1}{A}}-1=\sum_{i=1}^{\infty}\frac{1}{A^{i}}$ 。而 $\displaystyle \frac{1}{A}=\frac{\prod_{i=1}^{n}p_{i}^{[r_{i}<\max]}}{\text{base}^{\max}}$ ，显然有 $t=\prod_{i=1}^{n}p_{i}^{[r_{i}<\max]}<\text{base}$，所以 $\frac{1}{A}$ 在 $\text{base}$ 进制下为 $0.\underbrace{0\cdots 0}_{\max-1}t$。由于题目保证了 $k<\max^{2}$ ，所以 $\sum\limits_{i=\max+1}^{\infty}\frac{1}{A^i}$ 对第 $k$ 位无影响，下证：
 
-显然有 $\prod_{i=1}^{n}p_{i}[r_{i}<\max]\leq\frac{\text{base}}{2}$ ，故
+显然有 $\prod_{i=1}^{n}p_{i}^{[r_{i}<\max]}\leq\frac{\text{base}}{2}$ ，故
 $$
-\begin{aligned}\\
+\begin{aligned}
 \sum_{i=\max+1}^{\infty}\frac{1}{A^{i}}=&\frac{1}{A^{\max+1}}\cdot\frac{1}{1-\frac{1}{A}}\\
-=&\frac{(\prod_{i=1}^{n}p_{i}[r_{i}<\max])^{\max+1}}{\text{base}^{\max(\max+1)}}\cdot\frac{\text{base}^{\max}}{\text{base}^{\max}-\prod_{i=1}^{n}p_{i}[r_{i}<\max]}\\
+=&\frac{(\prod_{i=1}^{n}p_{i}^{[r_{i}<\max]})^{\max+1}}{\text{base}^{\max(\max+1)}}\cdot\frac{\text{base}^{\max}}{\text{base}^{\max}-\prod_{i=1}^{n}p_{i}^{[r_{i}<\max]}}\\
 \le&\frac{1}{2^{\max}\text{base}^{\max^{2}-1}}\\
 <&\frac{1}{\text{base}^{\max^{2}-1}}\\
-\end{aligned}\\
+\end{aligned}
 $$
 
-而观察容易知道， $\forall i\in[1,\max]$ 的 $\frac{1}{A^{i}}$ 的各个非零位置是互不相同的，也即每个位置最多只有一个 $\frac{1}{A^i}$ 有贡献。于是在第 $k$ 位非零的就只有 $\displaystyle \frac{1}{A^{\displaystyle \lceil\frac{k}{\max}\rceil}}$ 。所以答案就是 $\displaystyle \left(\prod_{i=1}^{n}p_{i}[r_{i}<\max]\right)^{\displaystyle \lceil\frac{k}{\max}\rceil}$ 在 $\text{base}$ 进制下的第 $\lceil\frac{k}{\max}\rceil\cdot \max-k$ 位。然后快速幂加上 NTT+CRT 或者拆系数 FFT 就行了。复杂度 $\mathcal{O}(\max\log \max)$ 。
+而观察容易知道， $\forall i\in[1,\max]$ 的 $\frac{1}{A^{i}}$ 的各个非零位置是互不相同的，也即每个位置最多只有一个 $\frac{1}{A^i}$ 有贡献。于是在第 $k$ 位非零的就只有 $\displaystyle \frac{1}{A^{\displaystyle \lceil\frac{k}{\max}\rceil}}$ 。所以答案就是 $\displaystyle \left(\prod_{i=1}^{n}p_{i}^{[r_{i}<\max]}\right)^{\displaystyle \lceil\frac{k}{\max}\rceil}$ 在 $\text{base}$ 进制下的第 $\lceil\frac{k}{\max}\rceil\cdot \max-k$ 位。
+
+然后快速幂加上 NTT+CRT 或者拆系数 FFT 就行了。复杂度 $\mathcal{O}(\max\log \max)$ 。
 
 ## F. Fleet of the Eternal Throne
 
