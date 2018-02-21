@@ -60,25 +60,18 @@ unsolved
 
 coldwater's comment
 
-$L_i$ 的具体计算过程：切 $i$ 刀将一个长为 $1$ 的线段切成了 $i+1$ 段，我们假设第一段是最小的，设长度为 $x$，其余的段长度依次为 $x_1,x_2,\dots,x_i$ 。那么我们有：
-
+$L_n$ 的具体计算过程：设随机变量 $X$ 表示最小面积，先计算 $P(X\ge x)$。设随机变量 $X_{i}$ 表示右边 $(i+1)$ 个区域的最小面积，随机变量 $Y_{i}$ 表示倒数第 $i$ 次切割的位置，显然有 $Y_{i}\sim U(0,1)$。设 $P(X_{i}\ge x|Y_{i+1}=l)$ 表示在 $Y_{i+1}=l$ 的条件下，$X_{i}\ge x$ 且每次切割都在上一次切割右边的概率，则所求为 $n!P(X_{n}\ge x|Y_{n+1}=0)$ 。我们用数学归纳法证明 $P(X_{i}\ge x|Y_{i+1}=l)=\frac{1}{i!}[1-l-(i+1)x]^{i}$。根据全概率公式有 $P(X_{1}\ge x|Y_{2}=l)=\int_{l+x}^{1-x}1\cdot f(y_{1})\mathbb{d}y_{1}=1-l-2x$ 满足要求。
 $$
-\begin{cases}
-\sum_{j=1}^ix_i=1-x\\
-x_i\geq x
-\end{cases}
+\begin{aligned}
+&P(X_{i}\ge x|Y_{i+1}=l)\\
+=&\int_{l+x}^{1-ix}P(X_{i-1}\ge x|Y_{i}=y_{i})f(y_{i})\mathbb{d}y_{i}\\
+=&\frac{1}{(i-1)!}\int_{l+x}^{1-ix}(1-y_{i}-ix)^{i-1}\mathbb{d}y_{i}\\
+=&\frac{1}{(i-1)!}\int_{0}^{1-l-(i+1)x}t^{i-1}\mathbb{d}t\\
+=&\frac{1}{i!}t^{i}|_{0}^{1-l-(i+1)x}\\
+=&\frac{1}{i!}[1-l-(i+1)x]^{i}
+\end{aligned}
 $$
-
-稍加转换，即为：
-
-$$
-\begin{cases}
-\sum_{j=1}^ix_i=1-(i+1)x\\
-0\leq x_i\leq 1-(i+1)x
-\end{cases}
-$$
-
-我们考虑 $i$ 维空间中原点沿着各坐标轴正方向延伸 $1-(i+1)x$ 处围起来的面积 $S_x$ 。那么有 $P(x)$ 与 $S_x$ 成正比，于是我们得到 $P(x)=k\big(1-(i+1)x\big)^i$ ，再由 $\int_0^{1/(i+1)}P(x)\text{d}x=1$ ，我们可以积分得到 $k=(i+1)^2$ 。那么 $L_i=\int_0^{1/(i+1)}P(x)\cdot x\text{d}x$，很容易积得 $L_i=\frac{1}{(i+1)^2}$。 
+故 $P(X\ge x)=[1-(n+1)x]^{n}$，故最终答案为 $\int_{0}^{\frac{1}{n+1}}x(1-P(X\ge x))'\mathbb{d}x=\frac{1}{(i+1)^{2}}$
 
 ## I. Ivan Dorn
 
