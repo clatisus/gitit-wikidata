@@ -32,6 +32,6 @@
 
 # Suffix Automaton
 
-时空复杂度：$O(n\sigma)$.
+时空复杂度：$O(n\Sigma)$.
 
 [Mycode](templates/string/sam)
