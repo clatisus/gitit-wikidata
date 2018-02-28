@@ -29,3 +29,9 @@
 空间复杂度：$O(n)$
 
 [MyCode](templates/string/sa_adding_doubling)
+
+# Suffix Automaton
+
+时空复杂度：$O(n\sigma)$.
+
+[Mycode](templates/string/sam)
