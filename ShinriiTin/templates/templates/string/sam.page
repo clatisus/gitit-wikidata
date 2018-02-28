@@ -1,0 +1,71 @@
+```c++
+using star = struct node*;
+
+struct node{
+	int len,siz;
+	star par,trans[sigma];
+	void clone(star x,int n){
+		siz=0,len=n;
+		par=x->par;
+		for(int i=0;i<sigma;++i)
+			trans[i]=x->trans[i];
+		x->par=this;
+	}
+};
+
+struct sam{
+	node pool[sqrt_N<<1];
+	star rt,last,tail;
+	int cnt[sqrt_N],Q[sqrt_N<<1];
+	star append(int c,int n){
+		star p,q,r,cur=tail++;
+		cur->len=n,cur->siz=1;
+		for(int i=0;i<sigma;++i)
+			cur->trans[i]=0;
+		for(p=last;p&&!p->trans[c];p=p->par)
+			p->trans[c]=cur;
+		if(!p)cur->par=rt;
+		else{
+			q=p->trans[c];
+			if(p->len+1==q->len)
+				cur->par=q;
+			else{
+				r=tail++;
+				r->clone(q,p->len+1);
+				for(;p&&p->trans[c]==q;p=p->par)
+					p->trans[c]=r;
+				cur->par=r;
+			}
+		}
+		return cur;
+	}
+	void build(char*s,int n){
+		tail=pool;
+		last=rt=tail++;
+		rt->par=0;
+		rt->len=rt->siz=0;
+		for(int i=0;i<sigma;++i)
+			rt->trans[i]=0;
+		for(int i=0;i<n;++i){
+			last=append(s[i]-'a',i+1);
+		}
+		for(int i=0;i<=n;++i)cnt[i]=0;
+		for(star p=pool;p<tail;++p)++cnt[p->len];
+		for(int i=1;i<=n;++i)cnt[i]+=cnt[i-1];
+		for(star p=tail-1;p>pool;--p)
+			Q[--cnt[p->len]]=p-pool;
+		for(int i=tail-pool-1;~i;--i){
+			star p=pool+Q[i];
+			if(p->par)p->par->siz+=p->siz;
+		}
+	}
+	int count(char*s,int n){
+		star p=rt;
+		for(int i=0;i<n;++i){
+			if(!p->trans[s[i]-'a'])return 0;
+			p=p->trans[s[i]-'a'];
+		}
+		return p->siz;
+	}
+};
+```
