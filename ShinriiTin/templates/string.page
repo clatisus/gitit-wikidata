@@ -20,7 +20,13 @@
 
 [MyCode](templates/string/kmp)
 
-# SuffixArray
+# Shift-And Algorithm
+
+时空复杂度：$O(nm/\alpha)$
+
+[MyCode](templates/string/shift-and_algorithm)
+
+# Suffix Array
 
 倍增法构造
 
