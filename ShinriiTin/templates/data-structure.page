@@ -1,7 +1,15 @@
 # SparseTable
 
-时间复杂度: O(nlogn)-O(1)
+时间复杂度: $O(n\log{n})-O(1)$
 
-空间复杂度: O(nlogn)
+空间复杂度: $O(n\log{n})$
 
 [MyCode](templates/data-structure/sparse-table)
+
+# Link-Cut Tree
+
+时间复杂度：$O(n\log{n})$
+
+空间复杂度：$O(n)$
+
+[MyCode（不换根）](templates/data-structure/link-cut_tree_no_evert)
