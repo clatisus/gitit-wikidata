@@ -12,6 +12,16 @@ date: 2018.03.03 13:00-18:00
 
 **题解：**
 
+枚举$a_i$，满足$|a_i-b_j|\le d,|a_i-c_k|\le d$，的$j,k$分别在区间$[L_{ab},R_{ab}]$和$[L_{ac},R_{ac}]$。
+
+对于每个$b_j$预处理出$L_j$和$R_j$，使得$\forall k(|b_j-c_k|\le d\to k \in [L_j,R_j])$。
+
+则问题转化为对于$j\in [L_{ab},R_{ab}]$，统计$k\in [L_{ac},R_{ac}]\land k\le R_j$的个数减去$k\in [L_{ac},R{ac}]\land k <L_j$的个数即可。
+
+通过预处理前缀和与二分查找，可以做到$O(n\log{n})$.
+
+
+
 
 ## F GCD
 
