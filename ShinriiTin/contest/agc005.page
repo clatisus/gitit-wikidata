@@ -1,0 +1,12 @@
+# [AtCoder Grand Contest 001](https://agc005.contest.atcoder.jp/)
+
+## [D - ~K Perm Counting](https://agc005.contest.atcoder.jp/tasks/agc005_d)
+
+**题目大意：**
+
+求有多少个$1$到$n$的排列$a$，满足$\forall 1\le i\le n\to|a_i-i|\not=k$.
+
+$2\le n\le2000,1\le k\le n-1$.
+
+
+
