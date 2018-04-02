@@ -1,0 +1,10 @@
+# [2014-2015 Petrozavodsk Winter Training Camp, Contest.58 (Makoto rng_58 Soejima contest)](http://codeforces.com/gym/100958/)
+
+## [B - Dictionary](http://codeforces.com/gym/100958/status/B)
+
+**题目大意：**
+
+给出$1\le n\le50$个只有小写英文字母和?组成的字符串$s_1,\cdots,s_n$，$1\le|s_i|\le20$.
+
+求有多少种方案，将所有?换成小写英文字母，并且满足$s_1<s_2<\cdots<s_n$.
+
