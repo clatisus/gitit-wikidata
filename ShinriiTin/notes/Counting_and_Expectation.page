@@ -318,6 +318,40 @@ int main(){
 
 问有多少$1$到$n$的排列$p$，满足$\displaystyle\min\limits_{i\le k}a_i+b_{p_i}\ge\max\limits_{j>k}a_j+b_{p_j}$，对$10^9+7$取模。
 
+**题解：**
+
+令$f(t)$表示满足下面三个条件的排列数：
+
+- $\forall i\le k\to a_i+b_{p_i}\ge t$
+
+- $\forall j>k\to a_j+b_{p_j}\le t$
+
+- $\exists i\le k\land a_i+b_{p_i}=t$
+
+则$ans=\sum\limits_t f(t)$.
+
+对于上述的第三个条件，我们可以简单地用一个容斥将其去掉。
+
+令$g(A,B)$表示满足下面两个条件的排列数：
+
+- $\forall i\le k\to a_i+b_{p_i}\ge A$
+
+- $\forall j>k\to a_j+b_{p_j}\le B$
+
+则$f(t)=g(t,t)-g(t+1,t)$.
+
+接下来考虑如何求$g(A,B)$的值。
+
+这其实是一个二分图完备匹配计数问题：
+
+$a,b$分别是二分图的左右部，$i\le k$的$a_i$可以与不小于$A-a_i$的$b$匹配，$i>k$的$a_i$可以与不大于$B-a_i$的$b$匹配。
+
+因此我们将$i\le k$的$A-a_i$，$i>k$的$B-a_i$，以及$b_j$，放在一起按大小排序（如果值相同，认为$A-a_i$最小，$B-a_i$最大）。
+
+对于排序后的数组，我们从小到大扫描一次，同时用dp计算方案数。
+
+令$dp[i][j]$表示扫描到了第$i$个位置，与$i\le k$的$a_i$匹配的$b$的数量为$j$的方案数。
+
 
 
 ## Izhevsk Training Camp (Simplified)
