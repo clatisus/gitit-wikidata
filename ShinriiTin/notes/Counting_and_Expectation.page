@@ -316,7 +316,7 @@ int main(){
 
 其中$1\le k\le n\le100$，$a_1\ge a_2\ge\cdots\ge a_n$，$0\le a_i,b_i\le1000$，$a_i$两两不同，$b_i$两两不同。
 
-问有多少$1$到$n$的排列$p$，满足$\min_{i\le k}a_i+b_{p_i}\ge\max_{j>k}a_j+b_{p_j}$，对$10^9+7$取模。
+问有多少$1$到$n$的排列$p$，满足$\displaystyle\min\limits_{i\le k}a_i+b_{p_i}\ge\max\limits_{j>k}a_j+b_{p_j}$，对$10^9+7$取模。
 
 
 
