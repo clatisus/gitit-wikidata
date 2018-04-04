@@ -509,7 +509,7 @@ int main(){
 
 给出三个$1$到$n$的排列$a,b,c$.
 
-令$T=\{(x,y,z)|S\subseteq[n],x=\max\limits_i a_i,y=\max\limits_i b_i,z=\max\limits_i c_i\}$，求$|T|$.
+令$T=\{(x,y,z)|S\subseteq[n],x=\max\limits_{i\in S} a_i,y=\max\limits_{i\in S} b_i,z=\max\limits_{i\in S} c_i\}$，求$|T|$.
 
 $1\le n \le10^5$.
 
