@@ -442,7 +442,64 @@ int main(){
 
 ## Izhevsk Training Camp (Simplified)
 
-占个坑，感觉会做了，写完和暴力拍一拍，没问题放上来。
+~~占个坑，感觉会做了，写完和暴力拍一拍，没问题放上来。~~
+
+**题目大意：**
+
+给出三个$1$到$n$的排列$a,b,c$，问有多少二元组$(x,y)$满足$a_x<a_y,b_x<b_y,c_x<c_y$。
+
+$2\le n\le5\times10^6$.
+
+**题解：**
+
+令满足$a_x<a_y,b_x<b_y,c_x<c_y$的二元组数量为$A$，满足$a_x<a_y,b_x<b_y,c_x>c_y$或$a_x<a_y,b_x>b_y,c_x<c_y$或$a_x>a_y,b_x<b_y,c_x>c_y$的二元组数量为$B$，则$A+B=\binom{n}{2}$.
+
+令满足$a_x<a_y,b_x<b_y$的二元组数量为$u$，满足$b_x<b_y,c_x<c_y$的二元组数量为$v$，满足$a_x<a_y,c_x<c_y$的二元组数量为$w$，则$3A+B=u+v+w$.
+
+因此我们可以做三次二维偏序，然后求得$\displaystyle A=\frac{u+v+w-\binom{n}{2}}{2}$，时间复杂度$O(n\log{n})$，空间复杂度$O(n)$。
+
+```c++
+#include <bits/stdc++.h>
+
+template<class T>inline void read(T&x){
+	char c; while(!isdigit(c=getchar()));
+	for(x=c-48;isdigit(c=getchar());x=x*10+c-48);
+}
+
+const int max_N = 5e6 + 21;
+
+using ll = long long;
+
+int n, a[max_N], b[max_N], c[max_N];
+
+int bit[3][max_N], q[max_N];
+
+int main(){
+	read(n);
+	for(int i=1;i<=n;++i) read(a[i]);
+	for(int i=1;i<=n;++i) read(b[i]);
+	for(int i=1;i<=n;++i) read(c[i]);
+	ll ans = 0;
+	for(int i=1;i<=n;++i) q[i] = i;
+	std::sort(q+1,q+1+n,[&](int x,int y){return a[x]<a[y];});
+	for(int i=1;i<=n;++i){
+		int x = q[i];
+		for(int j=b[x];j;j-=j&-j) ans += bit[1][j];
+		for(int j=c[x];j;j-=j&-j) ans += bit[2][j];
+		for(int j=b[x];j<=n;j+=j&-j) ++ bit[1][j];
+		for(int j=c[x];j<=n;j+=j&-j) ++ bit[2][j];
+	}	
+	std::sort(q+1,q+1+n,[&](int x,int y){return b[x]<b[y];});
+	for(int i=1;i<=n;++i){
+		int x = q[i];
+		for(int j=c[x];j;j-=j&-j) ans += bit[0][j];
+		for(int j=c[x];j<=n;j+=j&-j) ++ bit[0][j];
+	}
+	ans = (ans - 1ll*n*(n-1)/2) >> 1;	
+	printf("%lld\n", ans);
+	return 0;
+}
+```
 
 ## Mixed Drinks
 
