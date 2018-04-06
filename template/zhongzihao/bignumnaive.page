@@ -3,9 +3,9 @@
 
 typedef long long ll;
 
-struct BigInteger{ // 仅支持非负整数 
+struct BigInteger{ // ½öÖ§³Ö·Ç¸ºÕûÊý 
 	static const int N = 1000;
-	static const ll base = 1000000000000000000ll; // 修改它时记得修改输入输出格式 
+	static const ll base = 1000000000000000000ll; // ÐÞ¸ÄËüÊ±¼ÇµÃÐÞ¸ÄÊäÈëÊä³ö¸ñÊ½ 
 	ll a[N];
 	int length;
 	
@@ -54,7 +54,7 @@ struct BigInteger{ // 仅支持非负整数
 		return ret;
 	}
 	
-	BigInteger operator * (const BigInteger &p)const{
+	BigInteger operator * (const BigInteger &p)const{ // ×¢Òâ³¤¶ÈÌ«³¤¿ÉÄÜ»á±¬ __int128£¬ÊÓÇé¿öÐèÒª½« 18 Î»µ÷Ð¡ 
 		static __int128 aux[N << 1];
 		memset(aux, 0, sizeof(__int128) * (length + p.length));
 		for (int i = 0; i < length; ++ i){
@@ -75,10 +75,11 @@ struct BigInteger{ // 仅支持非负整数
 	}
 	
 	BigInteger operator * (ll p)const{
+		if (!p) return BigInteger();
 		__int128 remain = 0;
 		BigInteger ret;
 		for (int i = 0; i < length; ++ i){
-			remain += a[i] * p;
+			remain += (__int128) a[i] * p;
 			ret.a[i] = remain % base;
 			remain /= base;
 		}
