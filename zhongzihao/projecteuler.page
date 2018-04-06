@@ -12,21 +12,21 @@
 
 - 若 $n_{b}<n_{c}$
 
-  - 若 $n_{a}=n_{b}$，则 $(a\oplus b,a,b)$ 是一个负态。
-  - 若 $n_{a}<n_{b}$
-    - 若 $b'_{n_{a}}=1$，则 $(a,a\oplus b,b)$ 是一个负态。
-    - 若 $b'_{n_{a}}=0$，则 $(a,b,a\oplus b)$ 是一个负态。
+    - 若 $n_{a}=n_{b}$，则 $(a\oplus b,a,b)$ 是一个负态。
+    - 若 $n_{a}<n_{b}$
+        - 若 $b'_{n_{a}}=1$，则 $(a,a\oplus b,b)$ 是一个负态。
+        - 若 $b'_{n_{a}}=0$，则 $(a,b,a\oplus b)$ 是一个负态。
 
 - 若 $n_{b}=n_{c}$
 
-  - 若 $a>b\oplus c$，那么 $(b\oplus c,b,c)$ 是一个负态。
+    - 若 $a>b\oplus c$，那么 $(b\oplus c,b,c)$ 是一个负态。
 
-  - 若 $a<b\oplus c$
+    - 若 $a<b\oplus c$
 
-    - 若 $n_{a}<i$
+        - 若 $n_{a}<i$
 
-      - 若 $b'_{n_{a}}=1$，则 $(a,a\oplus b,b)$ 是一个负态。
-      - 若 $b'_{n_{a}}=0$，则 $(a,b,a\oplus b)$ 是一个负态。
+            - 若 $b'_{n_{a}}=1$，则 $(a,a\oplus b,b)$ 是一个负态。
+            - 若 $b'_{n_{a}}=0$，则 $(a,b,a\oplus b)$ 是一个负态。
 
     - 若 $n_{a}=i$，我们来证明 $a\oplus c<b$ 和 $a\oplus b<c$ 至少有一个成立：
 
