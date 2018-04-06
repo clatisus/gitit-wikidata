@@ -19,7 +19,7 @@
 
 - 若 $n_{b}=n_{c}$
 
-    - 若 $a>b\oplus c$，那么 $(b\oplus c,b,c)$ 是一个负态。
+    - 若 $a>b\oplus c$，则 $(b\oplus c,b,c)$ 是一个负态。
 
     - 若 $a<b\oplus c$
 
