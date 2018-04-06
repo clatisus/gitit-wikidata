@@ -30,7 +30,7 @@
 
         - 若 $n_{a}=i$，我们来证明 $a\oplus c<b$ 和 $a\oplus b<c$ 至少有一个成立：
 
-      设 $a$ 和 $b\oplus c$ 最高的不相同的位为第 $j$ 位，则有 $(a'_{n_{c}}\oplus c'_{n_{c}})\cdots(a'_{j+1}\oplus c'_{j+1})=b'_{n_{c}}\cdots b'_{j+1}$ 和 $(a'_{n_{b}}\oplus b'_{n_{b}})\cdots(a'_{j+1}\oplus b'_{j+1})=c'_{n_{b}}\cdots c'_{j+1}$ 均成立。又因为 $a<b\oplus c$，所以有 $a'_{j}=0,b'_{j}\oplus c’_{j}=1$，故 $a'_{j}\oplus c'_{j}<b'_{j}$ 和 $a'_{j}\oplus b '_{j}<c'_{j}$ 至少有一个成立，即 $a\oplus c<b$ 和 $a\oplus b<c$ 至少有一个成立。$\Box$
+            设 $a$ 和 $b\oplus c$ 最高的不相同的位为第 $j$ 位，则有 $(a'_{n_{c}}\oplus c'_{n_{c}})\cdots(a'_{j+1}\oplus c'_{j+1})=b'_{n_{c}}\cdots b'_{j+1}$ 和 $(a'_{n_{b}}\oplus b'_{n_{b}})\cdots(a'_{j+1}\oplus b'_{j+1})=c'_{n_{b}}\cdots c'_{j+1}$ 均成立。又因为 $a<b\oplus c$，所以有 $a'_{j}=0,b'_{j}\oplus c’_{j}=1$，故 $a'_{j}\oplus c'_{j}<b'_{j}$ 和 $a'_{j}\oplus b '_{j}<c'_{j}$ 至少有一个成立，即 $a\oplus c<b$ 和 $a\oplus b<c$ 至少有一个成立。$\Box$
 
             - 若 $a\oplus c<b$，则 $(a,a\oplus c,c)$ 是一个负态。
             - 若 $a\oplus b<c$，则 $(a,b,a\oplus b)$ 是一个负态。
