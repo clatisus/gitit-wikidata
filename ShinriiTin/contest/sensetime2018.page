@@ -1,48 +1,4 @@
 E
 ```c++
 #include <bits/stdc++.h>
-
-const int max_N = (int)5e5 + 21;
-
-int n, d[max_N], h[max_N], tot;
-
-std::vector<int> a[max_N];
-
-std::vector<double> p[max_N];
-
-double ans, sum, bit[max_N];
-
-int rk(int a){
-    return std::lower_bound(h+1, h+1+tot, a) - h;
-}
-
-int main(){
-    scanf("%d", &n);
-    for(int i=1;i<=n;++i) scanf("%d", d+i);
-    for(int i=1;i<=n;++i)
-        for(int j=0;j<d[i];++j){
-            int aa; double pp;
-            scanf("%lf%d", &pp, &aa);
-            a[i].push_back(aa);
-            p[i].push_back(pp);
-            h[++tot] = aa;
-        }
-    std::sort(h+1, h+1+tot);
-    tot = std::unique(h+1, h+1+tot) - h - 1;
-    for(int i=1;i<=n;++i){
-        for(int j=0;j<d[i];++j){
-            double tmp = sum;
-            for (int x = rk(a[i][j]); x; x -= x & -x) tmp -= bit[x];
-            ans += tmp * p[i][j];
-        }
-        for(int j=0;j<d[i];++j){
-            for (int x = rk(a[i][j]); x <= tot; x += x & -x) {
-                bit[x] += p[i][j];
-            }
-            sum += p[i][j];
-        }
-    }
-    printf("%.2f\n", ans);
-    return 0;
-}
 ```
