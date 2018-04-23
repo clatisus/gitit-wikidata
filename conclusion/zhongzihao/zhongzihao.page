@@ -157,7 +157,7 @@ $\begin{Bmatrix}n\\k\end{Bmatrix}$ 表示有 $n$ 个元素的集合划分为 $k$
 - $\sum_{k=0}^{n}\begin{Bmatrix}n\\k\end{Bmatrix}(x)_{k}=x^{n}$
 - $B_{n}=\sum_{k=0}^{n}\begin{Bmatrix}n\\k\end{Bmatrix}$（其中 $B_{n}$ 是贝尔数）
 
-对于一个固定的 $k$，$\{\begin{Bmatrix}n\\k\end{Bmatrix}\}$ 的生成函数为 $\sum_{n=k}^{+\infty}\begin{Bmatrix}n\\k\end{Bmatrix}x^{n}=\frac{x^{k}}{\prod_{i=1}^{k}1-kx}$，其指数型生成函数为 $\sum_{n=k}^{+\infty}\begin{Bmatrix}n\\k\end{Bmatrix}\frac{x^{n}}{n!}=\frac{(e^{x}-1)^{k}}{k!}$。
+对于一个固定的 $k$，$\{\begin{Bmatrix}n\\k\end{Bmatrix}\}$ 的生成函数为 $\displaystyle{\sum_{n=k}^{+\infty}\begin{Bmatrix}n\\k\end{Bmatrix}x^{n}=\frac{x^{k}}{\prod_{i=1}^{k}1-kx}}$，其指数型生成函数为 $\displaystyle{\sum_{n=k}^{+\infty}\begin{Bmatrix}n\\k\end{Bmatrix}\frac{x^{n}}{n!}=\frac{(e^{x}-1)^{k}}{k!}}$。
 
 ## 贝尔数
 
