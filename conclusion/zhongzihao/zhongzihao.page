@@ -131,19 +131,33 @@ $(x)^{(n)}=x(x+1)(x+2)\cdots(x+n-1)$ 称为上升阶乘幂， $(x)_{n}=x(x-1)(x-
 - $(x)_{m}(x)_{n}=\sum_{k=0}^{m}{m\choose k}{n\choose k}k!(x)_{m+n-k}$
 
 ## 斯特林数
-### 第一类斯特林数
-$|s(n,k)|$ 表示 $n$ 个元素的置换中能被分解为 $k$ 个循环的置换个数。 $s(n,k)=(-1)^{n-k}|s(n,k)|,s(0,0)=1,s(n,0)=s(0,n)=0$ ，满足
 
-- $s(n+1,k)=s(n,k-1)-ns(n,k)$
-- $(x)^{(n)}=\sum_{k=0}^{n}|s(n,k)|x^{k}$
+### 第一类斯特林数
+
+$\begin{bmatrix}n\\k\end{bmatrix}$ 表示 $n$ 个元素的置换中能被分解为 $k$ 个循环的置换个数，并定义 $s(n,k)=(-1)^{n-k}\begin{bmatrix}n\\k\end{bmatrix}$。 $\begin{bmatrix}n+1\\k\end{bmatrix}=n\begin{bmatrix}n\\k\end{bmatrix}+\begin{bmatrix}n\\k-1\end{bmatrix}(k>0)$，$\begin{bmatrix}0\\0\end{bmatrix}=1$，$\begin{bmatrix}n\\0\end{bmatrix}=\begin{bmatrix}0\\n\end{bmatrix}=0(n>0)$。
+该数列满足：
+
+- $(x)^{(n)}=\sum_{k=0}^{n}\begin{bmatrix}n\\k\end{bmatrix}x^{k}$
 - $(x)_{n}=\sum_{k=0}^{n}s(n,k)x^{k}$
 
-### 第二类斯特林数
-$S(n,k)$ 表示有 $n$ 个元素的集合划分为 $k$ 个集合的方案数。 $S(0,0)=1,S(n,0)=S(0,n)=0$ ，满足
+也就是说，对于一个固定的 $n$，$(x)^{(n)}$ 和 $(x)_{n}$ 分别是 $\{\begin{bmatrix}n\\k\end{bmatrix}\}$ 和 $\{s(n,k)\}$ 的生成函数。
 
-- $S(n,k)=kS(n-1,k)+S(n-1,k-1)$
-- $S(n,k)=\frac{1}{k!}\sum_{i=0}^{k}(-1)^{i}{k\choose i}(k-i)^{n}$
-- $\sum_{k=0}^{n}S(n,k)(x)_{k}=x^{n}$
+对于一个固定的 $k$，$\{\begin{bmatrix}n\\k\end{bmatrix}\}$ 的指数型生成函数为：$\frac{\ln^{k}\frac{1}{1-x}}{k!}=\sum_{n=k}^{+\infty}\begin{bmatrix}n\\k\end{bmatrix}\frac{x^{n}}{n!}$。
+
+### 第二类斯特林数
+
+$\begin{Bmatrix}n\\k\end{Bmatrix}$ 表示有 $n$ 个元素的集合划分为 $k$ 个集合的方案数。$\begin{Bmatrix}n+1\\k\end{Bmatrix}=k\begin{Bmatrix}n\\k\end{Bmatrix}+\begin{Bmatrix}n\\k-1\end{Bmatrix}(k>0)$，$\begin{Bmatrix}0\\0\end{Bmatrix}=1$，$\begin{Bmatrix}n\\0\end{Bmatrix}=\begin{Bmatrix}0\\n\end{Bmatrix}=0(n>0)$。
+
+该数列满足：
+
+- $\begin{Bmatrix}n\\k\end{Bmatrix}=\frac{1}{k!}\sum_{i=0}^{k}(-1)^{i}{k\choose i}(k-i)^{n}$
+
+容易注意到这是一个卷积形式，可以 $\mathcal{O}(n\log n)$ 地求出一个 $n$ 对应的所有第二类斯特林数
+
+- $\sum_{k=0}^{n}\begin{Bmatrix}n\\k\end{Bmatrix}(x)_{k}=x^{n}$
+- $B_{n}=\sum_{k=0}^{n}\begin{Bmatrix}n\\k\end{Bmatrix}$（其中 $B_{n}$ 是贝尔数）
+
+对于一个固定的 $k$，$\{\begin{Bmatrix}n\\k\end{Bmatrix}\}$ 的生成函数为 $\sum_{n=k}^{+\infty}\begin{Bmatrix}n\\k\end{Bmatrix}x^{n}=\frac{x^{k}}{\prod_{i=1}^{k}1-kx}$，其指数型生成函数为 $\sum_{n=k}^{+\infty}\begin{Bmatrix}n\\k\end{Bmatrix}\frac{x^{n}}{n!}=\frac{(e^{x}-1)^{k}}{k!}$。
 
 ## 贝尔数
 
