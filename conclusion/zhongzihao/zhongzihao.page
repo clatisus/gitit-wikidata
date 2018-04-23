@@ -144,6 +144,13 @@ $\begin{bmatrix}n\\k\end{bmatrix}$ 表示 $n$ 个元素的置换中能被分解�
 
 对于一个固定的 $k$，$\{\begin{bmatrix}n\\k\end{bmatrix}\}$ 的指数型生成函数为：$\displaystyle{\frac{\ln^{k}\frac{1}{1-x}}{k!}=\sum_{n=k}^{+\infty}\begin{bmatrix}n\\k\end{bmatrix}\frac{x^{n}}{n!}}$。
 
+另外还有：
+
+- \begin{bmatrix}n\\m\end{bmatrix}=\sum_{k}\begin{bmatrix}n+1\\k+1\end{bmatrix}{k\choose m}(-1)^{m-k}
+- \begin{bmatrix}n+1\\m+1\end{bmatrix}=\sum_{k=0}^{n}\begin{bmatrix}k\\m\end{bmatrix}\frac{n!}{k!}
+- \begin{bmatrix}m+n+1\\m\end{bmatrix}=\sum_{k=0}^{m}(n+k)\begin{bmatrix}n+k\\k\end{bmatrix}
+- \begin{bmatrix}n\\l+m\end{bmatrix}{l+m\choose l}=\sum_{k}\begin{bmatrix}k\\l\end{bmatrix}\begin{bmatrix}n-k\\m\end{bmatrix}{n\choose k}
+
 ### 第二类斯特林数
 
 $\begin{Bmatrix}n\\k\end{Bmatrix}$ 表示有 $n$ 个元素的集合划分为 $k$ 个集合的方案数。$\begin{Bmatrix}n+1\\k\end{Bmatrix}=k\begin{Bmatrix}n\\k\end{Bmatrix}+\begin{Bmatrix}n\\k-1\end{Bmatrix}(k>0)$，$\begin{Bmatrix}0\\0\end{Bmatrix}=1$，$\begin{Bmatrix}n\\0\end{Bmatrix}=\begin{Bmatrix}0\\n\end{Bmatrix}=0(n>0)$。
