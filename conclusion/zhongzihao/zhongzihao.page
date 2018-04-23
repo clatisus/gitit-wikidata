@@ -146,10 +146,10 @@ $\begin{bmatrix}n\\k\end{bmatrix}$ 表示 $n$ 个元素的置换中能被分解�
 
 另外还有：
 
-- \begin{bmatrix}n\\m\end{bmatrix}=\sum_{k}\begin{bmatrix}n+1\\k+1\end{bmatrix}{k\choose m}(-1)^{m-k}
-- \begin{bmatrix}n+1\\m+1\end{bmatrix}=\sum_{k=0}^{n}\begin{bmatrix}k\\m\end{bmatrix}\frac{n!}{k!}
-- \begin{bmatrix}m+n+1\\m\end{bmatrix}=\sum_{k=0}^{m}(n+k)\begin{bmatrix}n+k\\k\end{bmatrix}
-- \begin{bmatrix}n\\l+m\end{bmatrix}{l+m\choose l}=\sum_{k}\begin{bmatrix}k\\l\end{bmatrix}\begin{bmatrix}n-k\\m\end{bmatrix}{n\choose k}
+- $\begin{bmatrix}n\\m\end{bmatrix}=\sum_{k}\begin{bmatrix}n+1\\k+1\end{bmatrix}{k\choose m}(-1)^{m-k}$
+- $\begin{bmatrix}n+1\\m+1\end{bmatrix}=\sum_{k=0}^{n}\begin{bmatrix}k\\m\end{bmatrix}\frac{n!}{k!}$
+- $\begin{bmatrix}m+n+1\\m\end{bmatrix}=\sum_{k=0}^{m}(n+k)\begin{bmatrix}n+k\\k\end{bmatrix}$
+- $\begin{bmatrix}n\\l+m\end{bmatrix}{l+m\choose l}=\sum_{k}\begin{bmatrix}k\\l\end{bmatrix}\begin{bmatrix}n-k\\m\end{bmatrix}{n\choose k}$
 
 ### 第二类斯特林数
 
