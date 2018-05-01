@@ -10,20 +10,6 @@
 
 先判断是否为$0$，然后根据负数因子的个数回答即可。
 
-```c++
-#include <bits/stdc++.h>
-
-int a,b;
-
-int main(){
-	scanf("%d%d",&a,&b);
-	if(a<=0&&0<=b)puts("Zero");
-	else if(a>0)puts("Positive");
-	else puts(((b-a)&1)?"Positive":"Negative");
-	return 0;
-}
-```
-
 ## [B - Box and Ball](https://agc002.contest.atcoder.jp/tasks/agc002_b)
 
 **题目大意：**
@@ -42,30 +28,6 @@ int main(){
 
 最后扫一遍$f_i=1$的盒子数量即可，时间复杂度$O(n)$.
 
-```c++
-#include <bits/stdc++.h>
-
-const int max_N = 1e5 + 21;
-
-int n,m,ans,siz[max_N];
-
-bool f[max_N];
-
-int main(){
-	scanf("%d%d",&n,&m);
-	for(int i=1;i<=n;++i)siz[i]=1;
-	f[1]=1;
-	while(m--){
-		int x,y; scanf("%d%d",&x,&y);
-		++siz[y],f[y]|=f[x];
-		if(!--siz[x])f[x]=0;
-	}
-	for(int i=1;i<=n;++i)if(f[i])++ans;
-	printf("%d\n",ans);
-	return 0;
-}
-```
-
 ## [C - Knot Puzzle](https://agc002.contest.atcoder.jp/tasks/agc002_c)
 
 **题目大意：**
@@ -79,27 +41,6 @@ int main(){
 考虑最后一个结，它能被解开的充要条件是连接的相邻两段绳子的长度和不小于$L$，如果不存在这样的结，显然无解。
 
 如果存在，那么按离这个结的从远到近的顺序解开两边的结最后再解开这个结即可。
-
-```c++
-#include <bits/stdc++.h>
-
-const int max_N = 1e5 + 21;
-
-int n,pos,tot,ans[max_N],a[max_N],L;
-
-int main(){
-	scanf("%d%d",&n,&L);
-	for(int i=1;i<=n;++i)scanf("%d",a+i);
-	for(int i=1;i<n;++i)
-		if(a[i]+a[i+1]>=L){pos=i; break;}
-	if(!pos)return puts("Impossible"),0;
-	puts("Possible");
-	for(int i=1;i<pos;++i)ans[++tot]=i;
-	for(int i=n-1;i>=pos;--i)ans[++tot]=i;
-	for(int i=1;i<=tot;++i)printf("%d\n",ans[i]);
-	return 0;
-}
-```
 
 ## [D - Stamp Rally](https://agc002.contest.atcoder.jp/tasks/agc002_d)
 
@@ -117,76 +58,6 @@ int main(){
 
 时间复杂度$O(q\sqrt{m}+n+m)$，空间复杂度$O(n+m+q)$.
 
-```c++
-#include <bits/stdc++.h>
-
-//#define debug
-
-const int max_N = 1e5 + 21;
-
-#ifdef debug
-const int K = 4;
-#else
-const int K = 400;
-#endif
-
-int n,m,q,u[max_N],v[max_N];
-
-int x[max_N],y[max_N],z[max_N],ans[max_N];
-
-struct dfu{
-	int f[max_N],siz[max_N];
-	int find(int x){
-		return f[x]==x?x:f[x]=find(f[x]);
-	}
-	void merge(int x,int y){
-		x=find(x),y=find(y);
-		if(x==y)return;
-		if(siz[x]>siz[y])std::swap(x,y);
-		siz[y]+=siz[x],f[x]=y;
-	}
-}F[2];
-
-std::vector<int>Q[2],Q2;
-
-int main(){
-	scanf("%d%d",&n,&m);
-	for(int i=1;i<=m;++i)scanf("%d%d",u+i,v+i);
-	for(int i=1;i<=n;++i){
-		F[0].f[i]=i,F[0].siz[i]=1;
-		F[1].f[i]=i,F[1].siz[i]=1;
-	}
-	scanf("%d",&q);
-	for(int i=1;i<=q;++i){
-		scanf("%d%d%d",x+i,y+i,z+i);
-		Q[0].push_back(i);
-	}
-	int cur=0,B=(m-1)/K;
-	for(int i=0;i<=B;++i){
-		for(int j=i*K+1;j<=m&&j<=(i+1)*K;++j)
-			F[0].merge(u[j],v[j]);
-		Q[cur^1].clear(),Q2.clear();
-		for(auto&j:Q[cur]){
-			int fx=F[0].find(x[j]),fy=F[0].find(y[j]);
-			int siz=(fx==fy)?F[0].siz[fx]:F[0].siz[fx]+F[0].siz[fy];
-			if(siz>=z[j])Q2.push_back(j);
-			else Q[cur^1].push_back(j);
-		}
-		for(int j=i*K+1;j<=m&&j<=(i+1)*K;++j){
-			F[1].merge(u[j],v[j]);
-			for(auto&k:Q2){
-				if(ans[k])continue;
-				int fx=F[1].find(x[k]),fy=F[1].find(y[k]);
-				int siz=(fx==fy)?F[1].siz[fx]:F[1].siz[fx]+F[1].siz[fy];
-				if(siz>=z[k])ans[k]=j;
-			}
-		}
-		cur^=1;
-	}
-	for(int i=1;i<=q;++i)printf("%d\n",ans[i]);
-	return 0;
-}
-```
 
 **方法二：**
 
@@ -197,81 +68,6 @@ int main(){
 这样每层的区间中点是有序的，按顺序加边即可，而进入新的一层的时候则需要重置并查集。
 
 因为二分的树结构只有$O(\log{m})$层，因此时间复杂度为$O((n+m+q)\log{m})$.
-
-```c++
-#include <bits/stdc++.h>
-
-//#define debug
-
-const int max_N = 1e5 + 21;
-
-int n,m,q,cur,u[max_N],v[max_N];
-
-int x[max_N],y[max_N],z[max_N],ans[max_N];
-
-int f[max_N],siz[max_N];
-
-void dfu_init(){
-	for(int i=1;i<=n;++i)f[i]=i,siz[i]=1;
-}
-
-int find(int x){
-	return f[x]==x?x:f[x]=find(f[x]);
-}
-
-void merge(int x,int y){
-	x=find(x),y=find(y);
-	if(x==y)return;
-	if(siz[x]>siz[y])std::swap(x,y);
-	siz[y]+=siz[x],f[x]=y;
-}
-
-using star = struct node*;
-
-struct node{
-	int l,r;
-	std::vector<int>vec;
-}pool[max_N*20];
-
-star tail=pool;
-
-std::queue<star>Q;
-
-int main(){
-	scanf("%d%d",&n,&m);
-	for(int i=1;i<=m;++i)scanf("%d%d",u+i,v+i);
-	scanf("%d",&q);
-	star rt=tail++;
-	rt->l=1,rt->r=m,Q.push(rt);
-	for(int i=1;i<=q;++i){
-		scanf("%d%d%d",x+i,y+i,z+i);
-		rt->vec.push_back(i);
-	}
-	dfu_init();
-	while(!Q.empty()){
-		star it=Q.front(); Q.pop();
-		if(it->vec.empty())continue;
-		if(it->l==it->r){
-			for(auto&i:it->vec)ans[i]=it->l;
-			continue;
-		}
-		int mid=(it->l+it->r)>>1;
-		if(cur>mid)dfu_init(),cur=0;
-		while(cur<mid)++cur,merge(u[cur],v[cur]);
-		star lch=tail++,rch=tail++;
-		lch->l=it->l,lch->r=mid,rch->l=mid+1,rch->r=it->r;
-		for(auto&i:it->vec){
-			int fx=find(x[i]),fy=find(y[i]);
-			int sz=(fx==fy)?siz[fx]:siz[fx]+siz[fy];
-			if(sz>=z[i])lch->vec.push_back(i);
-			else rch->vec.push_back(i);
-		}
-		Q.push(lch),Q.push(rch);
-	}
-	for(int i=1;i<=q;++i)printf("%d\n",ans[i]);
-	return 0;
-}
-```
 
 ## [E - Candy Piles](https://agc002.contest.atcoder.jp/tasks/agc002_e)
 
@@ -313,29 +109,6 @@ int main(){
 
 因此整个算法的时间复杂度为排序所需的复杂度$O(n\log{n})$。
 
-```c++
-#include <bits/stdc++.h>
-
-const int max_N = 1e5 + 21;
-
-int n,a[max_N];
-
-int main(){
-	scanf("%d",&n);
-	for(int i=1;i<=n;++i)scanf("%d",a+i);
-	std::sort(a+1,a+1+n,[&](int x,int y){return x>y;});
-	int i=1;
-	while(i<=n&&i<a[i]&&i<a[i+1])++i;
-	--i;
-	int x=a[i+1]-i-1;
-	int r=i; while(r<n&&a[r+1]>i)++r;
-	int y=r-i-1;
-	if(x&1||y&1)puts("First");
-	else puts("Second");
-	return 0;
-}
-```
-
 ## [F - Leftmost Ball](https://agc002.contest.atcoder.jp/tasks/agc002_f)
 
 **题目大意：**
@@ -355,56 +128,4 @@ int main(){
 - 如果不放$0$号球（要求$j>i$），则需要先将该种颜色的其余$k-2$个球的位置决定好，然后转化为子问题$f[i][j-1]$，共$\displaystyle\binom{i+j(k-1)-1}{k-2}\times f[i][j-1]$种方案；
 
 时空复杂度$O(n(n+k))$，注意要特判$k=1$，此时显然只有一种方案。
-
-```c++
-#include <bits/stdc++.h>
-
-const int max_N = 2e3 + 21;
-
-const int mod = 1e9 + 7;
-
-int n,k,f[max_N][max_N];
-
-int fac[max_N*max_N],_fac[max_N*max_N],inv[max_N*max_N];
-
-inline void init(int n){
-	inv[1]=1;
-	for(int i=2;i<=n;++i){
-		inv[i]=1ll*(mod/i)*inv[mod%i]%mod;
-		if(inv[i])inv[i]=mod-inv[i];
-	}
-	fac[0]=_fac[0]=1;
-	for(int i=1;i<=n;++i){
-		fac[i]=1ll*fac[i-1]*i%mod;
-		_fac[i]=1ll*_fac[i-1]*inv[i]%mod;
-	}
-}
-
-inline int C(int n,int m){
-	return 1ll*fac[n]*_fac[m]%mod*_fac[n-m]%mod;
-}
-
-int calc(int i,int j){
-	if(~f[i][j])return f[i][j];
-	int&res=f[i][j];
-	res=0;
-	if(i)res=calc(i-1,j);
-	if(j>i)
-		res=(res+1ll*C(i+j*(k-1)-1,k-2)*calc(i,j-1))%mod;
-	return res;
-}
-
-int main(){
-	scanf("%d%d",&n,&k);
-	if(k==1)return puts("1"),0;
-	init(n*k);
-	for(int i=0;i<=n;++i)
-		for(int j=0;j<=n;++j)
-			f[i][j]=-1;
-	f[0][0]=1;
-	int ans=1ll*calc(n,n)*fac[n]%mod;
-	printf("%d\n",ans);
-	return 0;
-}
-```
 
