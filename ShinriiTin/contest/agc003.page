@@ -10,34 +10,6 @@
 
 显然不能回去当且仅当某个方向的旅行存在而其反方向的旅行不存在。
 
-```c++
-#include <bits/stdc++.h>
-
-const int max_N = 1e3 + 21;
-
-int n;
-
-bool vis[4];
-
-char s[max_N];
-
-int main(){
-	scanf("%s",s);
-	n=strlen(s);
-	for(int i=0;i<n;++i){
-		switch(s[i]){
-			case('N'): vis[0]=1; break;	
-			case('S'): vis[1]=1; break;
-			case('E'): vis[2]=1; break;
-			case('W'): vis[3]=1; break;
-		}
-	}
-	if((vis[0]^vis[1])||(vis[2]^vis[3]))puts("No");
-	else puts("Yes");
-	return 0;
-}
-```
-
 ## [B - Simplified mahjong](https://agc003.contest.atcoder.jp/tasks/agc003_b)
 
 **题目大意：**
@@ -54,37 +26,6 @@ int main(){
 
 按上面的策略从左往右贪心配对即可，时间复杂度$O(n)$。
 
-```c++
-#include <bits/stdc++.h>
-
-using ll = long long;
-
-const int max_N = 1e5 + 21;
-
-int n,A[max_N];
-
-ll ans;
-
-int main(){
-	scanf("%d",&n);
-	for(int i=1;i<=n;++i)scanf("%d",A+i);
-	for(int i=1,j;i<=n;++i){
-		if(A[i]&1){
-			for(j=i+1;j<=n&&A[j]>=2&&(~A[j]&1);++j);
-			if(A[j]&1){
-				ll tmp=0;
-				for(int k=i;k<=j;++k)tmp+=A[k];
-				ans+=(tmp>>1);
-				i=j;
-			}
-			else ans+=(A[i]>>1);
-		}
-		else ans+=(A[i]>>1);
-	}
-	printf("%lld\n",ans);
-	return 0;
-}
-```
 
 ## [C - BBuBBBlesort!](https://agc003.contest.atcoder.jp/tasks/agc003_c)
 
@@ -108,28 +49,7 @@ int main(){
 
 时间复杂度为排序复杂度$O(n\log{n})$.
 
-```c++
-#include <bits/stdc++.h>
 
-const int max_N = 1e5 + 21;
-
-int n,ans;
-
-std::pair<int,int>A[max_N];
-
-int main(){
-	scanf("%d",&n);
-	for(int i=1,a;i<=n;++i){
-		scanf("%d",&a);
-		A[i]={a,i};
-	}
-	std::sort(A+1,A+1+n);
-	for(int i=1;i<=n;++i)
-		if((i^A[i].second)&1)++ans;
-	printf("%d\n",ans>>1);
-	return 0;
-}
-```
 
 ## [D - Anticube](https://agc003.contest.atcoder.jp/tasks/agc003_d)
 
@@ -167,108 +87,6 @@ $Pair(t)$同样枚举$t^{\frac{1}{3}}$以内的质数，这一部分需要补上
 
 因此计算过程中简单判断一下是否会超出一个足够大的上限，会的话直接令其等于上限即可，不影响计算结果。
 
-```c++
-#include <bits/stdc++.h>
- 
-using ll = long long;
- 
-const int max_N = 1e5 + 21;
-
-const ll inf = 2e10 + 1;
- 
-int n,ans;
- 
-bool vis[max_N];
-
-int pri_tot,pri[max_N];
- 
-ll Norm[max_N],Pair[max_N];
-
-int N_tot,P_tot,N_siz[max_N],P_siz[max_N];
-
-inline void jzp(int n){
-	for(int x=2;x<=n;++x){
-		if(!vis[x])pri[++pri_tot]=x;
-		for(int i=1;i<=pri_tot;++i){
-			int y=pri[i];
-			if((ll)x*y>n)break;
-			vis[x*y]=1;
-			if(!(x%y))break;
-		}
-	}
-}
- 
-inline ll get_norm(ll x){
-	for(int i=1;i<=pri_tot;++i){
-		int y=pri[i];
-		ll z=1ll*y*y*y;
-		if(z>x)break;
-		while(!(x%z))x/=z;
-	}
-	return x;
-}
- 
-inline ll get_pair(ll x){
-	ll res=1;
-	for(int i=1;i<=pri_tot;++i){
-		int y=pri[i];
-		ll z=(ll)y*y*y;
-		if(z<=x){
-			while(!(x%z))x/=z;
-			if(!(x%(y*y))){
-				res*=y,x/=(y*y);
-				if(res>=inf)return inf;
-			}
-			else if(!(x%y)){
-				res*=(y*y),x/=y;
-				if(res>=inf)return inf;
-			}
-		}
-		else break;
-	}
-	ll y=std::sqrt(x);
-	if(y*y==x){
-		res*=y;
-		return res>=inf?inf:res;
-	}
-	if(inf/x/x<res)return inf;
-	return res*x*x;
-}
- 
-int main(){
-	jzp(1e5);
-	scanf("%d",&n);
-	for(int i=1;i<=n;++i){
-		ll s; scanf("%lld",&s);
-		Norm[i]=get_norm(s);
-		Pair[i]=get_pair(s);
-	}
-	std::sort(Norm+1,Norm+1+n);
-	std::sort(Pair+1,Pair+1+n);
-	for(int i=1;i<=n;++i){
-		if(Norm[i]!=Norm[i-1])Norm[++N_tot]=Norm[i];
-		++N_siz[N_tot];
-		if(Pair[i]!=Pair[i-1])Pair[++P_tot]=Pair[i];
-		++P_siz[P_tot];
-	}
-	int i=1,j=1;
-	while(i<=N_tot||j<=P_tot){
-		if(i<=N_tot&&j<=P_tot&&Norm[i]==Pair[j]){
-			if(Norm[i]!=1)ans+=std::max(N_siz[i],P_siz[j]);
-			++i,++j;
-		}
-		else if(i>N_tot||(j<=P_tot&&Norm[i]>Pair[j]))
-			ans+=P_siz[j++];
-		else
-			ans+=N_siz[i++];
-	}
-	ans>>=1;
-	if(Norm[1]==1)++ans;
-	printf("%d\n",ans);
-	return 0;
-}
-```
-
 ## [E - Sequential operations on Sequence](https://agc003.contest.atcoder.jp/tasks/agc003_e)
 
 **题目大意：**
@@ -296,41 +114,6 @@ int main(){
 直到$k<=B_1$，这时$k$无法再被拆分，给最终答案的区间$[1,k]$贡献$t[i]$。
 
 因为取模的下降速度很快，是$log$级别的，总的时间复杂度为$O(q\log{q}\log{max_A}+n)$.
-
-```c++
-#include <bits/stdc++.h>
-
-using ll = long long;
-
-const int max_N = 1e5 + 21;
-
-int n,q,top;
-
-ll A,st[max_N],t[max_N],ans[max_N];
-
-int main(){
-	scanf("%d%d",&n,&q);
-	st[++top]=n;
-	for(int i=1;i<=q;++i){
-		scanf("%lld",&A);
-		while(top&&st[top]>=A)--top;
-		st[++top]=A;
-	}
-	t[top]=1;
-	for(int i=top;i;--i){
-		ll k=st[i];
-		while(k>st[1]){
-			int j=std::lower_bound(st+1,st+1+top,k)-st-1;
-			t[j]+=t[i]*(k/st[j]);
-			k%=st[j];
-		}
-		ans[k]+=t[i];
-	}
-	for(int i=n;i;--i)ans[i]+=ans[i+1];
-	for(int i=1;i<=n;++i)printf("%lld\n",ans[i]);
-	return 0;
-}
-```
 
 ## [F - Fraction of Fractal](https://agc003.contest.atcoder.jp/tasks/agc003_f)
 
