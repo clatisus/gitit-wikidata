@@ -36,6 +36,8 @@ hdu 3239
 
 整理杜教筛相关式子
 
+高维FFT板子的复杂度好像不对，参见算导P540 30-3
+
 # 总结
 
 [开坑记录一些奇怪的结论](/conclusion/zhongzihao/zhongzihao)
