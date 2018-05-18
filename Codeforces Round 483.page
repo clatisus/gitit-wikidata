@@ -24,7 +24,7 @@
 
 显然 $col$ 只需要我们在更新线段树时顺带更新即可，$max$ 和 $min$ 在 `pull` 时更新：
 
-设 `maxchild = max(max[u << 1], max[u << 1 | 1])`，`minchild=min(min[u << 1], min[u << 1 | 1])`，`maxcol = col[u].empty() ? 0 : *(-- col[u].end())`
+设 `maxchild = max(max[u << 1], max[u << 1 | 1])`，`minchild = min(min[u << 1], min[u << 1 | 1])`，`maxcol = col[u].empty() ? 0 : *(-- col[u].end())`
 
 - 若 `col` 不为空且 `maxcol > maxchild` ，此时子树中的 `maxchild` 都已经被 `maxcol` 覆盖，无法看到
     - 若 `maxcol < minchild`，此时 `maxcol` 本身又被子树覆盖，没有能够看到且不在 `ans` 中的颜色，`max[u] = 0`
