@@ -5,6 +5,27 @@ date: 2018.05.27 09:00-14:15
 [practice link](http://poj.openjudge.cn/campus2018/)
 
 # Solutions
+## J Fermat's Christmas Theorem?
+
+**题目大意**：求 $x^{2}+y^{2}\equiv d\pmod N$ 满足 $0\le x,y<N$ 的解的数量。
+
+**题解**：首先注意到，根据中国剩余定理，我们可以将 $N$ 质因数分解后，对每种质因子分别求出答案再乘起来即可。做法为打表找规律+分类讨论。
+
+- $p=2$ 时
+    - 若 $d\equiv 0\pmod{p^{t}}$ 或 $d\equiv p^{t-1}\pmod{p^{t}}$，答案为 $p^{t}$
+    - 否则设 $d’$ 为 $d$ 除 $p$ 以外的质因子的乘积
+        - 若 $d'\equiv 1\pmod 4$，答案为 $p^{t+1}$
+        - 若 $d'\equiv 3\pmod 4$，答案为 $0$
+- $p\equiv 1\pmod 4$ 时
+    - 若 $d\equiv 0\pmod {p^{t}}$，答案为 $p^{t}+t\varphi(p^{t})$
+    - 否则设 $d’$ 为 $d$ 除 $p$ 以外的质因子的乘积，设 $d=d'\cdot p^{s}$，答案为 $(s+1)\varphi(p^{t})$
+- $p\equiv 3\pmod 4$ 时
+    - 若 $d\equiv 0\pmod{p^{t}}$，答案为 $p^{2\lfloor\frac{t}{2}\rfloor}$
+    - 否则设 $d’$ 为 $d$ 除 $p$ 以外的质因子的乘积，设 $d=d'\cdot p^{s}$
+        - 若 $s\equiv 1\pmod 2$，答案为 $0$
+        - 否则答案为 $(p+1)p^{t-1}$
+
+（证明待续）
 
 # Replay and Summary
 
