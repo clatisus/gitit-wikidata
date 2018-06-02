@@ -29,7 +29,7 @@ date: 2018.05.27 09:00-14:15
 
 首先我们证明任取 $n$ 个 $1\sim K$ 组成的互不包含的集合，都能构造出一个符合要求的矩阵：
 
-我们在 $(i,j)$ 处填入 $S_{j}-S_{i}$ 中的任意一个元素，显然 $S_{j}-S_{i}\neq\emptyset$。假设这种填法不满足要求，即存在 $i\neq j, j\neq k$ 使得 $S_{ij}=S_{jk}=x$，即 $x\in(S_{j}-S_{i})\cap(S_{k}-S_{j})$，那么显然有 $x\in S_{j}\land x\notin S_{i}\land x\notin S_{j}$，矛盾。所以我们构造出了一种符合要求的方案。不妨设 $k=\arg\min_{k\in\mathbb{N}}{k\choose \lfloor\frac{k}{2}\rfloor}\ge N$，那么我们至少可以构造出一种 $K=k$ 的方案。
+我们在 $(i,j)$ 处填入 $S_{j}-S_{i}$ 中的任意一个元素，显然 $S_{j}-S_{i}\neq\emptyset$。假设这种填法不满足要求，即存在 $i\neq j, j\neq k$ 使得 $S_{ij}=S_{jk}=x$，即 $x\in(S_{j}-S_{i})\cap(S_{k}-S_{j})$，那么显然有 $x\in S_{j}\land x\notin S_{i}\land x\notin S_{j}$，矛盾。所以我们构造出了一种符合要求的方案。不妨设 $\displaystyle{k=\arg\min_{k\in\mathbb{N}}{k\choose \lfloor\frac{k}{2}\rfloor}\ge N}$，那么我们至少可以构造出一种 $K=k$ 的方案。
 
 再证明 $K<k$ 时不能构造出符合要求的方案。显然此时不论如何构造，至少存在一个 $i\neq j$ 使得 $S_{i}\subset S_{j}$。那么 $S_{ij}\in S_{j}$，故存在 $k\neq j$ 使得 $S_{jk}=S_{ij}$ ，不满足要求。
 
