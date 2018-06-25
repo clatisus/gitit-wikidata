@@ -198,6 +198,8 @@ $1\sim n$ 的全错排数量为 $n!\sum_{i=0}^{n}(-1)^{i}\frac{1}{i!}$
 ## 其它
 $\sum{n\choose2k}{k\choose m}=\frac{n}{n-m}{n-m\choose n-2m}2^{n-2m-1}$
 
+设 $p$ 为质数，$a,b$ 在 $p$ 进制下的表示分别为 $\overline{\cdots a_{n}\cdots a_{0}}$ 和 $\overline{\cdots b_{n}\cdots b_{0}}$，那么 ${a\choose b}$ 中含有质因子 $p$ 的个数为满足 $\overline{\cdots a_{i}\cdots a_{0}}<\overline{\cdots b_{i}\cdots b_{0}}$ 的下标 $i$ 的个数。特别的，当 $a<b$ 时，${a\choose b}=0$，而满足条件的 $i$ 也有无穷多个。
+
 # 数论
 ## 连分数与佩尔方程
 记 $<x_{0},x_{1},x_{2},x_{3},\cdots> = x_{0}+\frac{1}{x_{1}+\frac{1}{x_{2}+\frac{1}{x_{3}+\cdots}}}$ ，其中 $x_{i}>0(i\ge1)$ 。称 $\frac{p_{n}}{q_n}=<x_{0},x_{1},\cdots,x_{n}>$ 为它的第 $n$ 个渐近分数。补充定义 $p_{-1}=1,q_{-1}=0$ ，则有递推式 $p_{n}=x_{n}p_{n-1}+p_{n-2},q_{n}=x_{n}q_{n-1}+q_{n-2}(n\ge1)$ 。对无限简单连分数，我们称 $\xi_{n}=<x_{n},x_{n+1},\cdots>$ 为它的第 $n$ 个完全商，满足 $\xi_{0}=\frac{p_{n}\xi_{n+1}+p_{n-1}}{q_{n}\xi_{n+1}+q_{n-1}}$。一个实数是二次根式当且仅当它是循环简单连分数，我们用 $<x_{0},\cdots,x_{m_{0}-1},<\overline{x_{m_{0}},\cdots,x_{m_{0}+l-1}}>>$ ，其中 $l$ 是 $\xi_{0}$ 的周期。设 $\xi_{0}=\frac{\sqrt{d}+c_{0}}{r_{0}},q_{0}|d-c^{2}_{0}$ ，我们有 $\xi_{n}=\frac{\sqrt{d}+c_{n}}{r_{n}}$ ，其中 $r_{n+1}=r_{n-1}+\frac{c_{n}^{2}-c_{n+1}^{2}}{r_{n}}=r_{n-1}+(c_{n}-c_{n+1})x_{n}$,$c_{n+1}=x_{n}r_{n}-c_{n}$,$a_{n}=\lfloor\xi_{n}\rfloor(n\ge1)$ 。
