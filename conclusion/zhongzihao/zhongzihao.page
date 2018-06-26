@@ -280,3 +280,6 @@ $$
 
 ## 最大反链
 给定一个非负整数数列 $\{t_{i}\}$，那么偏序集 $\prod_{i=1}^{n}\{x|0\le x\le t_{i},x\in\mathbb{Z}\}$ 的最大反链的大小等于关于 $x_{i}$ 的不定方程 $\displaystyle{\sum_{i=1}^{n}x_{i}=\lfloor\frac{\sum_{i=1}^{n}t_{i}}{2}\rfloor}$ 的非负整数解的个数。
+
+## 矩阵乘法
+设 \oplus,\otimes 为二元运算，且 \oplus 满足交换律和结合律，\otimes 满足结合律，\otimes 对 \oplus 满足分配律。定义新的矩阵乘法 A_{n,m}\times B_{m,p}=C_{n,p}，其中 c_{i,j}=\bigoplus_{k=1}^{m}a_{i,k}\otimes b_{k,j}，那么这种矩阵乘法满足结合律。除了通常的 $\oplus$ 代表加法和 $\otimes$ 代表乘法外，$\oplus$ 代表取最大/最小值，$\otimes$ 代表加法；在 $[0,+\infty)$ 上定义 $\oplus$ 代表取最大/最小值，$\otimes$ 代表乘法，都满足条件。其中后两者对一些求最优值的 `dp` 优化有一定的作用。[证明](conclusion/zhongzihao/matrix_multiplication)
