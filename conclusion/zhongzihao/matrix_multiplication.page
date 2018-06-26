@@ -1,0 +1,25 @@
+设 $\oplus,\otimes$ 为二元运算，且 $\oplus$ 满足交换律和结合律，$\otimes$ 满足结合律，$\otimes$ 对 $\oplus$ 满足分配律。定义新的矩阵乘法 $A_{n,m}\times B_{m,p}=C_{n,p}$，其中 $c_{i,j}=\bigoplus_{k=1}^{m}a_{i,k}\otimes b_{k,j}$，那么这种矩阵乘法满足结合律。
+证明：设 $D_{n,q}=(A_{n,m}\times B_{m,p})\times C_{p,q}$，$E_{n,q}=A_{n,m}\times(B_{m,p}\times C_{p,q})$，则有：
+$$
+\begin{aligned}
+d_{i,j}&=\bigoplus_{k=1}^{p}((\bigoplus_{u=1}^{m}a_{i,u}\otimes b_{u,k})\otimes c_{k,j})\\
+\end{aligned}
+$$
+由于 $\otimes$ 对 $\oplus$ 满足分配律，$\otimes$ 满足结合律，因此
+$$
+\begin{aligned}
+d_{i,j}&=\bigoplus_{k=1}^{p}\bigoplus_{u=1}^{m}((a_{i,u}\otimes b_{u,k})\otimes c_{k,j})\\
+&=\bigoplus_{k=1}^{p}\bigoplus_{u=1}^{m}(a_{i,u}\otimes b_{u,k}\otimes c_{k,j})\\
+\end{aligned}
+$$
+同理
+$$
+\begin{aligned}
+e_{i,j}&=\bigoplus_{u=1}^{m}(a_{i,u}\otimes(\bigoplus_{k=1}^{p}b_{u,k}\otimes c_{k,j}))\\
+&=\bigoplus_{u=1}^{m}\bigoplus_{k=1}^{p}(a_{i,u}\otimes(b_{u,k}\otimes c_{k,j}))\\
+&=\bigoplus_{u=1}^{m}\bigoplus_{k=1}^{p}(a_{i,u}\otimes b_{u,k}\otimes c_{k,j})\\
+&=\bigoplus_{k=1}^{p}\bigoplus_{u=1}^{m}(a_{i,u}\otimes b_{u,k}\otimes c_{k,j})\\
+&=d_{i,j}
+\end{aligned}
+$$
+因此 $(A_{n,m}\times B_{m,p})\times C_{p,q}=A_{n,m}\times(B_{m,p}\times C_{p,q})$，故该种矩阵乘法满足结合律。$\Box$
