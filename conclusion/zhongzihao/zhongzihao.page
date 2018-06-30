@@ -278,7 +278,7 @@ $$
 原式=nm-f(c,c-b-1,a,m-1,t_{1},t_{2})
 $$
 
-[证明](zhongzihao/similar_euclid)
+[证明](similar_euclid)
 
 ## 其他
 $x^{2}+y^{2}=t$ 的整数解的个数为 $4(\sigma_{1}(t)-\sigma_{3}(t))$，其中 $\sigma_{1}(t)$ 表示 $t$ 的约数中模 $4$ 余 $1$ 的个数，$\sigma_{3}(t)$ 表示 $t$ 的约数中模 $4$ 余 $3$ 的个数。
