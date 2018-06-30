@@ -217,6 +217,69 @@ $\sum{n\choose2k}{k\choose m}=\frac{n}{n-m}{n-m\choose n-2m}2^{n-2m-1}$
 ## 指数循环节
 对 $\forall a, b, n \in N^{+}, b \ge \phi(n)$ ，有 $a ^ {b} \equiv a ^ {b \% \phi(n) + \phi(n)}\pmod{n}$ ，注意 $b \ge \phi(n)$ 是必要条件，以及式子中取模后指数必须加上 $\phi(n)$ ，否则结果可能会出错。
 
+## 类欧几里得算法
+设 $f(a,b,c,n,t_{1},t_{2})=\sum_{i=0}^{n}i^{t_{1}}\lfloor\frac{ai+b}{c}\rfloor^{t_{2}}$，求解这一函数值的算法称为类欧几里得算法。这里仅讨论 $6$ 个参数均为非负整数的情况，且定义 $0^{0}=1$：
+
+定义 $m=\lfloor\frac{an+b}{c}\rfloor$，$g_{t}(x)=(x+1)^{t}-x^{t}=\sum_{i=0}^{t-1}g_{ti}x^{i}$，$h_{t}(x)=\sum_{i=1}^{x}i^{t}=\sum_{i=0}^{t+1}h_{ti}x_{i}$。
+
+- 若 $t_{2}=0$，有：
+
+$$
+原式=h_{t_{1}}(n)+[t_{1}=0]
+$$
+
+- 若 $m=0$，有：
+
+$$
+原式=0
+$$
+
+- 若 $a=0$，有：
+
+$$
+原式=\lfloor\frac{b}{c}\rfloor^{t_{2}}(h_{t_{1}}(n)+[t_{1}=0])
+$$
+
+- 若 $a\ge c$ 或 $b\ge c$，有：
+
+$$
+原式=\sum_{u_{1}+u_{2}+u_{3}=t_{2}}{t_{2}\choose u_{1},u_{2},u_{3}}(\lfloor\frac{a}{c}\rfloor)^{u_{2}}(\lfloor\frac{b}{c}\rfloor)^{u_{3}}f(a\%c,b\%c,c,n,t_{1}+u_{2},u_{1})
+$$
+
+- 若 $0\le a,b<c$，有：
+
+$$
+原式=m^{t_{2}}h_{t_{1}}(n)-\sum_{u=0}^{t_{2}-1}\sum_{v=0}^{t_{1}+1}g_{t_{2}u}h_{t_{1}v}f(c,c-b-1,a,m-1,u,v)
+$$
+
+特别地，若 $t_{1}=0,t_{2}=1$，则有：
+
+- 若 $m=0$，有：
+
+$$
+原式=0
+$$
+
+- 若 $a=0$，有：
+
+$$
+原式=\lfloor\frac{b}{c}\rfloor(n+1)
+$$
+
+- 若 $a\ge c$ 或 $b\ge c$，有：
+
+$$
+原式=\frac{n(n+1)}{2}\lfloor\frac{a}{c}\rfloor+(n+1)\lfloor\frac{b}{c}\rfloor+f(a\%c,b\%c,c,n,t_{1},t_{2})
+$$
+
+- 若 $0\le a,b<c$，有：
+
+$$
+原式=nm-f(c,c-b-1,a,m-1,t_{1},t_{2})
+$$
+
+[证明](zhongzihao/similar_euclid)
+
 ## 其他
 $x^{2}+y^{2}=t$ 的整数解的个数为 $4(\sigma_{1}(t)-\sigma_{3}(t))$，其中 $\sigma_{1}(t)$ 表示 $t$ 的约数中模 $4$ 余 $1$ 的个数，$\sigma_{3}(t)$ 表示 $t$ 的约数中模 $4$ 余 $3$ 的个数。
 
