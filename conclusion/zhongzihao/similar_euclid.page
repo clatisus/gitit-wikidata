@@ -24,7 +24,7 @@ $$
 $$
 \begin{aligned}
 原式&=\sum_{i=0}^{n}i^{t_{1}}\lfloor\frac{b}{c}\rfloor^{t_{2}}\\
-&=\lfloor\frac{b}{c}\rfloor^{t_{2}}h_{t_{1}}(n)
+&=\lfloor\frac{b}{c}\rfloor^{t_{2}}(h_{t_{1}}(n)+[t_{1}=0])
 \end{aligned}
 $$
 
