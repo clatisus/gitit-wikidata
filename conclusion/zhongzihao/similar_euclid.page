@@ -1,0 +1,85 @@
+设 $f(a,b,c,n,t_{1},t_{2})=\sum_{i=0}^{n}i^{t_{1}}\lfloor\frac{ai+b}{c}\rfloor^{t_{2}}$，求解这一函数值的算法因类似于欧几里得算法而得名类欧几里得算法。为了方便，这里仅讨论 $6$ 个参数均为非负整数的情况。现将该算法描述如下：
+
+定义 $m=\lfloor\frac{an+b}{c}\rfloor$，$g_{t}(x)=(x+1)^{t}-x^{t}=\sum_{i=0}^{t-1}g_{ti}x^{i}$，$h_{t}(x)=\sum_{i=1}^{x}i^{t}=\sum_{i=0}^{t+1}h_{ti}x_{i}$。
+
+首先描述几种特殊情况：
+
+- 若 $t_{2}=0$，那么有：
+
+$$
+\begin{aligned}
+原式&=\sum_{i=0}^{n}i^{t_{1}}\\
+&=h_{t_{1}}(n)+[t_{1}=0]
+\end{aligned}
+$$
+
+- 若 $m=0$，那么显然有：
+
+$$
+原式=0
+$$
+
+- 若 $a=0$，那么有：
+
+$$
+\begin{aligned}
+原式&=\sum_{i=0}^{n}i^{t_{1}}\lfloor\frac{b}{c}\rfloor^{t_{2}}\\
+&=\lfloor\frac{b}{c}\rfloor^{t_{2}}h_{t_{1}}(n)
+\end{aligned}
+$$
+
+- 若 $a\ge c$ 或 $b\ge c$，那么有：
+
+$$
+\begin{aligned}
+原式&=\sum_{i=0}^{n}i^{t_{1}}(\lfloor\frac{(a\%c)i+(b\%c)}{c}\rfloor+\lfloor\frac{a}{c}\rfloor i+\lfloor\frac{b}{c}\rfloor)^{t_{2}}\\
+&=\sum_{i=0}^{n}i^{t_{1}}\sum_{u_{1}+u_{2}+u_{3}=t_{2}}{t_{2}\choose u_{1},u_{2},u_{3}}(\lfloor\frac{(a\%c)i+(b\%c)}{c}\rfloor)^{u_{1}}(\lfloor\frac{a}{c}\rfloor i)^{u_{2}}(\lfloor\frac{b}{c}\rfloor)^{u_{3}}\\
+&=\sum_{u_{1}+u_{2}+u_{3}=t_{2}}{t_{2}\choose u_{1},u_{2},u_{3}}(\lfloor\frac{a}{c}\rfloor)^{u_{2}}(\lfloor\frac{b}{c}\rfloor)^{u_{3}}\sum_{i=0}^{n}i^{t_{1}+u_{2}}(\lfloor\frac{(a\%c)i+(b\%c)}{c}\rfloor)^{u_{1}}\\
+&=\sum_{u_{1}+u_{2}+u_{3}=t_{2}}{t_{2}\choose u_{1},u_{2},u_{3}}(\lfloor\frac{a}{c}\rfloor)^{u_{2}}(\lfloor\frac{b}{c}\rfloor)^{u_{3}}f(a\%c,b\%c,c,n,t_{1}+u_{2},u_{1})
+\end{aligned}
+$$
+
+接下来讨论一般的 $0\le a,b<c$ 的情况：
+$$
+\begin{aligned}
+原式&=\sum_{i=0}^{n}i^{t_{1}}\sum_{j=1}^{m}g_{t_{2}}(j-1)[j\le\lfloor\frac{ai+b}{c}\rfloor]\\
+&=\sum_{i=0}^{n}i^{t_{1}}\sum_{j=0}^{m-1}g_{t_{2}}(j)[j+1\le\lfloor\frac{ai+b}{c}\rfloor]\\
+&=\sum_{j=0}^{m-1}g_{t_{2}}(j)\sum_{i=0}^{n}i^{t_{1}}[cj+c-b\le ai]
+\end{aligned}
+$$
+显然不论如何，$i=0$  时 $cj+c-b\ge c-b>0\ge ai$，故 $cj+c-b\le ai$ 永远为假，因此：
+$$
+\begin{aligned}
+原式&=\sum_{j=0}^{m-1}g_{t_{2}}(j)\sum_{i=1}^{n}i^{t_{1}}[cj+c-b\le ai]\\
+&=\sum_{j=0}^{m-1}g_{t_{2}}(j)\sum_{i=1}^{n}i^{t_{1}}[cj+c-b-1<ai]\\
+&=\sum_{j=0}^{m-1}g_{t_{2}}(j)\sum_{i=1}^{n}i^{t_{1}}(1-[cj+c-b-1\ge ai])\\
+&=m^{t_{2}}h_{t_{1}}(n)-\sum_{j=0}^{m-1}g_{t_{2}}(j)\sum_{i=1}^{n}i^{t_{1}}[i\le\lfloor\frac{cj+c-b-1}{a}\rfloor]
+\end{aligned}
+$$
+
+
+下面我们证明 $\lfloor\frac{cj+c-b-1}{a}\rfloor\le n$：
+$$
+\begin{aligned}
+\lfloor\frac{cj+c-b-1}{a}\rfloor&\le\lfloor\frac{c(m-1)+c-b-1}{a}\rfloor\\
+&=\lfloor\frac{mc-b-1}{a}\rfloor
+\end{aligned}
+$$
+假设 $\lfloor\frac{mc-b-1}{a}\rfloor>n$，那么：
+$$
+\begin{aligned}
+mc-b-1&>na\\
+na+b+1&<mc\\
+\end{aligned}
+$$
+而 $\lfloor\frac{na+b}{c}\rfloor=m$，故 $na+b\ge mc$，矛盾。故 $\lfloor\frac{cj+c-b-1}{a}\rfloor\le n$。故有：
+$$
+\begin{aligned}
+原式&=m^{t_{2}}h_{t_{1}}(n)-\sum_{j=0}^{m-1}g_{t_{2}}(j)\sum_{i=1}^{\lfloor\frac{cj+c-b-1}{a}\rfloor}i^{t_{1}}\\
+&=m^{t_{2}}h_{t_{1}}(n)-\sum_{j=0}^{m-1}g_{t_{2}}(j)h_{t_{1}}(\lfloor\frac{cj+c-b-1}{a}\rfloor)\\
+&=m^{t_{2}}h_{t_{1}}(n)-\sum_{j=0}^{m-1}(\sum_{u=0}^{t_{2}-1}g_{t_{2}u}j^{u})\cdot(\sum_{v=0}^{t_{1}+1}h_{t_{1}v}\lfloor\frac{cj+c-b-1}{a}\rfloor^{v})\\
+&=m^{t_{2}}h_{t_{1}}(n)-\sum_{u=0}^{t_{2}-1}\sum_{v=0}^{t_{1}+1}g_{t_{2}u}h_{t_{1}v}\sum_{j=0}^{m-1}j^{u}\lfloor\frac{cj+c-b-1}{a}\rfloor^{v}\\
+&=m^{t_{2}}h_{t_{1}}(n)-\sum_{u=0}^{t_{2}-1}\sum_{v=0}^{t_{1}+1}g_{t_{2}u}h_{t_{1}v}f(c,c-b-1,a,m-1,u,v)
+\end{aligned}
+$$
+易见 $(a,c)$ 在一次递归后变为 $(c,a\%c)$，与欧几里得算法相同。故总复杂度为 $\mathcal{O}(\log\max\{a,c\}(t_{1}+t_{2})^{4})$。
