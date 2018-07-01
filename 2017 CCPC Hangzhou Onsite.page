@@ -53,6 +53,9 @@ date: 2018.06.29 09:00-14:00
 
 这样，在类的内部，每个询问最多转移 $\mathcal{O}(\sqrt n)$ 次。考虑类之间，我们在两棵树中把各自块的 lca 打上标记，然后 dfs 第一棵树，对于有标记的点，我们从头开始 dfs 第二棵树。这样的复杂度是 $\mathcal{O}(n\sqrt n)$ 的。
 
+## J. Master of GCD
+签到题。
+
 ## K. Master of Sequence
 
 **题目大意**：给定 $a_{i}$ 和 $b_{i}$，每次操作可能修改某个 $a_{i}$ 或某个 $b_{i}$，也可能给出一个 $k$，询问满足 $\sum_{i=1}^{n}\lfloor\frac{t-b_{i}}{a_{i}}\rfloor\ge k$ 的最小的 $t$。
