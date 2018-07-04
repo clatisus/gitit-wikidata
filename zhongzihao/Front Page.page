@@ -38,6 +38,8 @@ hdu 3239
 
 高维FFT板子的复杂度好像不对，参见算导P540 30-3
 
+整理一份 $ax^{2}-by^{2}=c$ 的佩尔方程求解技巧。
+
 # 总结
 
 [开坑记录一些奇怪的结论](/conclusion/zhongzihao/zhongzihao)
