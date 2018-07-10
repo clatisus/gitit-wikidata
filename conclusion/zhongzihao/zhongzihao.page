@@ -159,7 +159,7 @@ $\begin{Bmatrix}n\\k\end{Bmatrix}$ 表示有 $n$ 个元素的集合划分为 $k$
 
 - $\begin{Bmatrix}n\\k\end{Bmatrix}=\frac{1}{k!}\sum_{i=0}^{k}(-1)^{i}{k\choose i}(k-i)^{n}$
 
-容易注意到这是一个卷积形式，可以 $\mathcal{O}(n\log n)$ 地求出一个 $n$ 对应的所有第二类斯特林数
+容易注意到这是一个卷积形式，可以 $\mathcal{O}(n\log^{2} n)$ 地求出一个 $n$ 对应的所有第二类斯特林数
 
 - $\sum_{k=0}^{n}\begin{Bmatrix}n\\k\end{Bmatrix}(x)_{k}=x^{n}$
 - $B_{n}=\sum_{k=0}^{n}\begin{Bmatrix}n\\k\end{Bmatrix}$（其中 $B_{n}$ 是贝尔数）
