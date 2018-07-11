@@ -100,7 +100,7 @@ $\underbrace{1, 2, \cdots, n}_{n\text{ numbers}},$ $\underbrace{1, 2, \cdots, n 
 
 ## L. Limited Permutation
 
-**题目大意**：定义一个排列 $p_1, p_2, \dots, p_n$　的　$l, r$　数组表示对于 $\forall L, R $ 满足 $l_i \leq L \leq i \leq R \leq r_i$， 有 $\mathrm{min}(p_L, p_{L+1}, \dots, p_R) = p_i$。现给出 $l, r$ 数组，求有多少个排列满足要求。
+**题目大意**：定义一个排列 $p_1, p_2, \dots, p_n$　的　$l, r$　数组表示对于 $\forall L, R$ 满足 $l_i \leq L \leq i \leq R \leq r_i$， 有 $\mathrm{min}(p_L, p_{L+1}, \dots, p_R) = p_i$。现给出 $l, r$ 数组，求有多少个排列满足要求。
 
 **题解**：我们可以构造一棵二叉树，设节点 $u$ 的两个儿子分别为 $ls, rs$，那么显然有 $[l[u], u - 1] = [l[ls], r[ls]]$， 以及 $[u + 1, r[u]] = [l[rs], r[rs]]$。如果构建不出这样的一棵树，那么无解。否则，我们在树上计算方案。
 
