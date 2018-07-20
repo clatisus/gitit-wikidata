@@ -1,3 +1,4 @@
+```c++
 #include<bits/stdc++.h>
 
 typedef long long ll;
@@ -138,3 +139,4 @@ struct BigInteger{ // 仅支持非负整数
 
 int main(){
 }
+```
