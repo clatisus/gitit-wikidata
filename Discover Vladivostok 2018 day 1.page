@@ -50,6 +50,10 @@ $\displaystyle f(k) = \prod\limits_{i=0,\sum a_i = k}^{m} \binom{s_i}{a_i}^2\tim
 
 时间复杂度 $\mathcal{O}(n^2)$. 
 
+## F. The Easiest Problem
+
+签到题
+
 ## G. The squares
 
 **题目大意**：给你一个集合，元素最大为 $1000$，求有多少个非空子集中所有元素的积是完全平方数。答案最大约有 $10^{300}$。
