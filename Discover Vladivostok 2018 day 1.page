@@ -72,7 +72,7 @@ $\displaystyle f(k) = \prod\limits_{i=0,\sum a_i = k}^{m} \binom{s_i}{a_i}^2\tim
 
 考虑将矩阵高消，我们可以得到 $rk(A)$ 个行向量，它们是这 $n$ 个向量的一组基。我们首先枚举剩余 $n-rk(A)$ 个 $a_{i}$ 的取与不取，将它们异或起来就得到了一个行向量。要使最终的和为零向量，我们必须用这组基来表示这一行向量。由线性代数的知识我们知道，有且仅有一种方式能够表示这一行向量。故我们的答案即为 $2^{n-rk(A)}-1$。
 
-时间复杂度 $\displaystyle \mathcal{O}(\frac{169n^{2}}{64})$。
+时间复杂度 $\displaystyle \mathcal{O}(\frac{169n^{2}}{64})$, 转置再做的复杂度为 $\displaystyle \mathcal{O}(\frac{169^2n}{64})$。
 
 ## H. The fast reading
 
