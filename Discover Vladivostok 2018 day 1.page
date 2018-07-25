@@ -44,7 +44,7 @@ $n$ 个点 $m$ 条无向边的图 $G$，现在要给 $G$ 加 $n$ 条有向边，
 
 其中 $f(k)$ 为恰好有 $k$ 条不合法边的方案数。
 
-$\displaystyle f(k) = \prod\limits_{i=0}^{m} \binom{s_i}{a_i}^2\times a_i![\sum a_i = k]$，其中 $s_i$ 为第 $i$ 个连通块大小。
+$\displaystyle f(k) = \prod\limits_{i=0,\sum a_i = k}^{m} \binom{s_i}{a_i}^2\times a_i!$，其中 $s_i$ 为第 $i$ 个连通块大小。
 
 直接并查集求连通块之后背包求 $f(k)$ 即可。
 
