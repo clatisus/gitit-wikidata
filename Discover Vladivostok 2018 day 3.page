@@ -1,5 +1,19 @@
 # Solution
 
+## B. Tin-plate
+
+**题目大意**：在长度为 $n$ 的数组上完成三种操作。
+
+- 询问区间 $[L, R]$ 中不小于 $x$ 的元素个数
+- 将区间 $[L, R]$ 设置为同一个值 $x$ 
+- 翻转区间 $[L, R]$ 
+
+**题解**：分块，用 vector 维护块序列。每个块内部元素升序，维护一个 $\text{set}$ 标记和 $\text{reverse}$ 标记。对于询问操作，我们只需要先 $\text{split}(l)$ 和 $\text{split}(r+1)$ ，然后扫一遍所有的块，每个块内部二分 $\mathcal{O}(\log n)$ 找到答案。
+
+翻转和赋值操作同样 $\text{split}$ 之后打标记，翻转操作还要对 vector 进行 $\text{reverse}$ 。$\text{split}$ 操作，我们需要保持 $\text{split}$ 之后的两块内部元素仍然升序，这个可以通过维护元素 $(\text{value}, \text{position})$ 的 pair 实现，然后对 vector 进行 $\text{insert}$。
+
+上述操作每次最多只会增加一个块，我们在某个阈值（设为 $k$ ）之后对整个数组进行重构，注意重构之前要把每个块的标记下放到原数组。每次操作的复杂度为 $\mathcal{O}(\frac{n}{k}+k\log n)$ ，其中 $k$ 是块大小，重构复杂度是 $\mathcal{O}(n\log n)$ ，总复杂度为 $\mathcal{O}(n\log n + \frac{n}{k}n\log n + n(k\log n + \frac{n}{k}))$ 。所以 $k=\sqrt n$ ，复杂度为 $\mathcal{O}(n\sqrt n\log n)$ 。
+
 ## H. Alphabet Soup
 
 **题目大意**：圆周上有 $n$ 个点，用 $s$ 种颜色给它们染色，如果两种方案旋转后等价，就视为本质相同。求本质不同的方案数。
