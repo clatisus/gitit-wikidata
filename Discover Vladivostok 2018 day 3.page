@@ -51,12 +51,6 @@
 
 **题解**：$-1,0,1$ 单独考虑。$[2,B]$ 中的完全乘方数数量为 $\sum_{i=2}^{\infty}-\mu(i)(\lfloor\sqrt[i]{B}\rfloor-1)$，$[-A,-2]$ 中的完全乘方数数量为 $\sum_{i\ge3,2\nmid i}^{\infty}-\mu(i)(\lfloor\sqrt[i]{A}\rfloor-1)$。
 
-## L. K Minimums On The Subarray
-
-**题目大意**：每次询问一个长度为 $n$ 的数组中区间 $[l,r]$ 的前 $k(k\leq 10)$ 小。
-
-**题解**：$\sqrt n$ 分块，块内排序，每次取出块中的前 $k$ 小放入大小固定的优先队列。复杂度 $\mathcal{O}(n\sqrt n  k\log k)$。
-
 ## L. Network Instability
 
 **题目大意**：$n$ 个点，$m$ 条边的简单无向图，每个点有一个颜色。$q$ 次操作，每次将点 $v_i$ 的颜色改为 $c_i$，每次操作之后输出有多少条边的两个端点颜色不同。
