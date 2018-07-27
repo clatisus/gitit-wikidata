@@ -31,6 +31,11 @@
 
 时间复杂度$O(n\log^2{n})$，空间复杂度$O(n\log{n})$.
 
+C. Decomposition
+
+输出点分树即可。
+
+
 ## H. Tree Problem 
 
 **题目大意**：
