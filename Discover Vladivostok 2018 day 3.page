@@ -14,6 +14,12 @@
 
 上述操作每次最多只会增加一个块，我们在某个阈值（设为 $k$ ）之后对整个数组进行重构，注意重构之前要把每个块的标记下放到原数组。每次操作的复杂度为 $\mathcal{O}(\frac{n}{k}+k\log n)$ ，其中 $k$ 是块大小，重构复杂度是 $\mathcal{O}(n\log n)$ ，总复杂度为 $\mathcal{O}(n\log n + \frac{n}{k}n\log n + n(k\log n + \frac{n}{k}))$ 。所以 $k=\sqrt n$ ，复杂度为 $\mathcal{O}(n\sqrt n\log n)$ 。
 
+## C. K Minimums On The Subarray
+
+**题目大意**：每次询问一个长度为 $n$ 的数组中区间 $[l,r]$ 的前 $k(k\leq 10)$ 小。
+
+**题解**：$\sqrt n$ 分块，块内排序，每次取出块中的前 $k$ 小放入大小固定的优先队列。复杂度 $\mathcal{O}(n\sqrt n  k\log k)$。
+
 ## H. Alphabet Soup
 
 **题目大意**：圆周上有 $n$ 个点，用 $s$ 种颜色给它们染色，如果两种方案旋转后等价，就视为本质相同。求本质不同的方案数。
