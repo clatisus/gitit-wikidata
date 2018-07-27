@@ -36,9 +36,7 @@
 
 （有多少排列满足 $i$ 和 $p_i$ 不在同一个连通块。）
 
-**题解**：
-
-考虑容斥计算，$\displaystyle ans = \sum\limits_{k=0}^n(-1)^kf(k)\times(n-k)!$.
+**题解**：考虑容斥计算，$\displaystyle ans = \sum\limits_{k=0}^n(-1)^kf(k)\times(n-k)!$.
 
 其中 $f(k)$ 为恰好有 $k$ 条不合法边的方案数。
 
