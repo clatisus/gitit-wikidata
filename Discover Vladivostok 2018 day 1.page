@@ -76,9 +76,7 @@ $\displaystyle f(k) = \prod\limits_{i=0,\sum a_i = k}^{m} \binom{s_i}{a_i}^2\tim
 
 $1\le A_0, A_1, \cdots, A_{26}\le10$，分别为 `r` 前为空，为 `a`,...,`z` 的阅读时间。
 
-**题解**:
-
-令 $f[n][x]$ 表示阅读时间为 $n$ ，末尾为 $x$ 的字符串的个数，则有 $\mathcal{O}(n\sigma^2)$。
+**题解**: 令 $f[n][x]$ 表示阅读时间为 $n$ ，末尾为 $x$ 的字符串的个数，则有 $\mathcal{O}(n\sigma^2)$。
 
 用矩阵来加速转移，因为 $A_i\le10$ ，需要记录 $10\times\sigma$ 个状态，再加一个状态记录和，但是这样复杂度为 $\mathcal{O}((10\times\sigma)^3\log{n})$。
 
