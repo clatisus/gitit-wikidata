@@ -53,6 +53,24 @@
 
 时间复杂度$O(n\log^2{n})$，空间复杂度$O(n\log{n})$.
 
+## E. Minmax paths
+
+**题目大意**：
+
+给出一棵$n$个节点的树，每个点有一个权值$a_i$.
+
+求$\sum_{i=1}^n\sum_{j=1}^n(max(i,j)-min(i,j))\times len(i,j)$.
+
+$max(i,j),min(i,j),len(i,j)$分别为路径$(i,j)$上的最大权值、最小权值和长度。
+
+**题解**：
+
+可以$max$和$min$分开做，$min$直接将权值取相反数之后按$max$做即可。
+
+点分治，用权值线段树维护区间$\sum max$，$\sum len$，$\sum max\times len$，和个数即可。
+
+时间复杂度$O(n\log^2{n})$，空间复杂度$O(n)$.
+
 
 ## H. Tree Problem 
 
