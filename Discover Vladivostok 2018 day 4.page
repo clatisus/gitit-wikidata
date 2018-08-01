@@ -92,3 +92,9 @@ std solution:
 用这些状态进行高斯消元即可。
 
 搜索状态的时候可以搜关于行的单调递减数列。
+
+## J. Magical Switches
+
+**题目大意**：求 $\bigwedge_{i=1}^m((x_{00}\wedge x_{01})\vee(x_{10}\wedge x_{11})\vee(x_{20}\wedge x_{21}))$，其中 $x_{ij}=y_k$ 或者 $x_{ij}=!y_k$ 。找一组可行解。
+
+**题解**：显然如果存在数据使得 $x_{i0}=x_{i1}(i\in [0, 3))$，那么问题变成一个 3-sat 问题，没有多项式解法。注意到 $(x_{00}\wedge x_{01})\vee(x_{10}\wedge x_{11})\vee(x_{20}\wedge x_{21})=\bigwedge_{i,j, k\in[0, 2)}x_{0i}\vee x_{1j} \vee x_{2k}$，转换为标准的 3-sat 问题。我们直接搜索即可。
