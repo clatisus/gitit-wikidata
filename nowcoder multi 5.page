@@ -38,7 +38,7 @@ $$
 $$
 \begin{aligned}u(i)=&\sum_{|P|=i}(g(P)-\sum_{P'\subset P,P'\neq P}f(P'))\\
 =&v(i)-\sum_{|P|=i}\sum_{P'\subset P,P'\neq P}f(P')\\
-=&v(i)-\sum_{j=i+1}^{n}\sum_{|P'|=j}f(P')\sum_{P'\subset P,P'\neq P,|P|=i}1
+=&v(i)-\sum_{j=i+1}^{n}\sum_{|P'|=j}\left( f(P')\sum_{P'\subset P,P'\neq P,|P|=i}1 \right)
 \end{aligned}
 $$
 注意到 $\sum_{P'\subset P,P'\neq P,|P|=i}1$ 相当于将一个大小为 $j$ 的集合划分为 $i$ 个集合的方案数，即第二类斯特林数 $\begin{Bmatrix}j\\i\end{Bmatrix}$，故上式等于
