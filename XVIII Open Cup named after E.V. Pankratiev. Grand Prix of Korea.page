@@ -40,4 +40,4 @@ practice link: opentrains 10410
 
 把`+1`从平方中拿出来维护增量即可，把`parent`树轻重链剖分之后线段树维护。
 
-时间复杂度$O(n\log{n})$.
+时间复杂度$O(n\log^2{n})$.
