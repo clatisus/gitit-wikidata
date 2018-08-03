@@ -45,7 +45,7 @@ $$
 $$
 v(i)-\sum_{j=i+1}^{n}\begin{Bmatrix}j\\i\end{Bmatrix}u(j)
 $$
-接下来我们考虑求 $v$，定义集合幂级数 $h=\sum_{T}2^{T内部的边数}x^{T}y^{|T|}$。容易发现，$\displaystyle v(i)=[y^{|S|}][x^{S}]\frac{h^{i}}{i!}$。
+接下来我们考虑求 $v$，定义集合幂级数 $h=\sum_{T}2^{T内部的边数}x^{T}y^{|T|}$。容易发现，$\displaystyle v(i)=[x^{S}y^{|S|}]\frac{h^{i}}{i!}$。
 
 时间复杂度 $\mathcal{O(n^{3}2^{n})}$。
 
