@@ -9,6 +9,9 @@ practice link: opentrains 10411
 # Dirt Replay
 
 I: `-3` 解法错误；忘删调试语句；算法里排序关键字错误
+
 K: `-5` RE没判断cnt=0；corner case没分析清楚；Z来改的时候elseif漏写else
+
 G：`-4` 精度问题eps
+
 H：`-1` 算法错误，构造出来的序列不是最短的，判无解判错了
