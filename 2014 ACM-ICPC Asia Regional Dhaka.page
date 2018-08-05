@@ -7,3 +7,7 @@ date: 2018.08.05 12:00-17:00
 # Solutions
 
 # Dirt Replay
+
+J: `-1`  D 改了 ull 之后没有改输出 %llu
+
+F: `-2` case 没有分析清楚；复制粘贴之后忘记删掉一句话
