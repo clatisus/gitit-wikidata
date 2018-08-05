@@ -6,6 +6,9 @@ practice link: opentrains 10411
 
 # Solutions
 
+## A. Ability Draft
+签到题，搜就完事儿了。
+
 ## C. Block, Stock and Two Smoking Galaxy Notes
 
 **题目大意**：$n$ 个人，有 $m$ 对关系 $(u_i,v_i)$，表示这两个人能相互交流。让你从 $n$ 个人中选出一个 leader，并且把剩下的 $n-1$ 个人分成若干组。每个组要么 $1$ 个人，要么 $2$ 个人。如果是 $1$ 个人的小组，这个人要能与 leader 交流；如果是 $2$ 个人的小组，这两人要能相互交流，且存在一个人能与 leader 交流。
