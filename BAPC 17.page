@@ -1,0 +1,13 @@
+# Contest Info
+
+date: 2018.08.06 12:00-17:00
+
+[practice link](https://cn.vjudge.net/contest/244458)
+
+# Solutions
+
+# Dirt Replay
+
+C: `-2` Z 想了一个 log 比较大的 log^2 算法，D 实现的时候返回值没用 ll；TLE 
+
+M: `-1` 把排序放到了归约情况之前，应该放在之后
