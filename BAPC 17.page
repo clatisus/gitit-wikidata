@@ -74,6 +74,12 @@ $m\le10^6$次询问，每次询问前或者加或者删去一只青蛙（不超�
 
 时间复杂度$O(1416\cdot n\log{10^6} + m\log{10^6})$.
 
+---
+
+zhongzihao's comment
+
+我们可以归纳地证明，跳 $i$ 步能够跳到的位置是所有与 $\frac{i(i+1)}{2}$ 奇偶性相同，且在 $[-\frac{i(i+1)}{2},\frac{i(i+1)}{2}]$ 间的整数，这样 $f_{i}$ 就很容易求出了。
+
 ## K. King of the Waves
 
 ## L. Lemonade Trade
