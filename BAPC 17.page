@@ -78,6 +78,9 @@ $m\le10^6$次询问，每次询问前或者加或者删去一只青蛙（不超�
 
 ## L. Lemonade Trade
 
+## M. Manhattan Mornings
+
+
 # Dirt Replay
 
 C: `-2` Z 想了一个 log 比较大的 log^2 算法，D 实现的时候返回值没用 ll；TLE 
