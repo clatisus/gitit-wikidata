@@ -13,22 +13,22 @@ date: 2018.08.09 12:00-17:00
 
 ## D. Inverse Inverse Problem
 
-**题目大意**：定义 $f(x)=ax+b$，$f^{n}(x)=f(f(f(\cdots f(x)\cdots))$。定义 $g(x,n,t,p)$ 为满足 $f^{n}(x)\equiv t\pmod{p}$ 的最小的 $a$，如果不存在设为 $-1$。给出 $m$，求出一组 $(x,n,t,p)(p\le m)$ 使得 $g(x,n,t,p)$ 最大。
+**题目大意**：定义 $f(x)=ax+b$，$f^{n}(x)=f(f(f(\cdots f(x)\cdots))$。定义 $g(x,n,t,p)$ 为满足 $f^{n}(x)\equiv t\pmod{p}$ 的最小的 $a$，如果不存在设为 $-1$。给出 $m$，求出一组 $(x,n,t,p)(0\leq t<p\le m)$ ，$p$ 是质数，且使得 $g(x,n,t,p)$ 最大。
 
 **题解**：易得
 $$
 f^{n}(x)=\begin{cases}
 &x+nb&(a=1)\\
-&a^{n}x+\frac{1-a^{n}}{1-a}b&(a>1)
+&\displaystyle a^{n}x+\frac{1-a^{n}}{1-a}\cdot b&(a>1)
 \end{cases}
 $$
-考虑 $a=1$ 的情况，$x+nb\equiv t\pmod{p}$ 有解的充要条件是 $n\not\equiv0\pmod{p}$ 或 $x\equiv t\pmod{p}$。要使 $g$ 尽可能大，就不能让 $a$ 取到 $1$。所以我们在构造时要让 $p\mid n,x\not\equiv t\pmod{p}$。
+考虑 $a=1$ 的情况，$x+nb\equiv t\pmod{p}$ 中 $b$ 无解的充要条件是 $n\equiv0\pmod{p}$ 且 $x\not \equiv t\pmod{p}$。要使 $g$ 尽可能大，就不能让 $a$ 取到 $1$。所以我们希望 $b$ 无解，构造 $p\mid n,x\not\equiv t\pmod{p}$。
 
-考虑 $a>1$ 的情况，$a^{n}x+\frac{1-a^{n}}{1-a}b\equiv t\pmod{p}$ 有解的充要条件是 $1-a^{n}\not\equiv0\pmod{p}$ 或 $t-a^{n}x\equiv0\pmod{p}$。要使 $g$ 尽可能大，就要使 $a=2,3,\cdots$ 时尽可能多地无解。无解的充要条件即为 $a^{n}\equiv1\pmod{p}$ 且 $x\not\equiv t\pmod{p}$。注意到 $n$ 不能是 $p-1$ 的倍数，否则整个方程会无解，导致答案为 $-1$。
+考虑 $a>1$ 的情况，$\displaystyle a^{n}x+\frac{1-a^{n}}{1-a}\cdot b\equiv t\pmod{p}$ 中 $b$ 无解的充要条件是 $1-a^{n}\equiv0\pmod{p}$ 且 $t-a^{n}x\not \equiv0\pmod{p}$。要使 $g$ 尽可能大，就要使 $a=2,3,\cdots$ 时尽可能多地连续地无解。无解的充要条件即为 $a^{n}\equiv1\pmod{p}$ 且 $x\not\equiv t\pmod{p}$。注意到 $n$ 不能是 $p-1$ 的倍数，否则答案不够优。
 
 这里，在比赛时我猜测 $n\equiv\frac{p-1}{2}\pmod{(p-1)}$ 时答案最大，事实上也能通过。由于 $n\equiv\frac{p-1}{2}\pmod{(p-1)}$ 时满足 $a^{n}\equiv 1\pmod{p}$ 的 $a$ 最多，有 $\frac{p-1}{2}$ 个（但是不一定从 $2$ 开始连续出现），因此这个猜测是有一定道理的，但是我不会证明，不知道是不是巧合。下面叙述题解的做法。
 
-$a^{n}\equiv1\pmod{p}$ 等价于 $\delta_{m}(a)|n$，因此我们就是要求出最大的 $a$，使得 $lcm(\delta_{m}(2),\cdots,\delta_{m}(a))$ 小于 $p-1$。注意到若 $a$ 是 $p$ 的原根，那么 $\delta_{m}(a)$ 等于 $p-1$，而 $p$ 的原根有 $\varphi(\varphi(p))$ 个，因此暴力枚举的复杂度也不会很高。
+$a^{n}\equiv1\pmod{p}$ 等价于 $\delta_{p}(a)\mid n$，因此我们就是要求出最大的 $a$，使得 $\text{lcm}(\delta_{p}(2),\cdots,\delta_{p}(a))=n$ 小于 $p-1$。注意到若 $a$ 是 $p$ 的原根，那么 $\delta_{p}(a)$ 等于 $p-1$，而 $p$ 的原根有 $\varphi(\varphi(p))$ 个，因此暴力枚举的复杂度也不会很高。
 
 ## F. Mindiff and Maxdiff
 
