@@ -80,7 +80,7 @@ r\cdot y_0&+0&+(p+r)\cdot y_2&=c
 \end{aligned}
 $$
 
-的 $(y_0,y_1,y_2)$ 然后去 $f[4]$ 中查即可。注意最后解出来形如 $p\cdot q\cdot r+(p+q)\cdot(p+r)\cdot(q+r)y_i=t$，所以为了方便起见，我们可以把所有 $p\cdot q\cdot r=0$ 的情况单独拿出来，预处理它们内部构造出 $f[5]$ 的所有取值。注意使用 ll 和 int128。
+的 $(y_0,y_1,y_2)$ 然后去 $f[4]$ 中查即可。注意最后解出来形如 $\left(p\cdot q\cdot r+(p+q)\cdot(p+r)\cdot(q+r)\right)y_i=t$，所以为了方便起见，我们可以把所有 $p\cdot q\cdot r=0$ 的情况单独拿出来，预处理它们内部构造出 $f[5]$ 的所有取值。注意使用 ll 和 int128。
 
 ## I. Tree Subset Diameter 
 
