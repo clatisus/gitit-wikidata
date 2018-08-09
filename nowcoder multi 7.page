@@ -52,18 +52,16 @@ $a^{n}\equiv1\pmod{p}$ 等价于 $\delta_{p}(a)\mid n$，因此我们就是要�
 
 **题目大意**：对于一个集合，定义 $\text{maxdiff}$ 和 $\text{mindiff}$ 分别为该集合中元素差的绝对值的最大/最小值。求 $S=\{1,\cdots,n\}$ 的所有子集的 $\text{maxdiff}\times\text{mindiff}$ 的和。
 
-**题解**：枚举 $d$，求 $\text{mindiff}\ge d$ 的所有子集的 $\text{maxdiff}$ 的和，之后我们就可以容斥解决。记 $\text{maxdiff}=x$。枚举集合大小 $k$，对于一个 $x$，容易知道满足要求的子集个数为 $(n-x){x-(k-1)(d-1)-1\choose k-2}$，对答案的贡献为 $x(n-x){x-(k-1)(d-1)-1\choose k-2}$。注意到使得组合数不为 $0$ 的 $d$ 和 $k$ 的取值只有 $\mathcal{O}(n\log n)$ 种，我们现在只需要 $\mathcal{O}(1)$ 求出 $\sum_{x=1}^{n-1}x(n-x){x-(k-1)(d-1)-1\choose k-2}$ 即可，这是很容易的。记 $(k-1)(d-1)+1=t$，我们将 $x(n-x)$ 用 $(x-t+1)(x-t+2)$，$x-t+1$ 和 $1$ 表示，以 $(x-t+1)(x-t+2)$ 项的系数为 $a_{2}$ 为例，有：
+**题解**：枚举 $d$，求 $\text{mindiff}\ge d$ 的所有子集的 $\text{maxdiff}$ 的和，之后我们就可以容斥解决。记 $\text{maxdiff}=x$。枚举集合大小 $k$，对于一个 $x$，容易知道满足要求的子集个数为 $(n-x){x-(k-1)(d-1)-1\choose k-2}$（第 $i(i\in [0, k)$ 个元素减掉 $i\cdot (d-1)$），对答案的贡献为 $x(n-x){x-(k-1)(d-1)-1\choose k-2}$。注意到使得组合数不为 $0$ 的 $d$ 和 $k$ 的取值只有 $\mathcal{O}(n\log n)$ 种，我们现在只需要 $\mathcal{O}(1)$ 求出 $\sum_{x=1}^{n-1}x(n-x){x-(k-1)(d-1)-1\choose k-2}$ 即可，这是很容易的。记 $(k-1)(d-1)+1=t$，我们将 $x(n-x)$ 用 $(x-t+1)(x-t+2)$，$x-t+1$ 和 $1$ 的线性组合表示，以 $(x-t+1)(x-t+2)$ 项的系数为 $a_{2}$ 为例，有：
 $$
 \begin{aligned}
 &\sum_{x=1}^{n-1}a_{2}k(k-1){x-t+2\choose k}\\
-=&a_{2}k(k-1)({n-1-t+2+1\choose k+1}-{1-t+2\choose k+1})
+=&a_{2}k(k-1)\left({n-1-t+2+1\choose k+1}-{1-t+2\choose k+1}\right)
 \end{aligned}
 $$
-一次项和常数项以此类推。
+一次项和常数项以此类推。时间复杂度 $\mathcal{O}(n\log n)$。
 
-时间复杂度 $\mathcal{O}(n\log n)$。
-
-~~组合数学怎么及格的？~~
+comment: 上面要用到的简单公式：$\displaystyle \sum_{i=k}^n{i\choose k}={{n+1}\choose {k + 1}}$
 
 ## I. Tree Subset Diameter 
 
