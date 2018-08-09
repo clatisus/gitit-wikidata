@@ -30,7 +30,7 @@ $$
 
 这里，在比赛时我猜测 $n\equiv\frac{p-1}{2}\pmod{(p-1)}$ 时答案最大，事实上也能通过。由于 $n\equiv\frac{p-1}{2}\pmod{(p-1)}$ 时满足 $a^{n}\equiv 1\pmod{p}$ 的 $a$ 最多，有 $\frac{p-1}{2}$ 个（但是不一定从 $2$ 开始连续出现），因此这个猜测是有一定道理的，但是我不会证明，不知道是不是巧合。下面叙述题解的做法。
 
-$a^{n}\equiv1\pmod{p}$ 等价于 $\delta_{m}(a)|n$，因此我们就是要求出最大的 $a$，使得 $lcm(\delta_{m}(2),\cdots,\delta_{m}(a))$ 小于 $p-1$。注意到若 $a$ 是 $p$ 的原根，那么 $\delta_{m}(a)$ 等于 $p-1$，而 $p$ 的原根有 $\phi(\phi(p))$ 个，因此暴力枚举的复杂度也不会很高。
+$a^{n}\equiv1\pmod{p}$ 等价于 $\delta_{m}(a)|n$，因此我们就是要求出最大的 $a$，使得 $lcm(\delta_{m}(2),\cdots,\delta_{m}(a))$ 小于 $p-1$。注意到若 $a$ 是 $p$ 的原根，那么 $\delta_{m}(a)$ 等于 $p-1$，而 $p$ 的原根有 $\varphi(\varphi(p))$ 个，因此暴力枚举的复杂度也不会很高。
 
 ## F. Mindiff and Maxdiff
 
