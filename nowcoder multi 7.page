@@ -62,6 +62,26 @@ $$
 
 comment: 上面要用到的简单公式：$\displaystyle \sum_{i=k}^n{i\choose k}={{n+1}\choose {k + 1}}$
 
+## G. Rock-Paper-Scissors Tournament
+
+**题目大意**：给出 $a,b,c\in[1, 3^{32}]$，要求你构造一个长度不超过 $2^n\leq 32$ 的字符串（由 `?,R,S,P` 组成，后三者依次表示石头剪刀布）。使得它们经历 $n-1$ 相邻两两决定胜负的淘汰赛之后，胜者为 `R,S,P` 的方案数分别为 $a,b,c$。
+
+**题解**：我们预处理出 $n\in [0, 4]$ 的时候，所有可能的 $(a,b,c)$ 的解。这个可以简单递推得到，初始 $f[0][(1,1,1)]=\text{?},f[0][(1,0,0)]=\text{R},f[0][(0,1,0)]=\text{S},f[0][(0,0,1)]=\text{P}$。
+
+对于一次询问 $(a,b,c)$ ，如果满足它们均小于 $3^{16}$，那么我们直接去查即可。否则我们枚举 $f[4]$ 的所有可能的取值 $(p,q,r)$，解出满足：
+
+$$
+\begin{aligned}
+\begin{cases}
+(p+q)\cdot y_0&+p\cdot y_1&+0&=a\\
+0&+(q+r)\cdot y_1&+q\cdot y_2&=b\\
+r\cdot y_0&+0&+(p+r)\cdot y_2&=c
+\end{cases}
+\end{aligned}
+$$
+
+的 $(y_0,y_1,y_2)$ 然后去 $f[4]$ 中查即可。注意最后解出来形如 $p\cdot q\cdot r+(p+q)\cdot(p+r)\cdot(q+r)y_i=t$，所以为了方便起见，我们可以把所有 $p\cdot q\cdot r=0$ 的情况单独拿出来，预处理它们内部构造出 $f[5]$ 的所有取值。注意使用 ll 和 int128。
+
 ## I. Tree Subset Diameter 
 
 **题目大意**：$n$ 个点的边长为 $1$ 的树，求有多少个子集满足直径恰好为 $D$，答案取模。
