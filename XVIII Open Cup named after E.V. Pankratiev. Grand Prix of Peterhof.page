@@ -7,3 +7,11 @@ practice link: opentrains 10399
 # Solutions
 
 # Dirt Replay
+
+C: `-1` D 又双叒叕不套数组
+
+D: `-3` 以为是枚举到 min 错了，改成 max；发现其实是拼 t 出发的时候，串翻转了操作没翻转；没有用答案剪枝
+
+H: `-1` 模板用错
+
+J: `-2` 用 python3 莽超时；判二次剩余没判 0
