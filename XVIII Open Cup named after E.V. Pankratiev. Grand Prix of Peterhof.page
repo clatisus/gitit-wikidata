@@ -73,6 +73,10 @@ $$
 $$
 比较系数可得 $[x^{i}]\ln h(x)=(-1)^{i+1}i\cdot \left([x^{i}]\ln f(x)\right)\left([x^{i}]\ln g(x)\right)$。时间复杂度 $\mathcal{O}(n\log n)$。
 
+## I. Safe Landing
+
+签到题
+
 ## J. Perfect Square
 
 **题目大意**：判断一个大整数是否是完全平方数。
