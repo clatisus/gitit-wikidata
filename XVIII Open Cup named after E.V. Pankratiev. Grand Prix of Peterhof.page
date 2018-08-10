@@ -19,7 +19,7 @@ practice link: opentrains 10399
 
 虽然看起来 $\text{mask}$ 的范围是 $[0, 2^{2^6})$，但是实际上经程序验证，对于一组确定的 $(i, j, \text{color})$，不同的合法 $\text{mask}$ 最多只有 $74$ 个，可以用 map 实现。
 
-时间复杂度为$\mathcal{O}(nm\cdot2^{2n}\cdot S)$，空间复杂度为 $\mathcal{O}(2^{2n}\cdot S)$ ，这里的 $S\le74$。
+时间复杂度为$\mathcal{O}(nm\cdot2^{2n}\cdot S)$，空间复杂度为 $\mathcal{O}(2^{n}\cdot S)$ ，这里的 $S\le74$。
 
 ## C. Counterquestion
 
