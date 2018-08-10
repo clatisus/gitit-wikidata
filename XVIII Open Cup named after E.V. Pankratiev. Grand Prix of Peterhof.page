@@ -45,7 +45,7 @@ practice link: opentrains 10399
 
 ## H. Product of Roots
 
-**题目大意**：定义 $f(x)=\prod_{i=1}^{n}(1+a_{i}x),g(x)=\prod_{i=1}^{m}(1+b_{i}x),h(x)=\prod_{i=1}^{n}\prod_{i=1}^{m}(1+a_{i}b_{1}x)$，给出 $f(x),g(x)$，求 $h(x)$。
+**题目大意**：定义 $f(x)=\prod_{i=1}^{n}(1+a_{i}x),g(x)=\prod_{i=1}^{m}(1+b_{i}x),h(x)=\prod_{i=1}^{n}\prod_{j=1}^{m}(1+a_{i}b_{j}x)$，给出 $f(x),g(x)$，求 $h(x)$。
 
 **题解**：对三个多项式取 $\ln$，有：
 $$
