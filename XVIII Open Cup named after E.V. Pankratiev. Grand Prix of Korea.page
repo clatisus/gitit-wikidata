@@ -11,6 +11,45 @@ practice link: opentrains 10410
 
 **题解**：注意到对于每个点，距离它 $[l,r]$ 的范围是一个边长为 $2r$ 的正方形里面套着一个边长为 $2l$ 的正方形。这个图形可以拆成若干个矩形，之后就变成一个经典的扫描线题了。但是在拆分的时候一定要注意不要重叠，尤其是交界处的点要特别小心。
 
+## B. Circular Arrangement
+
+**题目大意**：有 $n$ 种颜色，每种有 $a_{i}$ 个。定义它们的一个排列的价值是每一段连续相同的颜色长度的乘积，并且开头和结尾算做连续。求所有排列的价值之和。
+
+**题解**：我们先不考虑头尾连续。考虑枚举每种颜色被分为了多少段，设为 $t_{i}$。记 $g_{i,j}$ 表示 $j$ 个某种颜色分为 $i$ 段的所有分法每段长度的乘积的和，那么可以递推求出：
+$$
+g_{i,j}=\begin{cases}
+&1&(i=j=0)\\
+&0&(ij=0,i+j\neq0)\\
+&\sum_{k=0}^{j}g_{i-1,j-k}&(i>0,j>0)
+\end{cases}
+$$
+对于一个固定的 $t_{1},\cdots,t_{n}$，根据容斥原理，答案为：
+$$
+\prod_{i=1}^{n}g_{t_{i},a_{i}}\sum_{1\le k_{1}\le t_{1},\cdots.1\le k_{n}\le t_{n}}\left((-1)^{\sum_{i=1}^{n}t_{i}-\sum_{i=1}^{n}k_{i}}\left(\prod_{i=1}^{n}{t_{i}-1\choose k_{i}-1}\right){\sum_{i=1}^{n}k_{i}\choose k_{1},\cdots,k_{n}}\right)
+$$
+那么最终答案为：
+$$
+\begin{aligned}
+&\sum_{1\le t_{1}\le a_{1},\cdots,1\le t_{n}\le a_{n}}\left(\prod_{i=1}^{n}g_{t_{i},a_{i}}\sum_{1\le k_{1}\le t_{1},\cdots.1\le k_{n}\le t_{n}}\left((-1)^{\sum_{i=1}^{n}t_{i}-\sum_{i=1}^{n}k_{i}}\left(\prod_{i=1}^{n}{t_{i}-1\choose k_{i}-1}\right){\sum_{i=1}^{n}k_{i}\choose k_{1},\cdots,k_{n}}\right)\right)\\
+=&\sum_{1\le k_{1}\le a_{1},\cdots,1\le k_{n}\le a_{n}}\left((\sum_{i=1}^{n}k_{i})!\prod_{i=1}^{n}\left(\sum_{k_{i}\le t_{i}\le a_{i}}\left((-1)^{t_{i}-k_{i}}{t_{i}-1\choose k_{i}-1}\frac{g_{t_{i},a_{i}}}{k_{i}!}\right)\right)\right)\\
+\end{aligned}
+$$
+记 $\sum_{k_{i}\le t_{i}\le a_{i}}\left((-1)^{t_{i}-k_{i}}{t_{i}-1\choose k_{i}-1}\frac{g_{t_{i},a_{i}}}{k_{i}!}\right)=c_{k_{i},a_{i}}$，那么有
+$$
+\begin{aligned}
+=&\sum_{j=n}^{\sum_{i=1}^{n}a_{i}}j!\sum_{\sum_{i=1}^{n}k_{i}=j}\prod_{i=1}^{n}c_{k_{i},a_{i}}
+\end{aligned}
+$$
+容易发现这里我们可以写成多项式的形式。设 $f_{a_{i}}(x)=\sum_{i=1}^{n}c_{i,a_{i}}x^{i}$，那么答案为：
+$$
+\sum_{j=n}^{\sum_{i=1}^{n}a_{i}}j![x^{j}]\prod_{i=1}^{n}f_{a_{i}}(x)
+$$
+这部分的复杂度为 $\mathcal{O}(n^{2}a^{2})$。
+
+接下来考虑头尾如何处理。$n=1$ 时特判一下。$n\ge2$ 时，我们考虑把尾部所有跟头部相同的颜色循环移动到头部，例如 $12321\rightarrow11232$。那么我们的问题就转化成了，求出所有头部与尾部颜色不同的排列的价值之和，其中头部那一段的贡献为它长度的平方。接下来枚举头部的颜色和它的长度，利用容斥可以很容易地求出答案。
+
+总复杂度 $\mathcal{O}(n^{2}a^{2})$。
+
 ## C. Earthquake
 
 **题目大意**：有 $n$ 条道路，第 $i$ 条道路由 $k_{i}$ 座桥组成。地震过后，每座桥有 $p_{ij}$ 的概率被毁。现在可以用 $1$ 的代价检查一座桥是否被毁，问最优策略下检查出一条道路可以通过或判断所有道路都不能通过的最小期望。
