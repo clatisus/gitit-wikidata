@@ -198,7 +198,7 @@ $1\sim n$ 的全错排数量为 $n!\sum_{i=0}^{n}(-1)^{i}\frac{1}{i!}$
 ## 其它
 $\sum{n\choose2k}{k\choose m}=\frac{n}{n-m}{n-m\choose n-2m}2^{n-2m-1}$
 
-设 $p$ 为质数，$a,b$ 在 $p$ 进制下的表示分别为 $\overline{\cdots a_{n}\cdots a_{0}}$ 和 $\overline{\cdots b_{n}\cdots b_{0}}$，那么 ${a\choose b}$ 中含有质因子 $p$ 的个数为满足 $\overline{\cdots a_{i}\cdots a_{0}}<\overline{\cdots b_{i}\cdots b_{0}}$ 的下标 $i$ 的个数。特别的，当 $a<b$ 时，${a\choose b}=0$，而满足条件的 $i$ 也有无穷多个。从另一种角度来说，也可以理解成 $k$ 和 $n-k$ 在做 $p$ 进制加法时产生进位的次数。
+设 $p$ 为质数，$a,b$ 在 $p$ 进制下的表示分别为 $\overline{\cdots a_{n}\cdots a_{0}}$ 和 $\overline{\cdots b_{n}\cdots b_{0}}$，那么 ${a\choose b}$ 中含有质因子 $p$ 的个数为满足 $\overline{\cdots a_{i}\cdots a_{0}}<\overline{\cdots b_{i}\cdots b_{0}}$ 的下标 $i$ 的个数。特别的，当 $a<b$ 时，${a\choose b}=0$，而满足条件的 $i$ 也有无穷多个。从另一种角度来说，也可以理解成 $a$ 和 $a-b$ 在做 $p$ 进制加法时产生进位的次数。这可以得到一个显然的推论，${a\choose b}$ 中 $p$ 的个数不超过 $\log_{p}a$。
 
 # 数论
 ## 连分数与佩尔方程
