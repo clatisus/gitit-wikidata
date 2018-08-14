@@ -9,6 +9,68 @@ practice link: opentrains 10411
 ## A. Ability Draft
 签到题，搜就完事儿了。
 
+## B. Short Random Problem
+
+**题目大意**：给你一棵树，每条边的边权服从 $U[0,1]$，且相互独立，求树直径的期望。
+
+**题解**：`std` 四百多行，不想写了。做法大概是这样的。
+
+考虑枚举每一条边，计算中心在该条边上的期望。首先我们需要预处理每个点到它子树距离最大值的期望，我们需要支持两种操作：
+
+一是给一个随机变量加上一个 $U[0,1]$。设 $X,Y$ 是连续型随机变量且相互独立，且 $Y\sim U[0,1]$，那么 $Z=X+Y$ 的概率密度函数为
+$$
+\begin{aligned}
+h(z)&=\int_{-\infty}^{+\infty}f(x)g(z-x)\mathbb{d}x\\
+&=\int_{z-1}^{z}f(x)\mathbb{d}x
+\end{aligned}
+$$
+二是取两个随机变量的最大值。设 $X,Y$ 是连续型随机变量且相互独立，那么 $Z=\max{X,Y}$ 的概率密度函数为
+$$
+\begin{aligned}
+h(z)&=\frac{\mathbb{d}\left(\int_{-\infty}^{z}f(x)\mathbb{d}x\int_{-\infty}^{z}g(y)\mathbb{d}y\right)}{\mathbb{d}z}\\
+&=\frac{\mathbb{d}\left(\int_{0}^{z}f(x)\mathbb{d}x\int_{0}^{z}g(y)\mathbb{d}y\right)}{\mathbb{d}z}
+\end{aligned}
+$$
+从操作的性质可以看出，这些概率密度函数都是以 $1$ 为单位的分段多项式函数。
+
+枚举每一条边时，它的子树的最大距离我们已经预处理了，而它上面的部分也容易在 $dfs$ 时顺便求出。下面分几种情况讨论：
+
+- 若两个部分都是单点，显然答案是 $\frac{1}{2}$。
+
+- 若一个部分是单点，设另一部分的最大距离服从随机变量 $X$，这条边服从随机变量 $Y\sim U[0,1]$，那么我们的期望为 $E(u(X,Y))$，其中
+  $$
+  u(X,Y)=\begin{cases}
+  &0&(X<Y)\\
+  &\frac{X+Y}{2}&(X\ge Y)
+  \end{cases}
+  $$
+  那么它的答案为
+  $$
+  \begin{aligned}
+  E(u(X,Y))&=\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}u(x,y)f(x)g(y)\mathbb{d}x\mathbb{d}y\\
+  &=\int_{-\infty}^{+\infty}\int_{-\infty}^{x}\frac{x+y}{2}f(x)g(y)\mathbb{d}y\mathbb{d}x\\
+  &=\int_{0}^{1}\int_{0}^{x}\frac{x+y}{2}f(x)\mathbb{d}y\mathbb{d}x+\int_{1}^{+\infty}\int_{0}^{1}\frac{x+y}{2}f(x)\mathbb{d}y\mathbb{d}x\\
+  &=\int_{0}^{1}\frac{3}{4}x^{2}f(x)\mathbb{d}x+\int_{1}^{+\infty}\frac{1}{2}xf(x)+\frac{1}{4}f(x)\mathbb{d}x
+  \end{aligned}
+  $$
+
+- 若两个部分都不是单点，设两个部分的最大距离分别服从随机变量 $X,Y$，枚举的边服从随机变量 $Z\sim U[0,1]$，那么我们的期望为 $E(u(X,Y,Z))$，其中
+  $$
+  u(X,Y,Z)=\begin{cases}
+  &\frac{X+Y+Z}{2}&(Z\ge|X-Y|)\\
+  &0&(Z<|X-Y|)
+  \end{cases}
+  $$
+  那么它的答案为
+  $$
+  \begin{aligned}
+  E(u(X,Y,Z))&=\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}u(x,y,z)f(x)g(y)h(z)\mathbb{d}x\mathbb{d}y\mathbb{d}z\\
+  &=\int_{-\infty}^{+\infty}\left(\int_{-\infty}^{x}\int_{-\infty}^{x-y}\frac{x+y+z}{2}f(x)g(y)h(z)\mathbb{d}z\mathbb{d}y+\int_{x}^{+\infty}\int_{-\infty}^{y-x}\frac{x+y+z}{2}f(x)g(y)h(z)\mathbb{d}z\mathbb{d}y\right)\mathbb{d}x\\
+  &=\int_{-\infty}^{+\infty}\left(\int_{-\infty}^{x-1}\int_{0}^{1}\frac{x+y+z}{2}f(x)g(y)\mathbb{d}z\mathbb{d}y+\int_{x+1}^{+\infty}\int_{0}^{1}\frac{x+y+z}{2}f(x)g(y)\mathbb{d}z\mathbb{d}y+\int_{x-1}^{x}\int_{0}^{x-y}\frac{x+y+z}{2}f(x)g(y)\mathbb{d}z\mathbb{d}y+\int_{x}^{x+1}\int_{0}^{x-y}\frac{x+y+z}{2}f(x)g(y)\mathbb{d}z\mathbb{d}y\right)\mathbb{d}x\\
+  &=\int_{-\infty}^{+\infty}\left(\int_{-\infty}^{x-1}\frac{2x+2y+1}{4}f(x)g(y)\mathbb{d}y+\int_{x+1}^{+\infty}\frac{2x+2y+1}{4}f(x)g(y)\mathbb{d}y+\int_{x-1}^{x}\frac{3x^{2}-2xy-y^{2}}{4}f(x)g(y)\mathbb{d}y+\int_{x}^{x+1}\frac{3y^{2}-2xy-x^{2}}{4}f(x)g(y)\mathbb{d}y\right)\mathbb{d}x
+  \end{aligned}
+  $$
+
 ## C. Block, Stock and Two Smoking Galaxy Notes
 
 **题目大意**：$n$ 个人，有 $m$ 对关系 $(u_i,v_i)$，表示这两个人能相互交流。让你从 $n$ 个人中选出一个 leader，并且把剩下的 $n-1$ 个人分成若干组。每个组要么 $1$ 个人，要么 $2$ 个人。如果是 $1$ 个人的小组，这个人要能与 leader 交流；如果是 $2$ 个人的小组，这两人要能相互交流，且存在一个人能与 leader 交流。
