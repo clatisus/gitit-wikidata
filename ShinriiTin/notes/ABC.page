@@ -222,8 +222,9 @@ int main() {
 
 记录末两位选或不选`dp`即可，$O(n^2)$.
 
+`coding time: 7min:39sec`
+
 ```c++
-//coding time: 7min:39sec
 #include <bits/stdc++.h>
 
 const int max_N = 5000 + 21;
@@ -260,6 +261,65 @@ int main() {
         for (int s = 0; s < 3; ++s) updt(res, dp[s][n][i]);
         printf("%d ", res);
     }
+    return 0;
+}
+```
+
+## [1010 A](http://codeforces.com/contest/1010/problem/A)
+
+**题目大意**：
+
+有一个质量为$m$的飞船，要从星球$1$出发，依次经过星球$2,\cdot,n$再回到星球$1$.
+
+在星球$i$上起飞需要花费总质量（包括燃料质量）除以$a_i$单位的燃料，着陆需要花费总质量（包括燃料质量）除以$b_i$单位的燃料。
+
+可以认为起飞和着陆的时间很短，当整个过程完成之后，燃料质量才一口气减少消耗的部分。
+
+问至少要携带多少燃料（中途不可以补充），无解输出-1。
+
+**题解**：
+
+二分答案判断即可。
+
+`coding time: 5min:50sec`
+
+`dirt: 1`：二分上界不要恰卡在最大可行范围。
+
+```c++
+#include <bits/stdc++.h>
+
+const int max_N = 1000 + 21;
+
+int n, m, a[max_N], b[max_N];
+
+std::vector<int> vec;
+
+bool check(double x) {
+    for (auto w : vec) {
+        double y = (m + x) / w;
+        if (y > x) return false;
+        x -= y;
+    }
+    return true;
+}
+
+int main() {
+    scanf("%d%d", &n, &m);
+    for (int i = 1; i <= n; ++i) scanf("%d", a + i);
+    for (int i = 1; i <= n; ++i) scanf("%d", b + i);
+    vec.resize(n * 2);
+    auto it = vec.begin();
+    *it++ = a[1];
+    for (int i = 2; i <= n; ++i) *it++ = b[i], *it++ = a[i];
+    *it++ = b[1];
+    double lo = 0, hi = 2e9, ans = -1;
+    while (hi - lo > 1e-9) {
+        double mi = (lo + hi) / 2;
+        if (check(mi)) ans = hi = mi;
+        else lo = mi;
+    }
+    if (ans > 0) printf("%.10f\n", ans);
+    else puts("-1");
     return 0;
 }
 ```
