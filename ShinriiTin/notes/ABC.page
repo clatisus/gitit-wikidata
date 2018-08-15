@@ -159,3 +159,53 @@ int main() {
     return 0;
 }
 ```
+
+## [1012 B](http://codeforces.com/contest/1012/problem/B)
+
+**题目大意**：
+
+有$n$行$m$列的网格图，上面有$q$个点是黑色，其它点是白色。($n,m\le2\times10^5,q\le\min(n\cdot m,2\times10^5)$.
+可以无数次进行一种操作：如果一个矩形（不能是只有一行或一列的）的三个顶点都是黑色，而另一个是白色，则可以将其染黑。
+问在原有的$q$个黑点的基础上至少要新增多少个新点，才可以使得经过若干次操作后使得所有点都是黑色。
+
+**题解**：
+
+将网格图的行列建成二分图，每个黑点就是二分图中的一条边。
+
+显然，在二分图中不属于同一连通块的无法进行操作，而属于同一连通块的一定可以通过操作全部染黑
+（通过找两个不同部分的点，沿着两条它们连向其他点的边不断轮询，如果不能操作就删除这两个点，
+再沿这两个点连的两条边轮询，最后直到连通块大小不超过3一定可以进行操作，然后之前轮询过的所有操作也可以完成）。
+
+答案就是连通块数量减去一。
+
+```c++
+#include <bits/stdc++.h>
+
+const int max_N = (int) 4e5 + 21;
+
+int n, m, q, f[max_N], ans = -1;
+
+void merge(int u, int v) {
+    auto find = [&](int x) {
+        int r = x, y;
+        for (; r != f[r]; r = f[r]);
+        for (; x != r; y = f[x], f[x] = r, x = y);
+        return x;
+    };
+    u = find(u), v = find(v);
+    f[u] = v;
+}
+
+int main() {
+    scanf("%d%d%d", &n, &m, &q);
+    for (int i = 1; i <= n + m; ++i) f[i] = i;
+    for (int i = 1, u, v; i <= q; ++i) {
+        scanf("%d%d", &u, &v);
+        merge(u, n + v);
+    }
+    for (int i = 1; i <= n + m; ++i)
+        if (f[i] == i) ++ans;
+    printf("%d\n", ans);
+    return 0;
+}
+```
