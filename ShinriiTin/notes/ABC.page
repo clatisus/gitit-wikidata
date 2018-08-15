@@ -1,0 +1,161 @@
+# Codeforces Div,1 AB(C) practice
+
+## [1019 A](http://codeforces.com/contest/1019/problem/A)
+
+**题目大意**：
+
+$n$个人给$m$个党派投票，第$i$个人投给$p_i$，但如果给他ci元钱，可以让他改选任意党派，最小化消耗的金额使得党派1的票数严格大于其它所有党派。
+
+($n,m\le3000,ci\le10^9$)
+
+**题解**：
+
+枚举党派1获胜至少需要多少票，显然大于等于这个票数的党派都要改票。
+
+$O(nm)$.
+
+```c++
+#include <bits/stdc++.h>
+
+#define ALL(x) (x).begin(), (x).end()
+
+const int max_N = 3000 + 21;
+
+using ll = long long;
+
+int n, m, p[max_N], c[max_N], cnt[max_N];
+
+std::vector<int> vec[max_N];
+
+bool check() {
+    for (int i = 2; i <= m; ++i)
+        if (cnt[1] <= cnt[i]) return false;
+    return true;
+}
+
+ll greed(int x) {
+    std::vector<int> remain;
+    ll ret = 0;
+    int k = x - cnt[1];
+    for (int i = 2; i <= m; ++i) {
+        if (cnt[i] < x) {
+            for (auto a : vec[i]) remain.push_back(a);
+            continue;
+        }
+        int tmp = cnt[i] - x + 1;
+        for (int j = 0; j < tmp; ++j) ret += vec[i][j];
+        for (int j = tmp; j < cnt[i]; ++j) remain.push_back(vec[i][j]);
+        k -= tmp;
+    }
+    if (k <= 0) return ret;
+    std::nth_element(remain.begin(), remain.begin() + k - 1, remain.end());
+    for (int i = 0; i < k; ++i) ret += remain[i];
+    return ret;
+}
+
+int main() {
+    scanf("%d%d", &n, &m);
+    for (int i = 1; i <= n; ++i) {
+        scanf("%d%d", p + i, c + i);
+        ++cnt[p[i]];
+        vec[p[i]].push_back(c[i]);
+    }
+    if (check()) return puts("0"), 0;
+    for (int i = 1; i <= m; ++i) std::sort(ALL(vec[i]));
+    ll res = LLONG_MAX;
+    for (int i = 1; i <= n; ++i) res = std::min(res, greed(i));
+    printf("%lld\n", res);
+    return 0;
+}
+```
+
+## [1019 B](http://codeforces.com/contest/1019/problem/B)
+
+**题目大意**：
+
+交互题。
+
+在一个长度为偶数$n\le10^5$的环上，任意相邻两个数的绝对值之差都为1。最多询问60次，确定是否存在一个位置$i$，满足它等于$(i+n/2)\pmod{n}$位置的数。存在则输出一组，否则输出-1.
+
+**题解**：
+
+差分之后既是问一个长度为$n/2$的区间内$-1$和$1$的数量是否相同。
+
+显然$n/2$不为偶数就无解，否则：
+
+先问一下$[1,n/2]$中哪一个多，如果有解了就退出。
+
+否则在$[1,n/2]$内二分答案，如果$[mid,mid+n/2)$内的情况和$[1,n/2]$相同，则答案区间与[1,n/2]的交集应该减少，反之就增加
+
+```c++
+#include <bits/stdc++.h>
+
+int n, lo, hi, mi, tp;
+
+int check(int x) {
+    int a, b;
+    printf("? %d\n", x);
+    fflush(stdout);
+    scanf("%d", &a);
+    printf("? %d\n", x + (n >> 1));
+    fflush(stdout);
+    scanf("%d", &b);
+    if (a == b) {
+        printf("! %d\n", x);
+        exit(0);
+    }
+    return (a < b) ? -1 : 1;
+}
+
+int main() {
+    scanf("%d", &n);
+    if (n % 4 != 0) return puts("! -1"), 0;
+    tp = check(1);
+    lo = 1, hi = (n >> 1);
+    while (lo <= hi) {
+        mi = (lo + hi) >> 1;
+        if (check(mi) == tp) lo = mi + 1;
+        else hi = mi - 1;
+    }
+    return puts("! -1"), 0;
+}
+```
+## [1012 A](http://codeforces.com/contest/1012/problem/A)
+
+**题目大意**：
+
+二维平面上有$n\le10^5$个点。
+
+现在它们的横纵坐标被打乱了，只知道一共$2n$个数, 但不知道每个数属于哪个点，也不知道是横坐标还是纵坐标。
+
+对于所有可能的情况，求能覆盖这些点的最小矩形面积。
+
+**题解**：
+
+等价于将数平分到两个集合，最小化两个集合的($\max-\min$)乘积。
+
+先排序，如果最小的数和最大的数不属于同一集合，则前$n$小的数一个集合最优。
+
+否则，枚举另一个集合，一定是连续的区间，取两种情况的最小值即可。
+
+$O(n\log{n})$.
+ 
+```c++
+#include <bits/stdc++.h>
+
+const int max_N = (int) 2e5 + 21;
+
+int n, a[max_N];
+
+int main() {
+    scanf("%d", &n);
+    for (int i = 1; i <= n * 2; ++i) scanf("%d", a + i);
+    std::sort(a + 1, a + 1 + 2 * n);
+    long long ans = 1ll * (a[n] - a[1]) * (a[n * 2] - a[n + 1]);
+    for (int i = 2; i <= n; ++i) {
+        ans = std::min(ans, 1ll * (a[2 * n] - a[1]) * (a[i + n - 1] - a[i]));
+    }
+    printf("%lld\n", ans);
+    return 0;
+}
+```
