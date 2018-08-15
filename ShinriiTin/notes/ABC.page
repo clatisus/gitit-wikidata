@@ -327,3 +327,48 @@ int main() {
 ## [1010 B](http://codeforces.com/contest/1010/problem/B)
 
 交互题，暂时留坑。
+
+## [1010 C](http://codeforces.com/contest/1010/problem/C)
+
+**题目大意**:
+
+给出$n\le10^5$个整数，每个整数可以用无数次，问在模$k\le10^5$意义下可以用和的形式凑出哪些数字。
+
+**题解**：
+
+由裴蜀定理，等价于用这个$n$个数的`gcd`的倍数去凑数字，$O(n\log{A}+k)$.
+
+`coding time: 3min:36sec`
+
+```c++
+#include <bits/stdc++.h>
+
+const int max_N = (int) 1e5 + 21;
+
+int n, k, g, a[max_N], ans;
+
+bool vis[max_N];
+
+int main() {
+    scanf("%d%d", &n, &k);
+    for (int i = 1; i <= n; ++i) {
+        scanf("%d", a + i);
+        g = std::__gcd(g, a[i]);
+    }
+    g %= k;
+    int x = g;
+    while (!vis[x]) {
+        vis[x] = true;
+        ++ans;
+        x = (x + g) % k;
+    }
+    printf("%d\n", ans);
+    for (int i = 0; i < k; ++i) {
+        if (!vis[i]) continue;
+        printf("%d ", i);
+    }
+    return 0;
+}
+```
+
+
