@@ -33,6 +33,8 @@ public class javatemplate {
 			out.println(b3.divide(b4, 10, BigDecimal.ROUND_HALF_UP));
 			b3 = b3.setScale(100, BigDecimal.ROUND_UP);
 			out.println(b3);
+                        Vector <Integer> vec = new Vector <>();
+                        Collections.sort(vec);
 		}
 	}
 	
