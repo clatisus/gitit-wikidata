@@ -87,11 +87,15 @@ $$
 
 ## I. Juggernaut
 
-**题目大意**：求所有 $n\times m$ 的 $0/1$ 矩阵中，有多少种本质不同且使得每行每列的异或和均为 $0$。本质相同定义为循环移动行/列之后相等。$n,m\le10^{9}$，答案对 $998244353$ 取模。
+**题目大意**：求所有 $n\times m$ 的 $0/1$ 矩阵中，有多少种本质不同且使得每行每列的异或和均为 $0$。本质相同定义为存在 $x,y$ 使得 $A_{i,j}=B_{(i+x)\text{ mod }n,(j+y)\text{ mod }m}$。$n,m\le10^{9}$，答案对 $998244353$ 取模。
 
-**题解**：根据 Burnside 引理，答案为 $\displaystyle{\frac{\sum_{i=1}^{n}\sum_{j=1}^{m}f_{i,j}}{nm}}$，其中 $f_{i,j}$ 表示 $x=i,y=j$ 的循环移动下保持不变的方案数。容易发现，$f_{i,j}=f_{gcd(i,n),gcd(j,m)}$。因此答案为 $\displaystyle{\frac{\sum_{u\mid n}\sum_{v\mid m}\varphi(\frac{n}{u})\varphi(\frac{m}{v})f_{u,v}}{nm}}$。由于 $10^{9}$ 以内的数的约数至多有 $1344$ 个，因此我们可以暴力枚举 $u,v$。
+**题解**：根据 Burnside 引理，答案为 $\displaystyle{\frac{\sum_{i=1}^{n}\sum_{j=1}^{m}f_{i,j}}{nm}}$，其中 $f_{i,j}$ 表示 $x=i,y=j$ 的循环移动下保持不变的方案数。
 
-考虑 $f_{u,v}$ 的计算，其中 $u\mid n,v\mid m$。如果不考虑异或和为 $0$，那么我们有 $A_{0\sim u-1,0\sim v-1}$ 中的 $uv$ 个元素互不相关，考虑把它们缩成一块（其它块以此类推）。这样，我们的循环同构就可以写成 $\displaystyle{A'_{i,j}=B'_{(i+1)\%\frac{n}{u},(j+1)\%\frac{m}{v}}}$。考虑计算每一块在每行每列出现的次数。一块在整个矩阵中出现的次数是 $lcm(\frac{n}{u},\frac{m}{v})$（不妨记为 $lcm$），那么它在每一行出现的次数是 $\displaystyle{\frac{lcm}{\frac{n}{u}}}$，在每一列出现的次数是 $\displaystyle{\frac{lcm}{\frac{m}{v}}}$。接下来分情况讨论：
+容易发现，$\displaystyle f_{i,j}=f_{\gcd(i,n),\gcd(j,m)}$。因此答案为 $\displaystyle{\frac{\sum_{u\mid n}\sum_{v\mid m}\varphi(\frac{n}{u})\varphi(\frac{m}{v})f_{u,v}}{nm}}$。由于 $10^{9}$ 以内的数的约数至多有 $1344$ 个，因此我们可以暴力枚举 $u,v$。
+
+考虑 $f_{u,v}$ 的计算，其中 $u\mid n,v\mid m$。如果不考虑异或和为 $0$，那么我们有 $A_{[0,u)\times [0,v)}$ 中的 $uv$ 个元素互不相关，考虑把它们缩成一块（其它块以此类推）。这样，我们的循环同构就可以写成 $\displaystyle{A'_{i,j}=B'_{(i+1)\text{ mod }n/u,(j+1)\text{ mod }m/v}}$。
+
+考虑计算每一块在每行每列出现的次数。一块在整个矩阵中出现的次数是 $\text{lcm}(n/u,m/v)$（不妨记为 $\text{lcm}$），那么它在每一行出现的次数是 $\displaystyle{\frac{\text{lcm}}{n/u}}$，在每一列出现的次数是 $\displaystyle{\frac{\text{lcm}}{m/v}}$。接下来分情况讨论：
 
 - 若在每行每列都出现奇数次，例如：
   $$
@@ -103,7 +107,7 @@ $$
   $$
   那么块 $a_{3}$ 中最右边一列和最下面一行的元素不能自由选取，而是由前面的元素中 $1$ 的个数唯一决定，因此答案为：
   $$
-  2^{\displaystyle{\frac{nm}{lcm}-u-v+1}}
+  2^{\displaystyle nm/\text{lcm}-u-v+1}
   $$
 
 - 若在每行出现奇数次，在每列出现偶数次，例如：
@@ -117,7 +121,7 @@ $$
   $$
   那么块 $a_{2}$ 中最右边一列的元素不能自由选取，因此答案为：
   $$
-  2^{\displaystyle{\frac{nm}{lcm}-u+1}}
+  2^{\displaystyle{nm/\text{lcm}-u+1}}
   $$
 
 - 若在每行出现偶数次，在每列出现奇数次，例如：
@@ -133,10 +137,10 @@ $$
   $$
   那么块 $a_{2}$ 中最下面一行的元素不能自由选取，因此答案为：
   $$
-  2^{\displaystyle{\frac{nm}{lcm}-v+1}}
+  2^{\displaystyle{nm/\text{lcm}-v+1}}
   $$
 
-- 每行每列都出现偶数次是不可能的，因为 $lcm$ 中 $2$ 的幂次至少跟 $\frac{n}{u}$ 和 $\frac{m}{v}$ 中的一个相同。
+- 每行每列都出现偶数次是不可能的，因为 $\text{lcm}$ 中 $2$ 的幂次至少跟 $n/u$ 和 $m/v$ 中的一个相同。
 
 当 $n,m$ 中至少有一个等于 $998244353$ 时，除法操作就无法完成了。这里有一个常见技巧，就是在计算过程中对 $nmp$ 取模，最后再直接除以 $nm$。这样中间过程的数据范围会达到 $10^{54}$，需要使用大整数。
 
