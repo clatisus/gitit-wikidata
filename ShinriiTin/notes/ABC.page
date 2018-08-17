@@ -222,7 +222,7 @@ int main() {
 
 记录末两位选或不选`dp`即可，$O(n^2)$.
 
-`coding time: 7min:39sec`
+`coding time: 7 min : 39 sec`
 
 ```c++
 #include <bits/stdc++.h>
@@ -281,7 +281,7 @@ int main() {
 
 二分答案判断即可。
 
-`coding time: 5min:50sec`
+`coding time: 5 min : 50 sec`
 
 `dirt: 1`：二分上界不要恰卡在最大可行范围。
 
@@ -334,7 +334,7 @@ int main() {
 
 由裴蜀定理，等价于用这个$n$个数的`gcd`的倍数去凑数字，$O(n\log{A}+k)$.
 
-`coding time: 3min:36sec`
+`coding time: 3 min : 36 sec`
 
 ```c++
 #include <bits/stdc++.h>
