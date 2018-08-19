@@ -25,6 +25,14 @@ $$
 
 ~~这尼玛还不是sb题?~~
 
+## H. Rikka with Ants
+
+**题目大意**：在坐标平面上有两只蚂蚁，它们从 $(1,0)$ 开始走，每一步它们会从 $(x,y)$ 走到 $(x+1,y)$ 或 $(x,y+1)$。第一只蚂蚁不能穿过 $y=\frac{a}{b}x$，第二只蚂蚁不能穿过 $y=\frac{c}{d}x$，每只蚂蚁会尽可能先往上走，再往右走。求两只蚂蚁经过的公共整点的数量。
+
+**题解**：显然 $\frac{a}{b}=\frac{c}{d}$ 时，公共整点有无穷个。否则，直线 $y=x$ 上两只蚂蚁走过的区间分别为 $[\lfloor\frac{ax-a}{b}\rfloor,\lfloor\frac{ax}{b}\rfloor]$ 和 $[\lfloor\frac{cx-c}{d}\rfloor,\lfloor\frac{cx}{d}\rfloor]$，那么答案即为 $\sum_{x=1}^{+\infty}\max\{\min\{\lfloor\frac{ax}{b}\rfloor,\lfloor\frac{cx}{d}\rfloor\}-\max\{\lfloor\frac{ax-a}{b}\rfloor,\lfloor\frac{cx-c}{d}\rfloor\}+1,0\}$。不妨设 $\frac{a}{b}>\frac{c}{d}$，有答案为 $\sum_{x=1}^{+\infty}max\{\lfloor\frac{cx}{d}\rfloor-\lfloor\frac{ax-a}{b}\rfloor+1,0\}$。为了后面求类欧方便，把式子变换成 $\sum_{x=0}^{+\infty}max\{\lfloor\frac{cx+c}{d}\rfloor-\lfloor\frac{ax}{b}\rfloor+1,0\}$。注意到，当 $\frac{cx+c}{d}<\frac{ax}{b}-1$ 时，有 $\lfloor\frac{cx+c}{d}\rfloor-\lfloor\frac{ax}{b}\rfloor+1\le0$，因此不用计算贡献；而 $\frac{cx+c}{d}\ge\frac{ax}{b}-1$ 时，有 $\lfloor\frac{cx+c}{d}\rfloor-\lfloor\frac{ax}{b}\rfloor+1\ge0$，可以计算贡献。设 $X=\lfloor\frac{bc+bd}{ad-bc}\rfloor$，那么答案即为 $\sum_{x=0}^{X}\lfloor\frac{cx+c}{d}\rfloor-\lfloor\frac{ax}{b}\rfloor+1$，使用类欧计算即可。
+
+时间复杂度 $\mathcal{O}(\log\max\{a,b,c,d\})$。
+
 # Dirt Replay
 
 F: `-4` 前三次代码错误但是 TLE，抠常数；算法正确之后，没有把 log 去掉，TLE
