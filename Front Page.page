@@ -67,7 +67,7 @@ Meeting:
 
 **给队友出数据，看代码，调 bug**。
 
-接锅：dp，图论，数据结构，字符串。
+接锅：dp，图论，数据结构，字符串，几何。
 
 ## ShinriiTin
 
@@ -75,7 +75,7 @@ Meeting:
 
 负责点外卖，敦促wjj不要摸鱼。wjj不要摸鱼! wjj不要摸鱼!(W: 我摸你马呢)
 
-接锅：dp，图论，数据结构，字符串， 离散数学。
+接锅：dp，图论，数据结构，字符串， 离散数学，几何。
 
 ## zhongzihao
 
@@ -83,7 +83,7 @@ Meeting:
 
 吃外卖。
 
-接锅：数论，博弈，计算几何，**找规律！！！猜结论！！！**。
+接锅：数论，博弈，~~计算几何~~，**找规律！！！猜结论！！！**。
 
 # Training
 
@@ -127,3 +127,4 @@ xxxx.xx.xx [nowcoder multi 1]() [nowcoder multi 2]() [nowcoder multi 3]() [nowco
 
 2018.08.02 [nowcoder multi 5]() **DONE** `pro:10/10` `rk:12` (C 缺 std 做法）
 
+# Strategy
