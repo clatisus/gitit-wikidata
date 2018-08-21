@@ -6,6 +6,29 @@ date: 2018.08.21 12:00-17:00
 
 # Solutions
 
+## D. Digit Division
+
+签到题。
+
+## F. Frightful Formula
+
+**题目大意**：给你一个 $n\times n$ 的矩阵 $F$，它的第一行和第一列已经给出。对于其它的格子，有 $F_{i,j}=aF_{i,j-1}+bF_{i-1,j}+c$，求 $F_{n,n}$。
+
+**题解**：不妨将两维坐标都减一。容易证明：
+$$
+F_{n-1,n-1}=\sum_{i=1}^{n-1}{n-2+n-1-i\choose n-1-i}a^{n-1}b^{n-1-i}F_{i,0}+\sum_{i=1}^{n-1}{n-2+n-1-i\choose n-1-i}a^{n-1-i}b^{n-1}F_{0,i}+\sum_{i=0}^{n-2}\sum_{j=0}^{n-2}{i+j\choose i}a^{i}b^{j}c
+$$
+对于后面常数项的处理有两种方法：
+
+- 容易看出是一个卷积形式，用拆系数 $FFT$ 优化。
+- 令 $g_{i,j}=f_{i,j}+\frac{c}{a+b-1}$，消去常数，需要注意处理 $a+b-1\equiv0\pmod{p}$ 的情况。
+
+时间复杂度 $\mathcal{O}(n\log n)$ 或 $\mathcal{O}(n)$。
+
+## H. Hovering Hornet
+
+简单几何题，求直线切割凸包的面积。
+
 # Dirt Replay
 
 E: `-1` 没考虑孤立点
