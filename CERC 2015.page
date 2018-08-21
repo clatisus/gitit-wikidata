@@ -7,3 +7,7 @@ date: 2018.08.21 12:00-17:00
 # Solutions
 
 # Dirt Replay
+
+E: `-1` 没考虑孤立点
+
+H: `-1` 排序 x y 写反了
