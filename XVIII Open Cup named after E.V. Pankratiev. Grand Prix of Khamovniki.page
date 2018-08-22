@@ -24,7 +24,7 @@ h(z)&=\int_{-\infty}^{+\infty}f(x)g(z-x)\mathbb{d}x\\
 &=\int_{z-1}^{z}f(x)\mathbb{d}x
 \end{aligned}
 $$
-二是取两个随机变量的最大值。设 $X,Y$ 是连续型随机变量且相互独立，那么 $Z=\max{X,Y}$ 的概率密度函数为
+二是取两个随机变量的最大值。设 $X,Y$ 是连续型随机变量且相互独立，那么 $Z=\max\{X,Y\}$ 的概率密度函数为
 $$
 \begin{aligned}
 h(z)&=\frac{\mathbb{d}\left(\int_{-\infty}^{z}f(x)\mathbb{d}x\int_{-\infty}^{z}g(y)\mathbb{d}y\right)}{\mathbb{d}z}\\
