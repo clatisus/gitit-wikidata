@@ -115,6 +115,10 @@ P proj(L l, P p){
     return l.p + l.v * (l.v % (p - l.p) / l.v.abs2());
 }
 
+P symmetry(L l, P p){
+    return 2 * proj(l, p) - p;
+}
+
 //判断线段是否严格相交（包括严格重合） 
 bool crsSS(P p1, P p2, P q1, P q2){
     double c1 = (p2 - p1) ^ (q1 - p1);
@@ -222,6 +226,20 @@ bool isCs(std::vector <C> &c){
     return false;
 }
 
+double areaCC(C c1, C c2){
+    double d = (c1.o - c2.o).abs();
+    if (sig(c1.r + c2.r - d) <= 0){
+        return 0;
+    }
+    if (sig(d - std::abs(c1.r - c2.r)) <= 0){
+        return sqr(std::min(c1.r, c2.r)) * PI;
+    }
+    double x = (sqr(d) + sqr(c1.r) - sqr(c2.r)) / (2 * d);
+    double t1 = std::acos(x / c1.r);
+    double t2 = std::acos((d - x) / c2.r);
+    return sqr(c1.r) * t1 + sqr(c2.r) * t2 - d * c1.r * sin(t1);
+}
+
 std::vector <P> tanCP(C c, P p){ // p在圆上时返回 p 点本身 
     double d = (p - c.o).abs2();
     double x = d - sqr(c.r);
@@ -298,7 +316,6 @@ int inPolygon(std::vector <P> &ps, P q){
 
 // >0表示 q 在 l 左边 
 double onLeft(L l, P p){
-<<<<<<< edited
     return l.v ^ (p - l.p);
 }
 
@@ -326,35 +343,6 @@ std::vector <P> convexHull(std::vector <P> &ps){ //返回的凸包为逆时针�
         ret.push_back(stack[i]);
     }
     return ret;
-=======
-	return l.v ^ (p - l.p);
-}
-
-std::vector <P> convexHull(std::vector <P> &ps){ //返回的凸包为逆时针方向
-	const int N = 100010; // 抄时记得修改 
-	static P stack[N];
-	std::sort(ps.begin(), ps.end());
-	int n = ps.size(), top = 0;
-	for (int i = 0; i < n; ++ i){
-		while (top > 1 && sig(onLeft(L (stack[top - 2], stack[top - 1]), ps[i])) <= 0){
-			-- top;
-		}
-		stack[top ++] = ps[i];
-	}
-	int tmp = top;
-	for (int i = n - 2; i >= 0; -- i){
-		while (top > tmp && sig(onLeft(L (stack[top - 2], stack[top - 1]), ps[i])) <= 0){
-			-- top;
-		}
-		stack[top ++] = ps[i];
-	}
-	if (n > 1) -- top;
-	std::vector <P> ret;
-	for (int i = 0; i < top; ++ i){
-		ret.push_back(stack[i]);
-	}
-	return ret;
->>>>>>> 988c3b9904ba179a8f3e224587ca78c39b7980e4
 }
 
 std::vector <P> minkSum(std::vector <P> &ps, std::vector <P> &qs){//O(n+m)
@@ -429,7 +417,6 @@ int tanConPR(std::vector <P> &ps, P q){ //O(logn)
 }
 
 int tanConPL(std::vector <P> &ps, P q){
-<<<<<<< edited
     int ret = 0, n = ps.size();
     int left = 1, right = n - 1;
     while (left <= right){
@@ -509,87 +496,6 @@ std::vector <P> isConL(std::vector <P> &ps, P p, P q){//要求凸包为逆时针
     }
     ps.erase(ps.begin() + n, ps.end());
     return ret;
-=======
-	int ret = 0, n = ps.size();
-	int left = 1, right = n - 1;
-	while (left <= right){
-		bool dnl = onLeft(L (q, ps[left - 1]), ps[left]) < 0;
-		int mid = left + right + 1 >> 1;
-		bool dnm = onLeft(L (q, ps[mid - 1]), ps[mid]) < 0;
-		if (dnm){
-			if (onLeft(L (q, ps[ret]), ps[mid]) < 0){
-				ret = mid;
-			}
-		}
-		if (dnl){
-			if (onLeft(L (q, ps[ret]), ps[left]) < 0){
-				ret = left;
-			}
-			if (dnm && onLeft(L (q, ps[left]), ps[mid]) < 0){
-				left = mid + 1;
-			}
-			else{
-				right = mid - 1;
-			}
-		}
-		else{
-			if (!dnm && onLeft(L (q, ps[left]), ps[mid])){
-				right = mid - 1;
-			}
-			else{
-				left = mid + 1;
-			}
-		}
-	}
-	return ret;
-}
-
-std::vector <P> isConL(std::vector <P> &ps, P p, P q){//要求凸包为逆时针方向
-	std::vector <double> arc;
-	int n = ps.size();
-	for (int i = 0; i < n; ++ i){
-		ps.push_back(ps[i]);
-	}
-	ps.push_back(ps[0]);
-	for (int i = 0; i < n; ++ i){
-		arc.push_back(L (ps[i], ps[i + 1]).angle);
-		if (i && arc[i] < arc[i - 1]){
-			arc[i] += 2 * PI;
-		}
-	}
-	auto getseg = [&ps](L l, int left, int right){
-		-- left;
-		while (left < right){
-			int mid = left + right + 1 >> 1;
-			if (sig(l.v ^ (ps[mid] - l.p)) < 0){
-				left = mid;
-			}
-			else{
-				right = mid - 1;
-			}
-		}
-		return left;
-	};
-	if (q < p) std::swap(p, q);
-	L l1(p, q), l2(q, p);
-	double al = l1.angle;
-	if (al < arc[0]) al += 2 * PI;
-	int left = (std::lower_bound(arc.begin(), arc.end(), al) - arc.begin()) % n;
-	double ar = l2.angle;
-    if (ar < arc[0]) ar += 2 * PI;
-	int right = std::lower_bound(arc.begin(), arc.end(), ar) - arc.begin();
-	int down = getseg(l1, left, right);
-	int up = getseg(l2, right, left + n);
-	std::vector <P> ret;
-	if (down >= left && up >= right){
-		double t = isLL(l1, L (ps[down], ps[down + 1]));
-		ret.push_back(l1.point(t));
-		t = isLL(l2, L (ps[up], ps[up + 1]));
-		ret.push_back(l2.point(t));
-	}
-	ps.erase(ps.begin() + n, ps.end());
-	return ret;
->>>>>>> 988c3b9904ba179a8f3e224587ca78c39b7980e4
 }
 
 std::vector <P> cutCon(std::vector <P> &ps, P p, P q){//用pq的左半平面切割ps，O(n)
