@@ -7,3 +7,13 @@ date: 2018.08.23 12:00-17:00
 # Solutions
 
 # Dirt Replay
+
+B: `-1` set 找前驱的时候用 --lower_bound，如果没有前驱，lower_bound 是 begin，自减还是 begin，是个假前驱
+
+D: `-1` Z 的高斯消元写错了
+
+F: `-3` 读错题意；三点共线；还有一个情况
+
+G: `-1` 没套函数
+
+H: `-2` 启发式合并错算法；忘记 fflush（最后假算法过了）
