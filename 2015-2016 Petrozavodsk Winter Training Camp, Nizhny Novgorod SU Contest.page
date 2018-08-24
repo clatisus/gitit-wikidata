@@ -10,7 +10,7 @@ date: 2018.08.23 12:00-17:00
 
 **题目大意**：给出一个 $n\times n$ 的矩阵 $\{c_{ij}\}$ 和一个 $n$ 维向量 $\{y_i\}$。你可以通过 $x_i=y_i+\sum_{j=1}^nc_{ij}$ 得到向量 $\mathbf{X}$。现在 $\mathbf{C}$ 和 $\mathbf{Y}$ 发生了变化，你不知道变化后的 $\mathbf{C}'$，但是你知道变化后的 $\mathbf{Y}'$。现在让你求 $\mathbf{X}'$，满足 $\displaystyle \forall i,j, \frac{x_j}{c_{ij}}=\frac{x'_j}{c'_{ij}}$。$n\leq 3000,c_{ij}\leq 1000,y_i,y'_i\in[10^7, 10^9]$。
 
-**题解**：注意到 $\sum c_{ij}$ 和 $y_i$ 差了一个数量级，我们设初始解 $\mathbf{X}'=\mathbf{Y}'$，每次用 $\displaystyle \{y'_i+\sum_{j=1}^n \frac{c_{ij}*x'_j}{x_j}\}$ 来更新 $\mathbf{X}'$，迭代几次就可以出解。
+**题解**：注意到 $\sum c_{ij}$ 和 $y_i$ 差了一个数量级，我们设初始解 $\mathbf{X}'=\mathbf{Y}'$，那么此时已经很接近答案，每次再用 $\displaystyle \{y'_i+\sum_{j=1}^n \frac{c_{ij}*x'_j}{x_j}\}$ 来更新 $\mathbf{X}'$，迭代几次就可以出解。
 
 ## B. Forcefield
 
