@@ -67,3 +67,21 @@
 时间复杂度$O(n\log{n})$.
 
 [Code](https://codeforces.com/contest/1017/submission/42000689)
+
+##  1016E Rest In The Shades
+
+**题目大意**：
+
+在二维平面上，$x$轴上有$n\le2\times10^5$条不相交的线段，$x$轴下方有一条线段$(a,Sy)\to(b,Sy)$.
+
+$q\le2\times10^5$次询问，每次给出一个$x$轴上方的点$(x,y)$，问该点与线段$(a,Sy)\to(b,Sy)$上一点连线与这$n\le2\times10^5$条不相交的线段有交的长度和。
+
+**题解**：
+
+解一下相似三角形可以发现，交点在$x$轴上一段连续的长度为$dx$时，对应的在线段$(a,Sy)\to(b,Sy)$上的长度为$dx\cdot\frac{y+S_y}{y}$。
+
+我们可以预处理线段长度的前缀和，然后解出$(a,Sy)\to(x,y)$与$(b,Sy)\to(x,y)$在$x$轴上的交点坐标，这两个交点之间的线段长度都会作为贡献，再单独处理一下这两个交点处即可。
+
+时间复杂度$O(n\log{n})$.
+
+[Code](https://codeforces.com/contest/1016/submission/42019576)
