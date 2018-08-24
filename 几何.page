@@ -21,3 +21,27 @@
 扫描线实现的时候，可以将$[-\pi,0)$的射线与$[0,\pi)$的射线分别排序，每次归并地扫直线旋转的最小角度即可。
 
 [Code](https://codeforces.com/contest/1025/submission/41862965)
+
+## 1019D Large Triangle
+
+**题目大意**：
+
+二维平面上有$3\le n\le2000$个整点，不存在三点共线，找出一个面积恰为$1\le S\le2\times10^{18}$的三角形或者判断不存在。
+
+**题解**：
+
+劼论1：在固定一条边$\vec{AB}$的情况下，三角形$ABC$的有向面积与$\vec{OC}.dot(\vec{AB}.rotate90())$的大小成正比。
+
+写一下式子可以发现，$\vec{OC}.dot(\vec{AB}.rotate90())=\vec{OB}.det(\vec{OC})+\vec{OC}.det(\vec{OA})=2S_{ABC}-\vec{OA}.det(\vec{OB})$.
+
+或者从几何的角度理解，$\vec{OC}.dot(\vec{AB}.rotate90())$同$\vec{OC}$在$\vec{AB}$法向量上的投影长度，即三角形的高成正比。
+
+这样我们显然可以得到进一步的劼论：
+
+如果将$\vec{AB}$的法向量放在单位圆上，当$\vec{v}$与该法向量重合时，$\vec{OA}.dot(\vec{v})=\vec{OB}.dot(\vec{v})$，而在法向量的一侧满足$\vec{OA}.dot(\vec{v})<\vec{OB}.dot(\vec{v})$，另一侧满足$\vec{OA}.dot(\vec{v})>\vec{OB}.dot(\vec{v})$(只考虑$\vec{v}$在$x$轴的左侧或右侧的一半平面的情况)。
+
+因此我们使用极角排序加扫描线维护平面上所有点与当前枚举的向量数量积的偏序关系，当扫到一条法向量的时候，检查是否需要交换两个点的顺序，然后二分查找面积为$S$的三角形。
+
+时间复杂度$O(n^2\log{n})$.
+
+[Code](https://codeforces.com/contest/1025/submission/41862965)
