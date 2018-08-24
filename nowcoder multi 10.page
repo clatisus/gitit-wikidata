@@ -80,6 +80,10 @@ comment:
 
 取整函数单调不降。
 
+## J. Rikka with Nickname
+
+签到题，序列自动机。
+
 # Dirt Replay
 
 F: `-4` 前三次代码错误但是 TLE，抠常数；算法正确之后，没有把 log 去掉，TLE
