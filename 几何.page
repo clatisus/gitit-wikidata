@@ -47,3 +47,23 @@
 时间复杂度$O(n^2\log{n})$.
 
 [Code](https://codeforces.com/contest/1025/submission/41862965)
+
+## 1017E The Supersonic Rocket
+
+**题目大意**;
+
+在二维平面上，给出两个整点集合$A$和$B$，大小分别为$n$和$m$，判断$A$和$B$的凸包是否可以经过若干次平移和旋转变换后重合。
+
+($3\le n,m\le10^5$)
+
+**题解**：
+
+先求出凸包，如果凸包点数不同，显然不可能。
+
+否则将两个凸包`hash`成两个长度为凸包大小的序列进行`kmp`判断是否循环同构。
+
+可以按逆时针序把与顶点相邻的两条边的向量内积和逆时针序较小的一条边自己的内积`make_pair`进行`hash`。
+
+时间复杂度$O(n\log{n})$.
+
+[Code](https://codeforces.com/contest/1017/submission/42000689)
