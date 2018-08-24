@@ -1,1 +1,25 @@
+# Geometry
+
+## Training
+
 - [CERC 2015 I Ice Igloos](http://clatisus.com/CERC%202015#i.-ice-igloos)
+
+## Codeforces
+
+# Geometry
+
+## 1025F Disjoint Triangles
+
+**题目大意**：
+
+二维平面上有$6\le n\le2000$个整点，不存在三点共线，问可以组成多少对不相交三角形。
+
+**题解**：
+
+任意两对不相交三角形会被两对最近的顶点(每个三角形出一个点)的连线分开。
+
+枚举一个顶点$O$，再将所有其它点按到点$O$的极角排序，扫描线一下，每次将两个半平面点数的$\binom{n}{2}$的乘积用来统计答案，最后除以$2$即可。
+
+扫描线实现的时候，可以将$[-\pi,0)$的射线与$[0,\pi)$的射线分别排序，每次归并地扫直线旋转的最小角度即可。
+
+[Code](https://codeforces.com/contest/1025/submission/41862965)
