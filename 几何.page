@@ -20,6 +20,8 @@
 
 扫描线实现的时候，可以将$[-\pi,0)$的射线与$[0,\pi)$的射线分别排序，每次归并地扫直线旋转的最小角度即可。
 
+时间复杂度$O(n^2\log{n})$.
+
 [Code](https://codeforces.com/contest/1025/submission/41862965)
 
 ## 1019D Large Triangle
