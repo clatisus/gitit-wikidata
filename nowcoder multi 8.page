@@ -60,6 +60,43 @@ $$
 
 总复杂度 $\mathcal{O}(m\log k)$。
 
+## K. Decoding graphs
+
+**题目大意**：给出一个 $n(n\le13)$ 个点的无向图，每个点有一个权值 $a_{i}$，求满足下列条件的 $b_{i}$ 的方案数：
+
+- $\forall1\le i\le n,0\le b_{i}\le a_{i}$
+- $\bigoplus_{i=1}^{n}b_{i}=c$
+- 若 $u,v$ 之间有边相连，$b_{u}\neq b_{v}$
+
+**题解**：设 $P$ 是 $V$ 的一个划分，$f(P)$ 表示 $P$ 中所有集合内部的 $b_{i}$ 相等，集合间随意的方案数。考虑计算每一个 $P$ 的容斥系数。定义 $g(S)=[S是独立集]-\sum_{P是S的划分,|P|\ge2}\prod_{T\in P}g(T)$。我们归纳地证明：$f(P)$ 的容斥系数 $c(P)=\prod_{S\in P}g(S)$。
+
+定义 $P'$ 是 $P$ 的子划分，当且仅当 $P'$ 的任意一个元素都是 $P$ 的某个元素的子集。为了方便记 $P'\subset P$。
+
+当 $P=\{\{1\},\{2\},\cdots,\{n\}\}$ 时，显然有 $c(P)=1=\prod_{S\in P}g(S)$。
+
+当 $|P|<n$ 时
+$$
+\begin{aligned}
+c(P)&=\prod_{S\in P}[S是独立集]-\sum_{P'\subset P,P'\neq P}c(P)\\
+&=\prod_{S\in P}[S是独立集]-\prod_{S\in P}\sum_{P'是S的划分}g(P')+\prod_{S\in P}g(S)\\
+&=\prod_{S\in P}g(S)\Box
+\end{aligned}
+$$
+我们有
+$$
+[S是独立集]=\sum_{P是S的划分}\prod_{T\in P}g(T)=\sum_{k=0}^{+\infty}\frac{1}{k!}\sum_{\bigcup_{j=1}^{k}S'_{j}=S,\bigcap_{j=1}^{k}S'_{j}=\emptyset}\prod_{j=1}^{k}g(S'_{j})
+$$
+设 $H$ 是一个集合幂级数，其中 $H^{S}=[S是独立集]$，$G$ 是 $g$ 的集合幂级数，在子集卷积的意义下定义乘法，则有 $H=e^{G}$，因此 $G=\ln H$。我们可以在 $\mathcal{O}(n^{3}2^{n})$ 的时间内计算出 $G$。
+
+下面考虑 $f(P)$ 的计算方法：对于 $P$ 中大小为偶数的集合 $S$，它们异或后的值恒为 $0$，我们只需要在最后结果中乘上 $\min S+1$ 即可；对于 $P$ 中大小为奇数的集合，相当于其中只有一个数。下面我们以对全集 $V$ 进行计算为例，不妨设 $a_{n}$ 是其中最大的数：
+
+- 若 $highbit(a_{n})<highbit(x)$ 那么显然答案为 $0$。
+- 否则考虑 $b_{n}$ 是否取 $a_{n}$ 的最高位
+    - 若取，那么答案相当于 $(a_{1},\cdots,a_{n-1},a_{n}\oplus highbit(a_{n}))$ 和 $c\oplus highbit(a_{n})$ 的答案。递归计算即可。
+    - 若不取，那么只要 $b_{1}\oplus b_{2}\oplus\cdots\oplus b_{n-1}\oplus c$ 的最高位小于 $highbit(a_{n})$，就一定可以找到相应的 $b_{n}$，这样的方案数很容易 $dp$ 求出。
+
+时间复杂度 $\mathcal{O}(bell(n)n)$。其中 $bell(n)$ 表示贝尔数。
+
 # Dirt Replay
 
 Replay 个屁 慌得一批
