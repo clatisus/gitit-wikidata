@@ -1,0 +1,13 @@
+# Contest Info
+
+date: 2018.08.25 12:00-17:00
+
+[practice link](http://acm.hdu.edu.cn/search.php?field=problem&key=2018%D6%D0%B9%FA%B4%F3%D1%A7%C9%FA%B3%CC%D0%F2%C9%E8%BC%C6%BE%BA%C8%FC+-+%CD%F8%C2%E7%D1%A1%B0%CE%C8%FC&source=1&searchmode=source)
+
+# Solutions
+
+# Dirt Replay
+
+A: `-1` 错误算法
+
+E: `-1` 错把 n 奇数的时候当做另一种 case
