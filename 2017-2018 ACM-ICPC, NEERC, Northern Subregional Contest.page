@@ -42,13 +42,27 @@ date: 2018.08.26 12:00-17:00
 
 **题目大意**：给出 $n$ 个点的简单无向图，让你让找两个点 $s,t$，和三条从 $s$ 到 $t$ 的不相交路径（点不相交且边不相交）。
 
-**题解**：
+**题解**：tarjan。无向图 dfs 树只有树边、反向边和前向边，我们忽略掉前向边。每个点记录 $\text{low}$ 值和取到 $\text{low}$ 值的点 $\text{sit}$。
+
+如果枚举到树边，那么我们先去 dfs，回溯的时候，考虑 $\text{low}[v]$ 和 $\text{sit}[v]$ 是否能跟 $u$ 构成答案，如果不能，更新 $\text{low}[u]$ 和 $\text{sit}[u]$。
+
+如果枚举到反向边，考虑 $\text{dfn}[v]$ 和 $u$ 是否能够跟 $u$ 构成答案，同样更新 $\text{low}[u]$ 和 $\text{sit}[u]$。
+
+![](/0826-Grand-Test.png)
+
+那么三条路径为：
+
+- $u\rightarrow \cdots \rightarrow \text{low}[v]$
+
+- $u\rightarrow \cdots \rightarrow \text{sit}[v]\rightarrow \text{low}[v]$
+
+- $u\rightarrow \cdots \rightarrow \text{sit}[u]\rightarrow \text{low}[u]\rightarrow \cdots \rightarrow \text{low}[v]$
 
 ## H. Hidden Supervisors
 
 **题目大意**：给出一棵 $n$ 个点的有根树森林，其中 $1$ 所在的树以 $1$ 为根。让你给其余的树指定根的父亲，使得最后连成的树上匹配最大。
 
-**题解**：
+**题解**：树上最大匹配可以自底向上贪心。我们对森林中每棵树自底向上贪心求出一个最大匹配，这样的最大匹配同时也**尽可能使根不被匹配**。我们把根已经匹配的树根连向 $1$。然后把 $1$ 号树以外的树，按照树上未匹配点的个数从大到小排序，然后依次把它们连接到 $1$ 号树上的一个未匹配点，这样会贡献 $1$ 的匹配，同时我们更新 $1$ 号树上的未匹配点。
 
 ## I. Intelligence in Perpendicularia
 
