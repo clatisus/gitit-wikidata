@@ -74,7 +74,7 @@ date: 2018.08.26 12:00-17:00
 
 **题解**：
 
-记$x_i=\sum_{j\le i, a_j > 0} a_j$，$y_i=\sum_{j<i,aj<0}a_j$，即是要最大化$\frac{x_i}{P}+\frac{y_i}{|N|}$.
+记$x_i=\sum_{j\le i, a_j > 0} a_j$，$y_i=\sum_{j\le i,aj<0}a_j$，即是要最大化$\frac{x_i}{P}+\frac{y_i}{|N|}$.
 
 按$O(\sqrt{n\log{n}})$分块，维护凸包上凸壳，询问时在$O(n/\sqrt{n\log{n}})$个凸包上进行三分，修改$O(\sqrt{n\log{n}})$重构一块，对一个后缀的块打平移标记即可。
 
