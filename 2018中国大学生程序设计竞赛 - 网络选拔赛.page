@@ -71,6 +71,40 @@ $$
 
 签到题。讨论环的正负，然后把步数按照环长分解，case 分析。
 
+## H. Search for Answer
+
+**题目大意**：给定一个 $n(n\leq 200)$ 个点的 tournament，现在有不超过 $200$ 条边没有定向。让你给它们定向，使得下列代码算出的 $\text{ans}$ 最大：
+
+```
+int ans = 0;
+for (int a = 0; a < n; ++a) {
+    for (int b = 0; b < n; ++b) if (b != a) {
+        for (int c = 0; c < n; ++c) if (c != a && c != b) {
+            for (int d = 0; d < n; ++d) if (d != a && d != b && d != c) {
+                if (s[a][b] == s[b][c] && s[b][c] == s[c][d] && s[c][d] == s[d][a]) {
+                    ++ans;
+                }
+                if (s[a][b] != s[b][c] && s[b][c] != s[c][d] && s[c][d] != s[d][a]) {
+                    --ans;
+                }
+            }
+        }
+    }
+}
+```
+
+**题解**：容易发现，给答案贡献 $1$ 的四元环形如：$\overleftarrow {a\rightarrow b\rightarrow c\rightarrow d}$，给答案贡献 $-1$ 的四元环形如 $\overrightarrow{a\rightarrow b\leftarrow c\rightarrow d}$。
+
+也即给答案贡献 $1$ 的四元环没有出度为 $2$ 的点，给答案贡献 $0$ 的四元环恰有一个出度为 $2$ 的点，给答案贡献 $-1$ 的四元环恰有两个出度为 $2$ 的点。可得：
+
+$$
+\text{ans}={n\choose 4}\cdot 4! - 8(n-3)\sum_{i=1}^n{\text{deg}_i \choose 2}
+$$
+
+我们枚举一个点，选择两条出边，第四个点有 $(n-3)$ 种选择。有两个出度为 $2$ 的环正好被减掉两次。我们要最大化上述式子，也即最小化 $\displaystyle \sum_{i=1}^n{\text{deg}_i \choose 2}$。用凸费用流解决。
+
+$\displaystyle {\text{deg}_i\choose 2}=\sum_{j=1}^{\text{deg}_i-1}j$。我们先把每个点确定的出度的贡献预先算好，然后对于每条未确定的边 $u\rightarrow v$，我们从源点向这条边连 $1$ 的容量，这条边向 $u,v$ 两点各连 $1$ 的容量。然后每个点连汇点若干条边，容量为 $1$，费用依次为 $\text{deg}_i,\text{deg}_i+1,\text{deg}+2,\cdots$。
+
 ## I. Tree and Permutation
 
 签到题。计算每条边贡献。
