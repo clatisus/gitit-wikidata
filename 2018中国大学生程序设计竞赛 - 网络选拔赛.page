@@ -79,7 +79,7 @@ $$
 
 又有 $\displaystyle h_{i}(n)=\prod_{j=1}^{t}{a_{j}+i-1\choose i-1}$，且不同取值的 $a_{i}$ 只有 $\sqrt{\sum a_{i}}$ 个，所有的 $h_{i}$ 也容易计算。
 
-时间复杂度 $\mathcal{O}(\sum a_{i}\sqrt{\sum a_{i}}\log\sum a_{i})$。
+时间复杂度 $\mathcal{O}((\sum a_{i})\cdot \sqrt{\sum a_{i}}\log\sum a_{i})$。
 
 还有几道相似的题：[51nod 1727](http://www.51nod.com/onlineJudge/questionCode.html#!problemId=1727) [hdu 4304](http://acm.hdu.edu.cn/showproblem.php?pid=4304) [ICPC Archive 4771](https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&category=348&page=show_problem&problem=2772) topcoder SRM 495 Div.1 C
 
