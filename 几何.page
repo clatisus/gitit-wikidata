@@ -48,6 +48,10 @@
 
 [Code](https://codeforces.com/contest/1019/submission/41974107)
 
+其实可以不直接维护法向量，维护原向量即可，它们的极角序是等价的，并且可以只做上半平面。
+
+[Code](https://codeforces.com/contest/1019/submission/42201334)
+
 ## 1017E The Supersonic Rocket
 
 **题目大意**;
