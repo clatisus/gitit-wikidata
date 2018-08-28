@@ -391,4 +391,4 @@ $$
 &f(n,m)+f(m,n)&(nm>1)
 \end{cases}
 $$
-其中 $f(n,m)=\sum_{i=1}^{+\infty}g_{i}(n)(g_{i}(m)+g_{i+1}(m))$，$g_{i}(n)$ 表示将 $n$ 分解成 $i$ 个大于 $1$ 的数的乘积的方案数（有序）。[证明](zhongzihao/set_counting)
+其中 $f(n,m)=\sum_{i=1}^{+\infty}g_{i}(n)(g_{i}(m)+g_{i+1}(m))$，$g_{i}(n)$ 表示将 $n$ 分解成 $i$ 个大于 $1$ 的数的乘积的方案数（有序）。[证明](set_counting)
