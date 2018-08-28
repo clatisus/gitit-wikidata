@@ -20,7 +20,7 @@ date: 2018.08.11 12:00-17:00
 
 这题的核心思想同[Large Traiangle](https://codeforces.com/contest/1019/problem/D)：
 
-如果将$\vec{AB}$的法向量放在单位圆上，当$\vec{v}$与该法向量重合时，$\vec{OA}.dot(\vec{v})=\vec{OB}.dot(\vec{v})$，而在法向量的一侧满足$\vec{OA}.dot(\vec{v})<\vec{OB}.dot(\vec{v})$，另一侧满足$\vec{OA}.dot(\vec{v})>\vec{OB}.dot(\vec{v})$(只考虑$\vec{v}$在$x$轴的左侧或右侧的一半平面的情况)。
+如果将$\vec{AB}$的法向量放在单位圆上，当$\vec{v}$与该法向量重合时，$\vec{OA}.dot(\vec{v})=\vec{OB}.dot(\vec{v})$，而在法向量的一侧满足$\vec{OA}.dot(\vec{v})<\vec{OB}.dot(\vec{v})$，另一侧满足$\vec{OA}.dot(\vec{v})>\vec{OB}.dot(\vec{v})$。
 
 假设我已经知道了最优解的方向向量$\vec{v}$，因为$(\vec{OA}+\vec{OB})\cdot\vec{v} = \vec{OA}\cdot\vec{v} + \vec{OB}\cdot\vec{v}$，因此我们取前$k$大的向量加起来更新答案即可，不能选择同种颜色就只考虑每种颜色最优的向量即可。
 
