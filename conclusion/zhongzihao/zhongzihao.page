@@ -385,10 +385,12 @@ $$
 设有两个集合 $A,B\subset\mathbb{N}$，且 $0\in A,1\in B,|A|=n,|B|=m$。定义 $A+B=\{x+y|x\in A,y\in B\}$，若 $A+B=[1,nm]\cap\mathbb{N}^{+}$，则称 $(A,B)$ 是好的。问这样的集合对有多少个。
 
 这一问题的答案为：
+
 $$
 \begin{cases}
-&1&(nm=1)\\
-&f(n,m)+f(m,n)&(nm>1)
+&1&(n=1\lor m=1)\\
+&f(n,m)+f(m,n)&(n>1\land m>1)
 \end{cases}
 $$
+
 其中 $f(n,m)=\sum_{i=1}^{+\infty}g_{i}(n)(g_{i}(m)+g_{i+1}(m))$，$g_{i}(n)$ 表示将 $n$ 分解成 $i$ 个大于 $1$ 的数的乘积的方案数（有序）。[证明](set_counting)
