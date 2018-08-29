@@ -7,3 +7,17 @@ practice link: opentrains 10397
 # Solutions
 
 # Dirt Replay
+
+A: `-2` D 弱智
+
+B: `-4` 没有还原位置，没有还原方向，f 和 c 个数关系判断错
+
+D: `-3` 输出方案写错
+
+E: `-2` 算法细节
+
+J: `-1` 交成了 hello world（数字题号有毒）
+
+K: `-3` 式子写错两次，eps 开大了
+
+L: `-1` 没有判串不存在
