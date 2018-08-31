@@ -19,3 +19,15 @@ $n\le10^5$个点的树，以$1$为根，一开始每个点都是白色，$q\le10
 复杂度$O(n\sqrt{n})$.
 
 [Code](https://codeforces.com/contest/1017/submission/42310637)
+
+## gym100551A
+
+发现自己15年交了一道gym没加文件输入输出tle的代码，加上就过了。
+
+[portal](https://codeforces.com/gym/100551/problem/A)
+
+无向图，加边，删边，询问连通块数量。
+
+按边的删除时间维护最大生成树，`lct`，复杂度$O(n\log{n})$.
+
+[Code](https://codeforces.com/gym/100551/submission/42311932)
