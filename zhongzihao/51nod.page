@@ -1,3 +1,9 @@
+## 1245. Binomial Coefficients Revenge
+
+**题目大意**：求 ${n\choose0},\cdots,{n\choose n}$ 中质因子 $p$ 的数量分别为 $0,1,2,\cdots$ 的有多少个。
+
+**题解**：使用[库默尔定理](http://clatisus.com/conclusion/zhongzihao/zhongzihao#%E5%BA%93%E9%BB%98%E5%B0%94%E5%AE%9A%E7%90%86)就可以简单地转化成一个数位 $dp$ 了。
+
 ## 1334. 无穷可定义数
 
 **题目大意**：对于所有满足 $w\nmid x$ 的正整数 $x$，定义 $f(x)=\frac{x}{x\mod{w}}$。若对于某个正整数 $x$，$f(x),f(f(x)),\cdots$ 无限嵌套下去都有定义，称 $x$ 为无穷可定义数。给出 $w$，求 $[L,R]$ 中的无穷可定义数。
