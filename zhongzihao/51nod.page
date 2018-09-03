@@ -1,3 +1,9 @@
+## 1150. Logarithm
+
+**题目大意**：给出一个长度为 $n$ 且两两不同的数列 $a$，求 $\sum_{i}\sum_{j\neq i}\log_{10}(a_{i}\oplus a_{j})$。
+
+**题解**：`trie` 入门题。
+
 ## 1245. Binomial Coefficients Revenge
 
 **题目大意**：求 ${n\choose0},\cdots,{n\choose n}$ 中质因子 $p$ 的数量分别为 $0,1,2,\cdots$ 的有多少个。
