@@ -239,6 +239,14 @@ $\sum{n\choose2k}{k\choose m}=\frac{n}{n-m}{n-m\choose n-2m}2^{n-2m-1}$
 ## 指数循环节
 对 $\forall a, b, n \in N^{+}, b \ge \phi(n)$ ，有 $a ^ {b} \equiv a ^ {b \% \phi(n) + \phi(n)}\pmod{n}$ ，注意 $b \ge \phi(n)$ 是必要条件，以及式子中取模后指数必须加上 $\phi(n)$ ，否则结果可能会出错。
 
+## 威尔逊定理
+$$
+\prod_{i=1,\text{gcd}(i,m)=1}^{m}i\equiv\begin{cases}
+&-1&(m=1,2,4,p^{l},2p^{l},\text{ p is odd prime})\\
+&1&(\text{otherwise})
+\end{cases}\pmod{m}
+$$
+
 ## 类欧几里得算法
 设 $f(a,b,c,n,t_{1},t_{2})=\sum_{i=0}^{n}i^{t_{1}}\lfloor\frac{ai+b}{c}\rfloor^{t_{2}}$，求解这一函数值的算法称为类欧几里得算法。这里仅讨论 $6$ 个参数均为非负整数的情况，且定义 $0^{0}=1$：
 
