@@ -10,6 +10,12 @@
 
 **题解**：注意到即便暴力复杂度也只有 $\mathcal{O}(10^{9})$，考虑剪枝。我们可以选取若干个质数，求出所有满足 $i^{2}+j^{2}\equiv N\pmod{p}$ 的 $i$。由于模质数意义下只有一半的数是二次剩余，所以每一个质数大约能够筛掉一半的数。
 
+## 1184. 第N个质数
+
+**题目大意**：求第 $n\le10^{9}$ 个质数。
+
+**题解**：朴素的想法是二分加洲阁筛，时间复杂度是 $\mathcal{O}((n\log n)^{\frac{3}{4}})$，会稍微超时一点。但是我们可以从[wiki](https://en.wikipedia.org/wiki/Prime-counting_function#Inequalities)上找到一个质数估计函数，在本题范围下误差不超过 $\pm3\times10^{6}$。因此我们可以对 `left-1` 前用洲阁筛计数，`left~right` 用区间筛即可。
+
 ## 1245. Binomial Coefficients Revenge
 
 **题目大意**：求 ${n\choose0},\cdots,{n\choose n}$ 中质因子 $p$ 的数量分别为 $0,1,2,\cdots$ 的有多少个。
