@@ -125,5 +125,18 @@ int main() {
 
 [Portal](https://codeforces.com/problemset/problem/1039/C)
 
+给出一个$n\le500000$个点，$m\le500000$条边的无向图，每个点有个点权$a_i$，满足$0\le a_i<2^k$，其中$0\le k\le60$，并且有边相连的两个点的权值不同.
+
+求二元组$(A,x)$的数量，满足：
+
+- $A$是图中的点集，$x$是$[0,2^k)$的整数
+- 将$A$中的所有点点权异或上$x$，依然满足有边相连的两个点的权值不同.
+
+对于边$(u,v)$，当$x=a_u\oplus a_v$时，$u$和$v$要么都属于$A$要么都不属于$A$.
+
+将边按$w = a_u\oplus a_v$排序，只考虑$w$相同的边，那么合法的方案数等于$2^{cnt}$，$cnt$为连通块数量。
+
+用按秩合并的并查集实现，做完一组撤销即可，时间复杂度$O(n\log{n})$.
+
 [Code](https://codeforces.com/contest/1039/submission/42820813)
 
