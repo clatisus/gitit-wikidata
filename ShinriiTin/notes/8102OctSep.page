@@ -31,3 +31,13 @@ $n\le10^5$个点的树，以$1$为根，一开始每个点都是白色，$q\le10
 按边的删除时间维护最大生成树，`lct`，复杂度$O(n\log{n})$.
 
 [Code](https://codeforces.com/gym/100551/submission/42311932)
+
+## 51nod 1981
+
+[portal](https://www.51nod.com/onlineJudge/questionCode.html#!problemId=1981)
+
+$n\le65536$个`set`，$q\le65536$次操作，要么给区间$[L,R]$的`set`都`insert`一个$0\le c\le30000$，要么询问区间`[L,R]`的`set`合并成一个`set`后第`k`小，非法输出`-1`.
+
+用线段树套`bitset`，标记永久化一下，询问时二分一下，注意$k=0$也是非法。
+
+时间复杂度$O(n\log{n}\cdot \frac{q}{32})$，空间复杂度$O(n\cdot\frac{q}{32})$.
