@@ -119,5 +119,11 @@ int main() {
     return 0;
 }
 ```
+# 图论
 
+## cf1039C
+
+[Portal](https://codeforces.com/problemset/problem/1039/C)
+
+[Code](https://codeforces.com/contest/1039/submission/42820813)
 
