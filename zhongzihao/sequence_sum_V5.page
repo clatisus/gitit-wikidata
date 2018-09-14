@@ -1,0 +1,64 @@
+## 序列求和V5学习及拓展
+
+首先膜鎕~~
+
+问题很简单，求 $\sum_{i=1}^{n}i^{k}b^{i}$。原问题是对一个质数取模，这里我们拓展为对一个质数的幂 $p^{e}$ 取模。下面分为三类讨论：
+
+- 若 $b\equiv0\pmod{p}$，那么我们至多只需要求前 $e$ 项即可。
+
+- 若 $b\equiv1\pmod{p}$，设 $b=up+1$，那么原式等于
+  $$
+  \begin{aligned}
+  &\sum_{i=1}^{n}i^{k}(up+1)^{i}\\
+  =&\sum_{i=1}^{n}i^{k}\sum_{j=0}^{i}{i\choose j}(up)^{j}\\
+  =&\sum_{i=1}^{n}i^{k}\sum_{j=0}^{e-1}{i\choose j}(up)^{j}\\
+  =&\sum_{j=0}^{e-1}(up)^{j}\sum_{i=1}^{n}i^{k}{i\choose j}
+  \end{aligned}
+  $$
+  注意到 ${i\choose j}$ 是一个关于 $i$ 的 $j$ 次多项式，因此上式是一个关于 $i$ 的 $k+e$ 次多项式。使用插值计算即可。时间复杂度 $\mathcal{O}(k+e+\log_{p}x)$。
+
+- 其它情况（以下做法来源于[tls的题解](http://www.51nod.com/onlineJudge/problemSolution.html#!problemId=1342)）：
+
+    记所求式子为 $f(n)$。
+
+    首先我们证明：原式可被表示为 $f(n)=b^{n}F(n)-F(0)$，其中 $F$ 是关于 $n$ 的某个 $k$ 次多项式。
+
+    $k=0$ 时：
+    $$
+    \begin{aligned}
+    f(n)&=\sum_{i=1}^{n}b^{i}\\
+    &=\frac{b^{n+1}-b}{b-1}\\
+    &=b^{n}\cdot\frac{b}{b-1}-\frac{b}{b-1}
+    \end{aligned}
+    $$
+    显然成立。
+
+    $k>1$ 时：
+    $$
+    \begin{aligned}
+    bf(n)-f(n)&=\sum_{i=1}^{n}i^{k}b^{i+1}-\sum_{i=1}^{n}i^{k}b^{i}\\
+    &=n^{k}b^{n+1}+\sum_{i=1}^{n}b^{i}\left[(i-1)^{k}-i^{k}\right]\\
+    &=n^{k}b^{n+1}+\sum_{j=0}^{k-1}(-1)^{j}{i\choose j}\sum_{i=1}^{n}i^{j}b^{i}\\
+    &=n^{k}b^{n+1}+\sum_{j=0}^{k-1}(-1)^{j}{i\choose j}\left[b^{n}F_{j}(n)-F_{j}(0)\right]\\
+    &=b^{n}\left(bn^{k}+\sum_{j=0}^{k-1}(-1)^{j}{i\choose j}F_{j}(n)\right)-\sum_{j=0}^{k-1}(-1)^{j}{i\choose j}F_{j}(0)
+    \end{aligned}
+    $$
+    也成立。
+
+    现在我们只需要求出 $F(0),\cdots,F(k)$，即可插值求出 $f(n)$。设 $F(0)=x$，那么我们很容易用 $x$ 来表示 $F$：$F(n)=\frac{f(n)+x}{b^{n}}$。下面我们证明，$\sum_{i=0}^{k+1}(-1)^{i}{k+1\choose i}F(i)=0$ 对于任何 $k+1$ 次多项式都成立。这样我们就得到了一个一次方程，可以解出 $x$。
+
+    首先证明一个引理：对任意 $0\le j\le k$，$\sum_{i=0}^{k+1}(-1)^{i}{k+1\choose i}{i\choose j}=0$：
+    $$
+    \begin{aligned}
+    &=\sum_{i=0}^{k+1}(-1)^{i}{k+1\choose j}{k+1-j\choose i-j}\\
+    &={k+1\choose j}\sum_{k=0}^{k+1-j}(-1)^{i+j}{k+1-j\choose i}\\
+    &=0
+    \end{aligned}
+    $$
+    而 $F(i)$ 可以表示为 ${i\choose 0},{i\choose 1},\cdots,{i\choose k}$ 的线性组合，那么之前的结论是显然的。
+
+    另外注意到这个一次方程的未知数的系数是 $\sum_{i=0}^{k+1}(-1)^{i}{k+1\choose i}\left(\frac{1}{R}\right)^{i}=\left(\frac{R-1}{R}\right)^{k+1}$，而 $R$ 模 $p$ 不为 $0$ 或 $1$，因此这个方程是有唯一解的。
+
+    时间复杂度 $\mathcal{O}(k+\log_{p}x)$。
+
+~~时间复杂度不一定准确~~
