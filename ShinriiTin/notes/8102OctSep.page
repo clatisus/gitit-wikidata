@@ -164,6 +164,8 @@ int main() {
 
 ## cf487E
 
+[Portal](https://codeforces.com/contest/487/problem/E)
+
 给出一个$n\le10^5$个点，$m\le10^5$条边的简单无向连通图，每个点有个点权。
 
 $q\le10^5$次操作，每次或者修改一个点的点权，或者询问从$u$到$v$的所有简单路径中最小的点权是多少。
