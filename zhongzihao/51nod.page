@@ -1,3 +1,11 @@
+## 1132. 覆盖数字的数量 V2
+
+**题目大意**：求 $[x,y]$ 中能由若干个 $a$ 和 $b$ 加起来表示的数量。
+
+**题解**：不妨设 $\gcd(a,b)=1$，那么有 $xa+yb=1$，不妨设 $x>0,y<0$。那么一个数 $c$ 能被表示，相当于 $ax_{1}+bx_{2}=c$ 有非负整数解，而这一方程的通解为 $x_{1}=xc-tb,x_{2}=yc+ta$。那么有解的充要条件即为 $yc+\lfloor\frac{xc}{b}\rfloor a\ge0$，即 $\lfloor\frac{xc}{b}\rfloor\ge\frac{-yc}{a}$。
+
+注意到 $xa+yb>0,\frac{xc}{b}>\frac{-yc}{a}$。而 $\frac{xc}{b}\ge\frac{-yc}{a}+1$ 时显然有解，因此我们只需要统计 $\frac{-yc}{a}<\frac{xc}{b}<\frac{-yc}{a}+1$，即 $c<ab$ 范围内的解即可。容易证明，在这个范围内，有解等价于 $\lceil\frac{-yc}{a}\rceil-\lfloor\frac{xc}{a}\rfloor=1$，无解等价于 $\lceil\frac{-yc}{a}\rceil-\lfloor\frac{xc}{a}\rfloor=0$。这个个数容易用类欧统计。
+
 ## 1143. Square Country 3
 
 **题目大意**：构造一个 $n\times m$ 的矩阵，使得每行、每列、每行的和、每列的和都是完全平方数，且矩阵中元素两两不同。
