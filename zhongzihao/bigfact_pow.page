@@ -1,5 +1,7 @@
 ## 大阶乘模质数的幂学习笔记
 
+以下参考了[这篇博客](https://min-25.hatenablog.com/entry/2017/11/01/185400)。
+
 求 $n!\mod{p^{e}}$（包括 $p$ 的幂次和互质部分的模），其中 $p$ 为质数，可以在 $\mathcal{O}(pe+e\log_{p}n)$ 下完成（不考虑大整数部分的复杂度）。
 
 定义 $f(m)=\prod_{i=1,\text{gcd}(i,m)=1}i$。那么有 $n!=f(n)\cdot p^{\lfloor\frac{n}{p}\rfloor}\cdot\lfloor\frac{n}{p}\rfloor!$，也就是说我们可以通过 $\log_{p}n$ 次 $f$ 的计算来得到答案。
