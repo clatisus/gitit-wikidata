@@ -1,5 +1,7 @@
 ## 大阶乘模质数学习笔记
 
+以下参考了[这篇博客](https://min-25.hatenablog.com/entry/2017/04/10/215046)。
+
 求 $n!\mod{p}(n<p)$，其中 $p$ 为质数，可以在 $\mathcal{O}(\sqrt{n}\log n)$ 的复杂度下完成。
 
 考虑根号分块。定义 $f_{u}(x)=\prod_{i=1}^{u}(x+i)$。设 $v=\lfloor\sqrt{n}\rfloor$，那么显然答案为 $\prod_{i=0}^{v-1}f_{v}(iv)\prod_{i=v^{2}+1}^{n}i$。
