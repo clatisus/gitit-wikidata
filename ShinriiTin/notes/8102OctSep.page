@@ -140,3 +140,24 @@ int main() {
 
 [Code](https://codeforces.com/contest/1039/submission/42820813)
 
+## cf1027F
+
+[portal](https://codeforces.com/problemset/problem/1027/F)
+
+有$n\le10^6$门课程，第$i$门课程可以在第$a_i$天完成或者第$b_i$天完成，$1\le a_i<b_i\le10^9$。
+
+同一天最多只能完成一门课程，问最早能在第几天完成所有课程，或者压根无法完成。
+
+将天数做为点，课程作为$a_i$到$b_i$的无向边建出一张图，则每条边需要消耗一个邻点，对于每个连通块，有解当且仅当点数不少于边数。
+
+点数小于边数时显然无解，否则点数可能等于边数或者是边数加一，即是树或者基环套树，显然有解。
+
+如果是树，则答案为树上次晚出现的点可以满足，如果是基环套树，则是树上最晚出现的点出现了才可以满足。
+
+`hash`之后，用并查集维护最大次大即可。
+
+`unordered_map`与`pbds`均无法通过，需要手写`hash`表。
+
+时间复杂度$O(n)$.
+
+[Code](https://codeforces.com/contest/1027/submission/42825188)
