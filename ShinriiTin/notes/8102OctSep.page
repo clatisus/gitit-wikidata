@@ -181,3 +181,13 @@ $q\le10^5$次操作，每次或者修改一个点的点权，或者询问从$u$�
 时间复杂度$O(n\log{n}+m+q\log^2{n})$.
 
 [Code](https://codeforces.com/contest/487/submission/42859771)
+
+## cf962F
+
+[Portal](https://codeforces.com/contest/962/problem/F)
+
+给出一个$n\le10^5$个点，$m\le21\times10^5$条边的简单无向图，求恰好出现在一个简单环中的边有哪些。
+
+求出点双连通分量，然后判断其是否为简单环（点数等于边数），是则所有边都满足要求。
+
+[Code](https://codeforces.com/contest/962/submission/42862554)
