@@ -30,6 +30,12 @@
 
 **题解**：朴素的想法是二分加洲阁筛，时间复杂度是 $\mathcal{O}((n\log n)^{\frac{3}{4}})$，会稍微超时一点。但是我们可以从[wiki](https://en.wikipedia.org/wiki/Prime-counting_function#Inequalities)上找到一个质数估计函数，在本题范围下误差不超过 $\pm3\times10^{6}$。因此我们可以对 `left-1` 前用洲阁筛计数，`left~right` 用区间筛即可。
 
+## 1224. 阶乘的幂的倍数
+
+**题目大意**：定义 $s(i,k)$ 为满足 $(i!)^{k}\mid n!$ 的最小的 $n$，求 $\sum_{i=2}^{n}s(i,k)$。
+
+**题解**：定义 $f(i,p)$ 为 $i!$ 中 $p$ 的个数。显然 $f$ 是一个关于 $\lfloor\frac{i}{p}\rfloor$ 的函数，因此我们可以枚举所有的质数及它们的倍数，计算 $f^{k}(i,p)$ 最早在哪个阶乘中出现。注意到在 $p$ 进制下，每一位对 $p$ 的贡献相当于该位数乘上一个系数，因此这个答案很容易用数位 $dp$ 求出。
+
 ## 1245. Binomial Coefficients Revenge
 
 **题目大意**：求 ${n\choose0},\cdots,{n\choose n}$ 中质因子 $p$ 的数量分别为 $0,1,2,\cdots$ 的有多少个。
