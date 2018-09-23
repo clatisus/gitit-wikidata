@@ -1,0 +1,17 @@
+# Contest Info
+
+date: 2018.09.23 12:00-17:00
+
+[practice link](https://cn.vjudge.net/contest/256182)
+
+# Solutions
+
+# Dirt Replay
+
+D: `-1` 题意
+
+E: `-2` 读错题；multiset
+
+G: `-1` 边界case（精度）
+
+H: `-3` 访问到了未初始化边界
