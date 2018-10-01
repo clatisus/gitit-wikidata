@@ -1,0 +1,13 @@
+# Contest Info
+
+date: 2018.10.01 12:30-17:30
+
+[practice link](https://cn.vjudge.net/contest/258247)
+
+# Solutions
+
+# Dirt Replay
+
+D: `-5` dp 的时候枚举顺序反了；卡常数（体系结构）
+
+I: `-2` 三分写错了
