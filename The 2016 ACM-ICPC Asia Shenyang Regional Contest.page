@@ -32,6 +32,8 @@ $$
 \end{aligned}
 $$
 
+底面沾水的面积和水面的面积成 $\sin\theta$ 比例。
+
 ## K. New Signal Decomposition
 
 **题目大意**：求 $\displaystyle{b_{i}=\sum_{j=0}^{p-1}a_{j}2^{\sin^{3}(\frac{2\pi ij}{p})}}$，其中 $p$ 为质数，$a$ 给出。
