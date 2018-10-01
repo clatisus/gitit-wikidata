@@ -26,7 +26,7 @@ date: 2018.10.01 12:30-17:30
 
 当 $i=1$ 的时候，Alice 和 Bob 的出价都是手上的全部金钱。考虑 $i\geq 2$，如果 $j=k$，那么 $f$ 值是 Alice 在后续 $i$ 件物品中的优势局面个数。
 
-否则，假设当前局面是 Alice 占优势，我们枚举 Alice 的出价 $x$，那么如果 Alice 获胜，收益为 $\text{va}_x = f[1-p][i-1][j-x][k]+1$ 。如果 Bob 想获胜，则出价 $x+1$,收益为 $\text{vb}_{x+1} = f[1-p][i-1][j][k-x-1]$。如果 $\text{vb}_{x+1}\geq \text{va}_x$，那么 Bob 不会浪费钱出 $x+1$，此时 $f[p][i][j][k]=va$。如果 $\text{va}_{x+1}\leq \text{vb}_{x+1}$，那么 Alice 不会浪费钱出 $x+1$，此时 $f[p][i][j][k]=vb$。否则，我们继续枚举 Alice 出价为 $x+1$ 的情况。
+否则，假设当前局面是 Alice 占优势，我们枚举 Alice 的出价 $x$，那么如果 Alice 获胜，收益为 $\text{va}_x = f[1-p][i-1][j-x][k]+1$ 。如果 Bob 想获胜，则出价 $x+1$,收益为 $\text{vb}_{x+1} = f[1-p][i-1][j][k-x-1]$。如果 $\text{vb}_{x+1}\geq \text{va}_x$，那么 Bob 不会浪费钱出 $x+1$，此时 $f[p][i][j][k]=\text{va}$。如果 $\text{va}_{x+1}\leq \text{vb}_{x+1}$，那么 Alice 不会浪费钱出 $x+1$，此时 $f[p][i][j][k]=\text{vb}$。否则，我们继续枚举 Alice 出价为 $x+1$ 的情况。
 
 ## G. Do not pour out
 
