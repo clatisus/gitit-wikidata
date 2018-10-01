@@ -6,6 +6,10 @@ date: 2018.10.01 12:30-17:30
 
 # Solutions
 
+## A. Thickest Burger
+
+签到题。
+
 ## B. Relative atomic mass
 
 签到题。
@@ -13,6 +17,16 @@ date: 2018.10.01 12:30-17:30
 ## C. Recursive sequence
 
 签到题。
+
+## D. Winning an Auction
+
+**题目大意**：一共 $n$ 件物品，Alice 手上有 $A$ 金钱，Bob 有 $B$。每轮各自出价 $a \in[0, A], b\in [0, B]$。若 $a > b$ 则 Alice 花费 $a$ 获得这件物品，若 $a < b$ 则 Bob 花费 $a$ 获得这件物品，若 $a=b$ 则第奇数件物品的时候 Alice 获得，否则 Bob 获得。两人均采用最优策略（最大化获得的物品数量），且都知道 $n, a, b$，问结果。
+
+**题解**：定义 $f[p=0/1][i][j][k]$ 表示当前局是第奇数/偶数局，还剩 $i$ 件物品，Alice 有 $j$ 金钱，Bob 有 $k$ 金钱，Alice 能获得的最大物品。那么我们只需要预处理出 $f$，然后每次询问我们查询 $f[1][n][A][B]$ 即可。
+
+当 $i=1$ 的时候，Alice 和 Bob 的出价都是手上的全部金钱。考虑 $i\geq 2$，如果 $j=k$，那么 $f$ 值是 Alice 在后续 $i$ 件物品中的优势局面个数。
+
+否则，假设当前局面是 Alice 占优势，我们枚举 Alice 的出价 $x$，那么如果 Alice 获胜，收益为 $\text{va}_x = f[1-p][i-1][j-x][k]+1$ 。如果 Bob 想获胜，则出价 $x+1$,收益为 $\text{vb}_{x+1} = f[1-p][i-1][j][k-x-1]$。如果 $\text{vb}_{x+1}\geq \text{va}_x$，那么 Bob 不会浪费钱出 $x+1$，此时 $f[p][i][j][k]=va$。如果 $\text{va}_{x+1}\leq \text{vb}_{x+1}$，那么 Alice 不会浪费钱出 $x+1$，此时 $f[p][i][j][k]=vb$。否则，我们继续枚举 Alice 出价为 $x+1$ 的情况。
 
 ## G. Do not pour out
 
