@@ -99,6 +99,11 @@ $$
 
 时间复杂度$O(n\log{n})$.
 
+--- 
+coldwater's solution
+
+用可持久化单调队列维护，二分head和tail，然后记录tail改变前的位置和值，回溯的时候撤销。
+
 ## K. New Signal Decomposition
 
 **题目大意**：求 $\displaystyle{b_{i}=\sum_{j=0}^{p-1}a_{j}2^{\sin^{3}(\frac{2\pi ij}{p})}}$，其中 $p$ 为质数，$a$ 给出。
