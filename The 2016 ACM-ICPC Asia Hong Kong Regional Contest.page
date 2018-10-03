@@ -1,0 +1,19 @@
+# Contest Info
+
+date: 2018.10.03 12:35-17:35
+
+[practice link](https://cn.vjudge.net/contest/258247)
+
+# Solutions
+
+# Dirt Replay
+
+A: `-1` swap 路径写错
+
+D: `-1` 位置 i 不作为答案时转移错误
+
+F: `-4` 写错了一堆，共产主义复用了一个数组
+
+J: `-1` D 坚持不用 W 的板子，写错了
+
+K: `-1` 写错了
