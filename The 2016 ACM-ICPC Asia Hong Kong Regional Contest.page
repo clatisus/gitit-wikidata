@@ -95,6 +95,12 @@ $$
 
 时间复杂度 $\mathcal{O}(n\log m\times \frac{n}{w})$。
 
+***
+
+zhongzihao's comment
+
+这种背包还可以用多项式来维护。增加一个大小为 $i$ 物品相当于乘上 $1+x^{i}$，删除则相当于除以 $1+x^{i}$。这两种操作都容易 $\mathcal{O}(n)$ 做到。因为答案太大，所以要模一个大质数。时间复杂度 $\mathcal{O}(nm)$。
+
 ## J. Taboo
 
 **题目大意**：
