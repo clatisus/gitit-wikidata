@@ -64,8 +64,10 @@ $$
 后者就是总局面数 $k^{nm}$，而前者即为每个位置是 good 的局面数，也即：
 
 $$
-nm=\left((\sum_{i=1}^{k-1}i^{n+m-2})\cdot k^{nm-n-m+1}\right)
+nm\left(\left(\sum_{i=1}^{k-1}i^{n+m-2}\right)\cdot k^{nm-n-m+1}\right)
 $$
+
+注意 $n=m=1$ 需要特判。
 
 ## I. Cherry Pick
 
