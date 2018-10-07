@@ -6,6 +6,31 @@ date: 2018.10.07 12:40-17:40
 
 # Solutions
 
+## B. Fraction
+
+签到题。
+
+## F. Harmonic Value Description
+
+签到题。
+
+## K. Binary Indexed Tree 
+
+**题目大意**：定义树状数组的实现方式如下：
+
+```c++
+void add (int x, int t){
+    for (int i = x; i != 0; i -= i & (-i))
+        a[i] += t;
+}
+```
+
+修改区间 $[l,r]$ 时调用 `add(r, 1)` 及 `add(l-1, -1)`。定义区间 $[l,r]$ 的价值为修改它时真正改变了的位置，即修改 $r$ 和修改 $l-1$ 时抵消的位置不算。求所有 $[1,n]$ 的子区间的价值和。
+
+**题解**：修改 $[l,r]$ 时，真正改变的位置即为 $\text{bitcount}(r)+\text{bitcount}(l-1)-2\text{bitcount}(x)$，其中 $x$ 是 $l-1$ 的 $r$ 的最长公共前缀。
+
+我们分两个部分计算该答案。显然减号前面的答案为 $n\sum_{i=0}^{n}\text{bitcount}(i)$。减号后面的答案只需要枚举 $l$ 和 $r$ 的最长公共前缀的长度，然后数位 $dp$ 即可。
+
 # Dirt Replay
 
 F: `-1` 写反了（没自己测试）
