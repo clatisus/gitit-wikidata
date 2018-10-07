@@ -27,7 +27,7 @@ void add (int x, int t){
 
 修改区间 $[l,r]$ 时调用 `add(r, 1)` 及 `add(l-1, -1)`。定义区间 $[l,r]$ 的价值为修改它时真正改变了的位置，即修改 $r$ 和修改 $l-1$ 时抵消的位置不算。求所有 $[1,n]$ 的子区间的价值和。
 
-**题解**：修改 $[l,r]$ 时，真正改变的位置即为 $\text{bitcount}(r)+\text{bitcount}(l-1)-2\text{bitcount}(x)$，其中 $x$ 是 $l-1$ 的 $r$ 的最长公共前缀。
+**题解**：修改 $[l,r]$ 时，真正改变的位置即为 $\text{bitcount}(r)+\text{bitcount}(l-1)-2\text{bitcount}(x)$，其中 $x$ 是 $l-1$ 和 $r$ 的最长公共前缀。
 
 我们分两个部分计算该答案。显然减号前面的答案为 $n\sum_{i=0}^{n}\text{bitcount}(i)$。减号后面的答案只需要枚举 $l$ 和 $r$ 的最长公共前缀的长度，然后数位 $dp$ 即可。
 
