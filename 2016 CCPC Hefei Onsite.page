@@ -7,3 +7,9 @@ date: 2017.10.11 13:15-18:15
 # Solutions
 
 # Dirt Replay
+
+D: `-3` 输入太慢；式子推错了（没验证 n=1）；四舍五入用 int。。。。
+
+E: `-1` 没清空数组，builtin popcount太慢
+
+G: `-3` D 不相信自己的模版，瞎改
