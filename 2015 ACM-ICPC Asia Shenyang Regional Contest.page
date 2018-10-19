@@ -4,6 +4,8 @@ date: 2018.10.17 12:40-15:40
 
 [practice link](https://cn.vjudge.net/contest/262879)
 
+# Solutions
+
 ## E. Efficient Tree 
 
 **题目大意**：
@@ -35,5 +37,3 @@ $A$中对于每一个$b$，只保留$a$最大的，这样剩下的就只有$O(m)
 $a$这一维排序，$c$，$d$二维树状数组维护。
 
 时间复杂度$O((n+m)(\log{n}+\log{c}\log{d}))$.
-
-# Solutions
