@@ -1,0 +1,27 @@
+# Contest Info
+
+date: 2018.10.23 14:15-16:25
+
+[practice link](http://codeforces.com/contest/986)
+
+# Solutions
+
+## A. Fair
+
+签到题。
+
+## B. Petr and Permutations
+
+签到题。
+
+## C. AND Graph
+
+**题目大意**：给你若干个互不相等的 $n$ 位（二进制下）整数，若 $x\text{&}y=0$，那么在 $x$ 和 $y$ 间连一条边。求这个图的联通块数量。
+
+**题解**：补充 $2^{n}$ 个点，记为 $(0,0)\sim(2^{n}-1,0)$。建立有向图：
+
+- $x\to (x,0)$
+- $(x,0)\to (x\text{|}2^{\text{bit}},0)$，其中 $x$ 的 $\text{bit}$ 位为 $0$
+- $(x,0)\to \sim x$
+
+显然 $x$ 有一条路径到 $y$，当且仅当 $x\text{&}y=0$。那么我们 `dfs` 一下即可。
