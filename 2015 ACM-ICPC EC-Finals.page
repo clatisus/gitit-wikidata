@@ -79,7 +79,7 @@ $$
 
 考虑一个连通块 $S$，它的概率生成函数即为：$\prod_{u\in S}(1-p_{u}+p_{u}x^{w_{u}})$。考虑在树上 $dp$，设 $dp[u]$ 表示在 $u$ 的子树中选取连通块，且 $u$ 必选的所有连通块的概率生成函数之和。那么 $dp[u]=(1-p_{u}+p_{u}x^{w_{u}})\prod_{u\to v}(1+dp[v])$。用 $FFT$ 加速即可。
 
-时间复杂度 $\mathcal{O}(n\sum w_{i}\log\sum w_{i}+Q\log Q\sum w_{i})$
+时间复杂度 $\mathcal{O}(n\sum w_{i}\log\sum w_{i}+Q\log Q\sum w_{i})$。
 
 ## H. Open Face Chinese Poker
 
