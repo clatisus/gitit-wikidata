@@ -66,6 +66,20 @@ $$
 
 时间复杂度 $\mathcal{O}(n^{4})$。 
 
+## J. Taxi
+
+**题目大意**：在 $n$ 个点边带权的树上，有 $m$ 个人和 $m$ 个出租车。每个人如果分配了一辆车，那么代价就是他们之间的路径长度。人和车的分配方案会最大化代价之和。现在问你所有的 $n^{2m}$ 种局面的代价之和。
+
+**题解**：枚举一条边，计算它的贡献。枚举子树 $v$ 中人的个数 $x$，那么另外一边有 $m-x$ 个人。再枚举另一边的车的数量 $y$，那么这边有 $m-y$。显然边的贡献的两边人数和车数的 $\min$。
+
+另 $t=w\cdot {m \choose x}\cdot \text{sz}[v]^x\cdot (n-\text{sz}[v])^{m-x}$。
+
+那么 $1\leq y\leq x$ 的时候，有 $t\cdot {m\choose y}\cdot \text{sz}[v]^{m-y}\cdot (n-\text{sz}[v])^y\cdot (y+m-x)$。
+
+那么 $x<y\leq m$ 的时候，有 $t\cdot {m \choose y}\cdot \text{sz}[v]^{m-y}\cdot (n-\text{sz}[v])^y\cdot (m-y+x)$。
+
+对 $y$ 前缀和优化，复杂度 $\mathcal{O}(nm)$ 。 
+
 ## L. Xormites
 
 **题目大意**：有一个正整数数列 $\{a_i\}$，两个人玩游戏，每次从头或者从尾取一个数。收益为所有数的异或和，问先手必胜、后手必胜还是平局。
