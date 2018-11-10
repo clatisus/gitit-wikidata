@@ -8,9 +8,16 @@ practice link: opentrains 10391
 
 ## A. Balance
 
-**题目大意：**有一个 $n\times n(n\leq 50)$ 的矩阵，（吃完火锅回来困了，明天再写）
+**题目大意：**有一个 $n\times n(n\leq 50)$ 的矩阵 $A[i][j]$。求一个新的矩阵 $B[i][j]$，满足每个位置有 $B[i][j]\geq A[i][j]$，且 $B[i][j]+B[i+1][j+1]=B[i+1][j]+B[i][j+1]$。最小化 $\sum B[i][j]-A[i][j]$。
 
-**题解：**
+**题解：**线性规划：
+
+$$
+\begin{aligned}
+\text{Minimize: }& \sum {a[i]+b[i]}\\
+\text{Subject to: }& a[i]+b[j]\geq A[i][j]
+\end{aligned}
+$$
 
 ## B. Entanglement
 
