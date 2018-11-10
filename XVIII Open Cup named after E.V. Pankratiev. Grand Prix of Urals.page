@@ -84,7 +84,7 @@ $q\le2\times10^5$次操作，每次选择一种颜色，将这种颜色的所有
 
 如果$j\le i-|v|+|u|+1$，那么$2|u|\ge |s[i-|v|+1\cdots j+|u|-1]|$，$s[i-|v|+1\cdots j+|u|-1]$有一个可以覆盖它的回文`border`，一定也是回文串，这与$u=link[v]$（$u$是$v$最长的回文`border`）矛盾。
 
-因此$j> i-|v|+|u|+1$，$|v|-1>2|u|$，因此$diff[u]\le|u|<|u|-|v|$，$link[v]=slink[v]$成立。
+因此$j> i-|v|+|u|+1$，$|v|-1>2|u|$，因此$diff[u]\le|u|<|u|-|v|=diff[v]$，$link[v]=slink[v]$成立。
 
 所以$left$集合增加的位置，只有$O(\log{n})$个。
 
