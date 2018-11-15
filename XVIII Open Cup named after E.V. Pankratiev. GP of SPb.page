@@ -6,4 +6,22 @@ practice link: opentrains 10394
 
 # Solutions
 
+## A. Base $i − 1$ Notation
+
+签到题。
+
+## B. Squaring a Bit
+
+签到题。
+
+## E. Decimal Form
+
+**题目大意**：告诉你 $\frac{a}{b}(1\le a<b\le10^{9})$ 的十进制的前十八位小数，求 $a,b$。
+
+**题解**：在 `stern-brocut tree` 上二分即可。
+
+## L. Xor-fair Division
+
+签到题。
+
 # Dirt Replay
