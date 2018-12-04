@@ -26,7 +26,7 @@ practice link: opentrains 10354
 
 五个点的连通状态只有$52$种，打表发现生成器的周期为$54$，于是矩阵乘法快速幂搞定。
 
-时间复杂度$O(s^3\log{n}+T\cdot s\cdot2^{5})$.
+时间复杂度$O(s^3\log{n}+T\cdot s^2\cdot2^{5})$.
 
 ## D. Skyscrapers
 
