@@ -6,6 +6,16 @@ practice link: opentrains 10354
 
 # Solutions
 
+## B. Craters
+
+**题目大意**：
+
+二维平面上有$n\le2\times10^5$随机的整点，求最大三角形的面积。
+
+**题解**：
+
+最大三角形一定是凸包上的点组成的，先求个凸包，因为数据随机，凸包上的点个数很少，暴力枚举一下就行。
+
 ## F. Buddy Numbers
 
 签到题。
