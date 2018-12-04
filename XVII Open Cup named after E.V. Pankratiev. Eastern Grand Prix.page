@@ -28,6 +28,18 @@ practice link: opentrains 10354
 
 时间复杂度$O(s^3\log{n}+T\cdot s\cdot2^{5})$.
 
+## D. Skyscrapers
+
+**题目大意**：
+
+略。
+
+**题解**：
+
+每次二分找到会影响的区间，用线段树维护$a_i-i$和$a_i+i$，然后暴力删除即可。
+
+时间复杂度$O(n\log{n})$.
+
 ## F. Buddy Numbers
 
 签到题。
