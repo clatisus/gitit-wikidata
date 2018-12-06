@@ -16,6 +16,8 @@ practice link: opentrains 10437
 
 ## E. Birthday
 
+**题目大意**：把一个 $n\leq 2000$ 的无向图的点集划分成 $k$ 个非空集合 $S_1,S_2,\dots,S_k$，使得对于 $\forall$ 边，它要么在一个点集中，要么连接两个相邻的点集 $S_i$ 和 $S_{i+1}(i<k)$。
+
 ## J. Office
 
 ## K. Recursive circuit
