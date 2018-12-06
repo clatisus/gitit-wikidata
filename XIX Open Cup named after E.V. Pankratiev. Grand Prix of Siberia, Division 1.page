@@ -21,3 +21,5 @@ practice link: opentrains 10437
 ## K. Recursive circuit
 
 ## L. Subsequences
+
+**题目大意**：定义一个小写字母串是好的，当且仅当它的本质不同子序列个数有偶数个。给你 $n\leq 20$ 个字符串，总长度不超过 $10^5$，问有多少种排列，使得它们拼成的串是好的。
