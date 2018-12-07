@@ -49,3 +49,23 @@ practice link: opentrains 10437
 ## L. Subsequences
 
 **题目大意**：定义一个小写字母串是好的，当且仅当它的本质不同子序列个数有偶数个。给你 $n\leq 20$ 个字符串，总长度不超过 $10^5$，问有多少种排列，使得它们拼成的串是好的。
+
+**题解**：我们可以写出一个经典的 $dp$ 方程：$dp[i][c]$ 表示前 $i$ 个字符中，以字符 $c$ 结尾的本质不同子序列有多少个，那么转移方程为：
+
+$$
+dp[0][\text{a}]=\cdots=dp[0][\text{z}]=0, dp[0][\varepsilon]=1
+$$
+
+$$
+dp[i][c]=
+\begin{cases}
+&dp[i-1][c]&(c\neq s[i])\\
+&dp[i-1][\varepsilon]+\sum_{j=\text{a}}^{\text{z}}dp[i-1][j]&(c=s[i])
+\end{cases}
+$$
+
+容易证明，$dp[i]$ 中除了 $dp[i][\varepsilon]$ 恒为 $1$，至多只有一个为奇数。因此我们可以用一个大小为 $27$ 的状态来记录 $dp$ 的奇偶性。
+
+外层也是一个经典的 $dp$，不再赘述。注意需要预处理内层的转移，否则复杂度要乘上串长。
+
+时间复杂度 $\mathcal{O}(2^{n}n|\Sigma|+|\Sigma|\cdot\sum{|s_{i}|})$
