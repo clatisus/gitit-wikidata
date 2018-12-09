@@ -12,7 +12,7 @@ practice link: opentrains 1489
 
 **题解**：注意到，每个 $(x,y)$ 和 $(x+1,y-1)$ 的方向必须相同。设 $\gcd=\gcd(n,m)$，那么所有 $x+y\equiv x'+y'\pmod{\gcd}$ 的 $(x,y)$ 和 $(x',y')$ 的方向都应该相同。
 
-容易发现，最开始的 $\gcd$ 步的 $x+y$ 恰好膜 $\gcd$ 互不相同，因此这 $\gcd$ 步就决定了是否有解。之后很简单，不再赘述。
+容易发现，最开始 $\gcd$ 步的 $x+y$ 恰好膜 $\gcd$ 互不相同，因此这 $\gcd$ 步就决定了是否有解。之后很简单，不再赘述。
 
 ## G. Rectangle-free Grid
 
