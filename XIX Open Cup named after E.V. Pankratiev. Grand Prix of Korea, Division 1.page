@@ -5,3 +5,17 @@ date: 2018.12.09 14:51-19:51
 practice link: opentrains 10435
 
 # Solutions
+
+## F. Fake Plastic Trees
+
+逗你玩题。构造方式是唯一的。
+
+## H. Fractions
+
+签到题。
+
+## J. Histogram Sequence
+
+**题目大意**：有一个长度为 $n$ 的数列 $\{h_{i}\}$，对于 $1\le l\le r\le n$ 的每个区间 $[l,r]$，定义它的价值为 $(r-l+1)\min_{l\le i\le r}h_{i}$。现在将所有 $\frac{n(n+1)}{2}$ 个价值排序，要求你给出第 $L$ 个到第 $R$ 个之间的值。
+
+**题解**：二分求出第 $L$ 个和第 $R$ 个的值 $a_{L}$ 和 $a_{R}$，$(a_{L},a_{R})$ 中间的值全部都要取。具体的个数使用单调栈计算。
