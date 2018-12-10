@@ -20,6 +20,30 @@ practice link: opentrains 10433
 
 签到题。
 
+## H. Galactic Governments
+
+**题目大意**：
+
+在一个$k\le10$维空间中有一个大的立方体
+$$
+U={(x_1,\cdots,x_k)\in \mathcal{R}^k:0\le x_i\le C}
+$$
+立方体中有$n\le18$个小立方体，
+$$
+G_i=\{(x_1,\cdots,x_k)\in U:a_{i,j}\le x_j\le b_{i,j}\}
+$$
+$a_{i,j}$和$b_{i,j}$都是$[0,C]$的整数。
+
+求一个字典序最小的点$(\beta_1+\frac{1}{2},\cdots,\beta_k+\frac{1}{2})$在$U$中而不在任何一个$G_i$中
+
+**题解**：
+
+如果$n$个立方体的体积并小于$U$的体积，就一定有解。
+
+依次确定$\beta_i$，每一位都二分找到一个最小的$mid$，使得$\cup G_i$不能填满$[0,mid+1]\times\cdots\times[0,C]$，那么$mid$就是这一位可以取得的最小值，然后再用$[mid,mid+1]\times\cdots\times[0,C]$与每个$G_i$求交集，降维处理。
+
+时间复杂度$O(2^n\cdot nk^2\log{C})$.
+
 ## I. Multiplication
 
 **题目大意**：给出一个整数 $x$，要求你问 $n$ 个数， `interactor` 返回其中任意 $\frac{n}{2}$ 个数分别乘上 $x$ 的值。要求你猜出 $x$。所有数在 $[0,2^{31})$ 内，运算在模 $2^{31}$ 下。
