@@ -50,7 +50,7 @@ $a_{i,j}$和$b_{i,j}$都是$[0,C]$的整数。
 
 **题解**：问前 $n$ 个奇数，暴力筛出答案即可。
 
-K. Beautiful Tables
+## K. Beautiful Tables
 
 **题目大意**：
 
