@@ -12,6 +12,10 @@ practice link: opentrains 10435
 
 [类似的技巧](http://clatisus.com/Discover%20Vladivostok%202018%20day%202#i.-kindom-and-roads)
 
+**题解**：
+
+轻重链剖分后，暴力维护每条重链上不同的颜色段即可，时间复杂度$O(n\log{n})$.
+
 ## D. Dumae
 
 **题目大意**：$n$ 个人排队，每个人的位置在区间 $[L_i,R_i]$ 之间，并且有 $m$ 对关系，每对关系是 $(u_i,v_i)$ 表示 $u_i$ 要站在 $v_i$ 前面，求一种可行的方案。
