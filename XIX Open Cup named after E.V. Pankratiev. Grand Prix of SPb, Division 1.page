@@ -10,6 +10,34 @@ practice link: opentrains 10433
 
 暴力算盐即可。
 
+## C. Clique Festival
+
+**题目大意**：
+
+有一个$n\le10^5$个点的无向图，一开始没有边。
+
+之后$k\le18$次操作，每次选出若干个点，增加一个选中点组成的团，团中每条边的权值为$a_i$.
+
+令$dis(i,j)$为$i$到$j$的最短路长度，求$\sum\limits_{i=1}^{n-1}\sum\limits_{j=i+1}^{n} dis(i,j)$.
+
+**题解**：
+
+先`floyd`一次求出每两个团之间的最短路，然后就是计算每个最短路贡献多少个点对。
+
+记$mask[x]$为点$x$出现在哪些团中的二进制状态，$mask_cnt[s]$为$mask[x]=s$的$x$的个数。
+
+简单的用$O(2^k\cdot k)$算出$dp[s]$，表示$mask[x]\subseteq s$的个数。
+
+之后记$mask_vis[s]$表示$mask[x]=s$的点已经计算过和$mask_vis[s]$中的团的贡献。
+
+那么，将$k^2$条最短路径排序，从小到大计算点对数量。
+
+当枚举到$(i,j)$这一对最短路时，枚举包含$i$的$s$，并且$mask_vis[s]$不包含$j$，则点对数量有$mask[s]\times(dp[s\oplus mask_vis[s]] - dp[s\oplus mask_vis[s]\oplus 2^j])$，之后再将$j$加入$mask_vis[s]$中即可。
+
+注意到这时，多算了每个点到自己的最短路，减去后，每一对最短路恰好被计算了两次，除以$2$就是答案。
+
+时间复杂度$O(n+k^3+k^2\log{k}+k^2\cdot2^k)$.
+
 ## E. Lui and Lines
 
 **题目大意**：给出 $n$ 维空间中的两条直线，求它们的距离。
