@@ -5,3 +5,7 @@
 ### A. Saving the Universe
 
 贪心，每次扩展极长的一段使得 search engine 不全在一段里面。
+
+### B. Train Timetable
+
+按出发时间排序，扫一遍。
