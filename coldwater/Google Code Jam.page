@@ -9,3 +9,9 @@
 ### B. Train Timetable
 
 按出发时间排序，扫一遍。
+
+## Round 1A
+
+### A. Minimum Scalar Product
+
+把两个序列的正（含0）负元素排序不等式，然后剩下个数一样的同号元素排序不等式。
