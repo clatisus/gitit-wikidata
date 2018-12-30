@@ -19,3 +19,9 @@
 ### A. Minimum Scalar Product
 
 排序不等式
+
+### B. Milkshakes
+
+**题目大意**：给出一个 SAT 问题，求一组取得 $1$ 最少的解。保证每个 clause 最多有一个 negated variable。
+
+**题解**：假设所有变量取 $0$，然后对不满足的 clause，将它的对应变量变为 $0$，重复上述步骤。
