@@ -1,0 +1,19 @@
+# Contest Info
+
+date: 2019.01.13 20:00-22:00
+
+[practice link](https://atcoder.jp/contests/keyence2019)
+
+# Solutions
+
+## E. Connecting Cities
+
+**题目大意**：给定 $D, \{a_i\}$，求 $n(n\leq 10^5)$ 个点的完全图的最小生成树。边权为 $|i-j|\times D+a_i+a_j$。
+
+**题解**：
+
+## F. Paper Cutting
+
+**题目大意**：
+
+**题解**：
