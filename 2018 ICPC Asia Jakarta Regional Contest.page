@@ -20,7 +20,7 @@ date: 2019.01.13 13:10-18:10
 
 **题解**：[De_Bruijn_sequence](https://en.wikipedia.org/wiki/De_Bruijn_sequence)
 
-由于 $m^{n}$ 可能很大，因此不能把整个欧拉回路找出来。只要正向和反向的边有一个足够了即可停止搜索。
+找有向图的欧拉回路用 [Hierholzer’s Algorithm](https://www.geeksforgeeks.org/hierholzers-algorithm-directed-graph/) 来做，复杂度是 $\mathcal{O}(|E|)=\mathcal{O}(m^n)$ 的。在 $m^{n}$ 很大的时候，不能把整个欧拉回路找出来。只要正向路径和反向的栈里面有一个长度足够了即可停止搜索。
 
 ## D. Icy Land
 
