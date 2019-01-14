@@ -23,6 +23,22 @@ $$
 
 时间复杂度 $\mathcal{O}(n+\sum w_{i})$，空间复杂度 $\mathcal{O}(\sum w_{i})$。
 
+## B. Baby Bites
+
+签到题。
+
+## C. Code Cleanups
+
+签到题。
+
+## D. Delivery Delays
+
+**题目大意**：无向图的 $1$ 号点有一个披萨店，他会依此接到若干个订单 $(s_i,u_i,t_i)$，分别表示接到订单的时间，需要送达的节点，披萨准备好可以送出的时间。保证 $s,t$ 分别递增。骑手可以携带任意数量的披萨，但是必须按照订单顺序送货。求最小的最大等待时间。
+
+**题解**：二分答案。dp 验证。设 $\text{dp}[i]$ 表示前 $i$ 个订单送达之后的最小时间。用 Dijkstra 预处理任意两点的最短路。预处理 $\text{cost}[i][j]$ 表示订单 $[i,j]$ 的配送时间。 $\text{pre}[i][j]=\max_{k=i}^j \text{cost}[i][k] - s_k$。
+
+转移的时候，令 $s=\max(\text{dp}[j-1],t_i)$，如果 $s+\text{dis}[1][u_j]+pre[j][i]>mid$，那么不合法，否则用 $s+\text{dis}[1][u_j]+\text{cost}[j][i]+\text{dis}[u_i][1]$ 更新 $\text{dp}[i]$。
+
 ## E. Explosion Exploit
 
 暴搜。注意状态内部不需要有序，即可缩减大量状态。
