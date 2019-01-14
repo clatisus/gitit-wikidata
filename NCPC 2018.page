@@ -37,7 +37,7 @@ $$
 
 **题解**：二分答案。dp 验证。设 $\text{dp}[i]$ 表示前 $i$ 个订单送达之后的最小时间。用 Dijkstra 预处理任意两点的最短路。预处理 $\text{cost}[i][j]$ 表示订单 $[i,j]$ 的配送时间。 $\text{pre}[i][j]=\max_{k=i}^j \text{cost}[i][k] - s_k$。
 
-转移的时候，令 $s=\max(\text{dp}[j-1],t_i)$，如果 $s+\text{dis}[1][u_j]+pre[j][i]>mid$，那么不合法，否则用 $s+\text{dis}[1][u_j]+\text{cost}[j][i]+\text{dis}[u_i][1]$ 更新 $\text{dp}[i]$。
+转移的时候，枚举 $j$ 到 $i$ 一起送。令 $s=\max(\text{dp}[j-1],t_i)$，如果 $s+\text{dis}[1][u_j]+\text{pre}[j][i]>mid$，那么不合法，否则用 $s+\text{dis}[1][u_j]+\text{cost}[j][i]+\text{dis}[u_i][1]$ 更新 $\text{dp}[i]$。
 
 ## E. Explosion Exploit
 
