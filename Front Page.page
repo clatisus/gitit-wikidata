@@ -57,7 +57,7 @@ Meeting:
 
 # Workshop
 
-[wiki archive]() 维基百科拾遗
+[wiki archive]() **维基百科拾遗**
 
 [tips and tricks]() 小提示，tricks，易错点
 
@@ -67,29 +67,42 @@ Meeting:
 
 [constructive algorithms]() 构造
 
-[2017-2018 赛季日程安排](2017-2018-Schedule)
-
 # Todo
 
-- 修改模板放到 git 上，整理 notes
-
-- 补 nowcoder 和 hdu 多校
-
-- 自己刷题，查漏补缺，一定要**记录和整理**
-
-- [几何]()
+- 搞模版（精简版）
+- 几何
 
 ## coldwater
 
 [wjj个人](coldwater/Front Page)
 
+- 看一遍官方题解
+
+- 2018-2019 ACM-ICPC Nordic Collegiate Programming Contest (NCPC 2018) **G** 边染色算法
+
+- Atcoder **E**
+
+- cf div2 **E**
+
 ## ShinriiTin
 
 [dyx个人](ShinriiTin/Front Page)
 
+- 朱刘算法 模版改复杂度+精简+放到两边
+
+- 2018 ICPC Asia Jakarta Regional Contest **B**
+
+- 2018-2019 ACM-ICPC Nordic Collegiate Programming Contest (NCPC 2018) **F**
+
+- CERC 2018 **F**
+
 ## zhongzihao
 
 [zzh个人](zhongzihao/Front Page)
+
+- 2018-2019 ACM-ICPC Nordic Collegiate Programming Contest (NCPC 2018) **G** 构造
+
+- CERC 2018 **K**
 
 # Training
 
