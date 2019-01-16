@@ -48,16 +48,16 @@ coldwater's comment:
 
 ## E. Equality Control
 
-**题目大意**：定义4种`vector`操作：
+**题目大意**：定义4种 vector 操作：
 
-- $[a_1,\cdots,a_k]$：初始化一个`vector`
-- $sorted(X)$：返回$X$排序后的`vector`
-- $shuffle(X)$：等概率随机返回$X$的一个排列后的`vector`
-- $concat(X,Y)$：返回$X$和$Y$连接后的`vector`
+- $[a_1,\cdots,a_k]$：初始化一个 vector
+- $\text{sorted}(X)$：返回$X$排序后的 vector
+- $\text{shuffle}(X)$：等概率随机返回$X$的一个排列后的 vector
+- $\text{concat}(X,Y)$：返回$X$和$Y$连接后的 vector
 
-给出两个以上四种操作组成的函数，判断对于任意可能的结果`vector`，它们是否都有相同的概率得到。
+给出两个以上四种操作组成的函数，判断对于任意可能的结果 vector，它们是否都有相同的概率得到。
 
-**题解**：对于$shuffle$以外的操作，得到的结果都是固定的。并且在$sort$和$shuffle$内部的任何操作都是没有意义的。这样可以化简得到固定的结果和被$shuffle$的区间。一个被$shuffle$的区间，如果只含有一种数，本质上也是固定的，可以去掉$shuffle$的影响。否则剩下的$shuffle$区间，两个操作函数要等价，必须是这些区间完全相同。因此只需要处理一下输入，将$sort$和$shuffle$区间内部都排序，连着这个位置的属性（是否固定，属于第几个$shuffle$区间）进行比较即可。时间复杂度$O(n\log{n})$.
+**题解**：对于 $\text{shuffle}$ 以外的操作，得到的结果都是固定的。并且在 $\text{sort}$ 和 $\text{shuffle}$ 内部的任何操作都是没有意义的。这样可以化简得到固定的结果和被 $\text{shuffle}$ 的区间。一个被 $\text{shuffle}$ 的区间，如果只含有一种数，本质上也是固定的，可以去掉 $\text{shuffle}$ 的影响。否则剩下的 $\text{shuffle}$ 区间，两个操作函数要等价，必须是这些区间完全相同。因此只需要处理一下输入，将 $\text{sort}$ 和 $\text{shuffle}$ 区间内部都排序，连着这个位置的属性（是否固定，属于第几个 $\text{shuffle}$ 区间）进行比较即可。时间复杂度 $\mathcal{O}(n\log{n})$。
 
 ## F. Fastest Speedrun
 
