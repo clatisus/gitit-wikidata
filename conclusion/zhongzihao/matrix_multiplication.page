@@ -1,5 +1,7 @@
 设 $\oplus,\otimes$ 为二元运算，且 $\oplus$ 满足交换律和结合律，$\otimes$ 满足结合律，$\otimes$ 对 $\oplus$ 满足分配律。定义新的矩阵乘法 $A_{n,m}\times B_{m,p}=C_{n,p}$，其中 $c_{i,j}=\bigoplus_{k=1}^{m}a_{i,k}\otimes b_{k,j}$，那么这种矩阵乘法满足结合律。
 
+**update**：简单的说就是环上定义的矩阵仍然成一个环。之前写的什么玩意。
+
 证明：设 $D_{n,q}=(A_{n,m}\times B_{m,p})\times C_{p,q}$，$E_{n,q}=A_{n,m}\times(B_{m,p}\times C_{p,q})$，则有：
 $$
 \begin{aligned}
