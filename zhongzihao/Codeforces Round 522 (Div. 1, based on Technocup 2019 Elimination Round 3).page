@@ -3,3 +3,27 @@
 [practice link](https://codeforces.com/contest/1078)
 
 # Solutions
+
+## A. Barcelonian Distance
+
+签到题。
+
+## B. The Unbearable Lightness of Weights
+
+签到题。
+
+## C. Vasya and Maximum Matching
+
+**题目大意**：给你一棵树，求出有多少边集删除后剩余部分的最大匹配唯一。
+
+**题解**：可以证明，一棵树的完备匹配一定是唯一的。一个非孤立点的连通图的非完备匹配的最大匹配一定不是唯一的，在上述条件下我们可以把 $V$ 划分成已匹配和未匹配的两个点集 $S_{1}$ 和 $S_{2}$，且它们都非空，又因为图连通，所以一定存在一条边连接 $u\in S_{1}$ 和 $v\in S_{2}$，那么我们把 $u$ 的那条匹配边改为 $v$，就得到了一个不同的最大匹配。
+
+那么说人话就是：删除边后的每个连通块，要么是孤立点，要么有完备匹配。然后树 $dp$ 一下就好了。
+
+## D. Chattering
+
+预处理倍增用线段树维护，查询的时候二分。
+
+## E. Negative Time Summation
+
+主要解决三个问题：搭一个非门，搭一个与门，某个格子非空则不动，否则填 $0$。
