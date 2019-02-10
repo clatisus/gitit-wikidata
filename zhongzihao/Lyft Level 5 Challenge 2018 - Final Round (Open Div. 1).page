@@ -3,3 +3,29 @@
 [practice link](http://codeforces.com/contest/1074)
 
 # Solutions
+
+## A. The Tower is Going Home
+
+签到题。
+
+## B. Intersecting Subtrees
+
+签到题。
+
+## C. Optimal Polygon Perimeter
+
+签到题。
+
+## D. Deduction Queries
+
+签到题。
+
+## E. Grid Sort
+
+**题目大意**：给你一个 $n\times m$ 的网格，每个格子中有一个 $1\sim nm$ 且互不相同的整数。每次你可以选一个简单环（四连通），将这个环中的元素按环的顺序移动一位。要求你将这个网格按照先行后列排好序。
+
+**题解**：事实上使用 $2\times2$ 的环已经可以完成要求了。我们先将除了右下角 $2\times2$ 格之外的格子都排好序，这个不是特别困难。之后我们直接暴搜右下角 $3\times 3$ 的格子排好序即可。
+
+## F. DFS
+
+签到题。
