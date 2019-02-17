@@ -5,3 +5,9 @@ date: 2019.02.17 09:30-14:30
 [practice link](http://opentrains.mipt.ru/~ejudge/team.cgi?contest_id=2584)
 
 # Solutions
+
+## B. Cheese
+
+**题目大意**：给定 $n$ 个物品，每个物品为 $(V_i, M_i)$。让你最多选两个物品各切一刀（选择一个 $p\in [0, 1]$，物品被切为 $(pV_i, pM_i)$ 和 $((1-p)V_i, (1-p)M_i)$。然后分成两堆，使得两堆的 $\sum V$ 相等，且 $\sum M$ 相等。
+
+**题解**：
