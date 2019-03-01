@@ -5,3 +5,15 @@ date: 2019.02.22 09:30-14:30
 [practice link](http://opentrains.mipt.ru/~ejudge/team.cgi?contest_id=2584)
 
 # Solutions
+
+## C. Called Convergient
+
+**题目大意**：一个人开始有 $x$ 元钱，每轮他可以下注不超过他当前钱数，且不小于上一轮的钱。每轮赢的概率为 $p$，$0<p<\frac{1}{2}$。如果他的钱大于等于 $1$ 元，那么他就赢，如果钱数为 $0$，他就输。求最优策略下他赢的概率。
+
+**题解**：没学过随机过程的我不会证。。只能上结论了：
+
+设 $x$ 的二进制表示为 $0.b_{1}b_{2}\cdots$，那么赢的概率为 $\displaystyle{\sum_{i=1}^{+\infty}b_{i}p^{i-\sum_{j=1}^{k-1}b_{j}}(1-p)^{\sum_{j=1}^{k-1}b_{j}}}$。这个式子只要找一下循环节就很好求了。
+
+## F. Formally, You Choose Three Integers
+
+签到题。
