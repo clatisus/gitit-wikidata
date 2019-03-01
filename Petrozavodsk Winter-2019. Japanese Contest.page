@@ -6,6 +6,11 @@ date: 2019.03.01 18:03-23:03
 
 # Solutions
 
+## A. Digits Are Not Just Characters
+
+签到题。
+
+
 ## B. Arithmetic Progressions
 
 **题目大意**：给你一个长度为 $n$ 且互不相同的数列，要求你用这些数组成一个等差数列（顺序可以交换），且长度尽可能大。
