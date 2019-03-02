@@ -6,6 +6,10 @@ date: 2019.02.19 12:30-17:30
 
 # Solutions
 
+## A. Another LCA Problem
+
+裸的`LCT`维护`LCA`。
+
 ## B. Bar
 
 **题目大意**：求 $\sum_{n=1}^{+\infty}\frac{\ln n}{n^{s}}(s>1)$。
