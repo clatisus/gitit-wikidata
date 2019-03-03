@@ -20,7 +20,7 @@ c_{2}&=a_{0}*b_{1}+a_{1}*b_{0}
 $$
 这样我们就可以用 $4$ 次乘法来完成一维的计算。
 
-时间复杂度 $T(3^k)=c\times \mathcal{O}(3^{k-1})+4T(3^{k-1})$，$\mathcal{O}=c\times (4^k-3^k)$。其中 $c$ 是常数。
+时间复杂度 $T(3^k)=c\times \mathcal{O}(3^{k-1})+4T(3^{k-1})$，也即 $\mathcal{O}(c\times (4^k-3^k))$。其中 $c$ 是常数。
 
 ## D. Basis Change
 
