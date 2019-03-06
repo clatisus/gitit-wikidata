@@ -52,7 +52,7 @@ coldwater's comment:
 
 有一个 Kruskal 的做法。对所有的 $2^n$ 个点建图，每个点跟只相差一位的 $n$ 个点连边。我们要求的等价于：对给定的点求最小生成树，它们两两的边权为它们在图上的最段路。我们从给定点出发（初始距离设为 $0$）去 dfs，对于每个点 $u$，求出 $p_u$ 和 $d_u$ 分别表示到 $u$ 最近的给定点下标和距离。
 
-我们再枚举图中所有的边 $(u,v)$，把 $(p_u, p_v, d_u+d_v+1)$ 拿来做 Kruskal 即可。复杂度 $\mathcal{n2^n(n+\alpha(m))}$。
+我们再枚举图中所有的边 $(u,v)$，把 $(p_u, p_v, d_u+d_v+1)$ 拿来做 Kruskal 即可。复杂度 $\mathcal{O}(n2^n(n+\alpha(m))$。
 
 ## H. Masterpiece
 
