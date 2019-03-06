@@ -82,9 +82,9 @@ coldwater's comment:
 
 $$
 \begin{aligned}
-g[u][i] += g[v][i + 1]\\
-g[u][i] += f[u][i] * f[v][i - 1]\\
-f[u][i] += f[v][i - 1]\\
+&g[u][i] += g[v][i + 1]\\
+&g[u][i] += f[u][i] * f[v][i - 1]\\
+&f[u][i] += f[v][i - 1]\\
 \end{aligned}
 $$
 
