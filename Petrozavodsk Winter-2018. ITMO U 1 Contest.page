@@ -39,4 +39,4 @@ $$
 
 那么 $\displaystyle f_i = \sum_{k = 1, j = i + k\cdot a_i}^{j\le n} f_j\cdot [a_j\neq a_i]$。从后往前计算。对 $a_i$ 大小分块，如果 $a_i \ge \sqrt n$，我们直接暴力枚举 $k$ 即可。
 
-记录 $\text{sum}[i][j]$ 表示下标模 $i$ 余 $j$ 的位置的和。如果 $a_i< \sqrt n$，那么答案为 $\text{sum}[a_i][i\bmod a_i]$。更新的时候对 $\forall j, j\neq a_i$（通过 $a_i$ 跳过来的时候不更新答案），更新 $\text{sum}[j][i\bmod j]$ 即可。
+记录 $\text{sum}[i][j]$ 表示下标模 $i$ 余 $j$ 的位置的和。如果 $a_i< \sqrt n$，那么答案为 $\text{sum}[a_i][i\bmod a_i]$。更新的时候对 $\forall j, j\neq a_i$（通过 $a_i$ 跳过来的时候不被贡献），更新 $\text{sum}[j][i\bmod j]$ 即可。
