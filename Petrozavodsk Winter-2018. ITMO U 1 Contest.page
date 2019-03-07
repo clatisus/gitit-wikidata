@@ -30,3 +30,13 @@ $$
 **题解**：我们先求出最小值。观察式子可以发现，每个 $p_i$，我们需要找到一个 $p_j$ 满足 $j\le i$，如果不考虑取等的情况，这让我们想到了树。建有向图，枚举所有的有向边 $j\rightarrow i$，边权为 $b_j\oplus a_i$。考虑取等的情况，我们新建一个结点作为根，连接有向边 $\text{root}\rightarrow i$，边权为 $b_i\oplus a_i$。求最小树形图，即得到了最小值。
 
 要使得方案最小，我们从左往右枚举排列的每个位置，每种取值，然后 check 当前的图能否达到最小值即可。一次 check 的复杂度为 $\mathcal{O}(n^2\log n)$，总复杂度 $\mathcal{O}(n^4\log n)$。
+
+## J. Journey
+
+**题目大意**：长度为 $n$ 的数列 $a_i$，满足 $a_i\in [1, n)$。你一开始站在位置 $1$，手上拿着数 $h_1(h_1\in [1, n))$。假设位置 $i$，手上拿的数是 $h_i$，那么你可以跳到 $i+h_i$ 或者 $i+a_i$。$h_i$ 等于上一跳的距离。求 $1$ 到 $n$ 的方案数。
+
+**题解**：题意可以理解为在位置 $i$ 可以跳到位置 $j=i+k\cdot a_i(k\ge 1, a_j\neq a_i)$。从后往前计算方案数。初始值 $f_n=1$。将 $a_n$ 设置为 $-1$。
+
+那么 $\displaystyle f_i = \sum_{k = 1, j = i + k\cdot a_i}^{j\le n} f_j\cdot [a_j\neq a_i]$。从后往前计算。对 $a_i$ 大小分块，如果 $a_i \ge \sqrt n$，我们直接暴力枚举 $k$ 即可。
+
+记录 $\text{sum}[i][j]$ 表示下标模 $i$ 余 $j$ 的位置的和。如果 $a_i< \sqrt n$，那么答案为 $\text{sum}[a_i][i\bmod a_i]$。更新的时候对 $\forall j, j\neq a_i$，更新 $\text{sum}[j][i\bmod j]$ 即可。
