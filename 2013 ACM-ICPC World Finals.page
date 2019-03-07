@@ -44,3 +44,5 @@ $$
 $$
 h = \lfloor \frac{nmg_0-1}{nm-xy} \rfloor
 $$
+
+复杂度 $\mathcal{O}(n^3)$。
