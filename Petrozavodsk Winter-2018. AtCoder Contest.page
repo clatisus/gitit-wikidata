@@ -3,3 +3,15 @@
 date: 2019.03.08 13:01-18:01
 
 [practice link](http://opentrains.snarknews.info/~ejudge/team.cgi?contest_id=001513)
+
+# Solutions
+
+## A. Vacant Seat
+
+签到题。
+
+## C. Construct Point
+
+**题目大意**：找出一个整点三角形严格内部的整点。
+
+**题解**：类欧签到题。
