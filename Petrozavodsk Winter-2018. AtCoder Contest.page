@@ -40,7 +40,7 @@ date: 2019.03.08 13:01-18:01
 
 **题目大意**：给出一个长度为 $n(n\le 2\times 10^5)$ 的序列，每个元素 $a_i(0\le a_i\le 10^8)$。若干次操作，操作有三种：将区间 $[l, r]$ 加上数字 $x$；将区间 $[l, r]$ 除以 $x$ 向下取整；求区间 $[l, r]$ 的 $\max$。其中，$1\le x\le 10^3$。
 
-**题解**：线段树上暴力做 add 和 max。维护 min 和 max，对于除法操作，我们一直递归，直到区间满足 $\min - \lfloor \frac{\min}{x}\rfloor = \max - \lfloor \frac{\max}{x}\rfloor$，那么这个区间的数除以 $x$ 向下取整可以转换为减去这个 diff 值。
+**题解**：线段树上直接打标记做 add 和 max。维护 min 和 max，对于除法操作，我们一直递归，直到区间满足 $\min - \lfloor \frac{\min}{x}\rfloor = \max - \lfloor \frac{\max}{x}\rfloor$，那么这个区间的数除以 $x$ 向下取整可以转换为减去这个 diff 值。
 
 复杂度证明留坑。大概是两个 $\log$ 吧？
 
