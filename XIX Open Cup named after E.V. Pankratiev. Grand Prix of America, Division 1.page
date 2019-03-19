@@ -5,3 +5,9 @@ date: 2019.03.19 16:14-21:14
 [practice link](http://opentrains.snarknews.info/~ejudge/team.cgi?contest_id=010454)
 
 # Solutions
+
+## E. Monotony
+
+**题目大意**：给定一个 $r\times c$（$1\le r, c\le 20$）的矩阵，每个位置有一个数字，它们互不相同。定义一个矩阵是好的，当且仅当它的每一行、每一列都是单调的（增减性独立）。在所有的 $(2^r-1)(2^c-1)$ 种非空子矩阵中，有多少个好的？
+
+**题解**：
