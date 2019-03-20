@@ -5,3 +5,9 @@ date: 2019.03.20 15:40-20:40
 [practice link](https://codeforces.com/gym/101242/)
 
 # Solutions
+
+## B. Branch Assignment
+
+**题目大意**：给出一个$n\le5000$个点，$m\le50000$条边的有向图，保证任意两点可达。给出$b\le n-1$和$s\le b$，将$1,\cdots,b$分成$s$个非空的集合$S_1,\cdots,S_s$。设集合$S$的代价为$F(S)=\sum_{i,j\in S\land i\not=j} dis(i,b+1)+dis(b+1,j)$，最小化总代价.
+
+**题解**：先做两次最短路，求出$dis(i,b+1)$和$dis(b+1,i)$。设$a_i=dis(i,b+1)+dis(b+1,i)$，即是将$a_1,\cdots,a_b$分成$s$个非空的集合$S_1,\cdots,S_s$，集合$S$的代价为$F(S)=(|S|-1)\times\sum_{x\in S} x$.显然，将$a$从小到大排序，显然最优解是分成$s$个长度不增的连续区间。令$s_i=\sum_{j\le i} a_i$，$dp[k][i]$表示前缀$i$分成$k$个区间的最小值，则$dp[k][i]=\min dp[k - 1][j] + (i - j - 1)\cdot(s_i - s_j)$。~~这个看起来就非常地有决策单调性，直接分治就做完了。~~因为区间长度递减的性质，我们枚举$j$的时候只需要枚举到$i-j\le \frac{i}{k}$即可，时间复杂度$O(m\log{n}+bs\log{b})$.
