@@ -52,7 +52,15 @@ $$T(n) = \alpha(n) \sum_{i=1}^{\max a_i} \frac{\max a_i}{i}$$
 
 ## F. zzh 与同余方程
 
-出题人咕咕中。
+该题等价于对 $\forall i=1,\cdots,n$，求 $(i+1)^{i+1}-(i+1)^{i}=(i+1)^{i}\cdot i$ 的约数个数之和。对数论不太熟悉的同学可以先看[这里](https://zh.wikipedia.org/wiki/%E5%9B%A0%E6%95%B8#%E5%9B%A0%E6%95%B0%E4%B8%AA%E6%95%B0)了解一下基本知识。
+
+设 $i$ 的唯一分解为 $\prod_{i=1}^{n}p_{i}^{a_{i}}$，$i+1$ 的唯一分解为 $\prod_{i=1}^{m}p_{i}'^{a_{i}'}$。由于 $i$ 和 ​$i+1$ 互质，因此 ​$(i+1)^{i}\cdot i$ 的约数个数即为 ​$\prod_{i=1}^{m}a_{i}'\cdot\prod_{i=1}^{n}ia_{i}$。
+
+记 $A=10^{7}$。使用线性的[欧拉筛](https://blog.csdn.net/lytning/article/details/24432651)可以在 $\mathcal{O}(A)$ 的时间内求出 $1\sim A$ 中每个整数的最小质因子及其数量。对于每个 $i$，我们不断地把它最小的质因子除掉，就可以在 $\mathcal{O}(\omega(i))$ 的时间内得到 $i$ 的唯一分解，从而可以计算出上面的式子。
+
+虽然本题有 $T=10^{6}$ 组数据，但是我们可以从 $1$ 到 $10^{7}$ 依次计算，在计算的过程中把 $1,\cdots,10^{7}$ 的答案储存下来。这样对每个询问就可以 $\mathcal{O}(1)$ 回答了。
+
+时间复杂度 $\sum_{i=1}^{A}\mathcal{O}(\omega(i))=\mathcal{O}(A\log\log A)$。这一时间复杂度的证明参见 [Mertens' second theorem](https://en.wikipedia.org/wiki/Mertens%27_theorems)。
 
 ## G. 小 z 刷题。
 
