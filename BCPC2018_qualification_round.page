@@ -98,19 +98,17 @@ $$
 
 设 $ans_i$ 为第 $i$ 种物品有个数限制而选择都超过限制时的方案数，则
 
-$ans=(ans_空)+(-ans_1-ans_2-...-ans_n)+(ans_{1,2}+ans_{1,3}+...+ans_{n-1,n})-....​$
+$$ans=(ans_空)+(-ans_1-ans_2-...-ans_n)+(ans_{1,2}+ans_{1,3}+...+ans_{n-1,n})-....​$$
 
 有些物品有限制的方案数为 ${n+m-1-sum\choose m-sum}$
 
 其中，$sum$ 为 $\sum（每种物品限制的个数+1）$，即，我们要求的是不满足任何一个限制的方案数。
 
-比如对于样例
-
-$n=2,m=3​$
+比如对于样例 $n=2,m=3​$。
 
 $$
 \begin{aligned}
-ans&={n+m-1\choose m}-{n+m-v[1]-1\choose m-v[1]-1}-{n+m-v[2]-1\choose m-v[2]-1}+{n+m-v[1]-1-v[2]-1\choose m-v[1]-1-v[2]-1}\\
+ans&={n+m-1\choose m}-{n+m-v_1-1\choose m-v_1-1}-{n+m-v_2-1\choose m-v_2-1}+{n+m-v_1-1-v_2-1\choose m-v_1-1-v_2-1}\\
 
 ​&=C_4^3-C_2^1-C_0^{-1}+C_{-2}^{-3}\\
 
