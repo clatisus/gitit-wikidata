@@ -182,7 +182,7 @@ $\begin{Bmatrix}n\\k\end{Bmatrix}$ 表示有 $n$ 个元素的集合划分为 $k$
 
 ## 贝尔数
 
-设 $B_{n}$ 表示基数为 $n$ 的集合的划分方法数，则 $B_{n}$ 满足 $B_{n+1}=\sum_{k=0}^{n}{n\choose k}B_{k}$ ， $B_{n}=\sum_{k=0}^{n}S(n, k)$ ，其中 $S$ 是第二类斯特林数，对任意质数 $p$ 有 $B_{n+p}\equiv B_{n}+B_{n+1}\pmod{p}$ ，其指数型母函数是 $\sum_{n=0}^{\infty}\frac{B_{n}}{n!}x^{n}=e^{e^{x}-1}$ 。从 $0$ 开始， $B_{n}$ 的前若干项为 
+设 $B_{n}$ 表示基数为 $n$ 的集合的划分方法数，则 $B_{n}$ 满足 $B_{n+1}=\sum_{k=0}^{n}{n\choose k}B_{k}$，$B_{n}=\sum_{k=0}^{n}S(n, k)$，其中 $S$ 是第二类斯特林数，对任意质数 $p$ 有 $B_{n+p}\equiv B_{n}+B_{n+1}\pmod{p}$，其指数型母函数是 $\sum_{n=0}^{\infty}\frac{B_{n}}{n!}x^{n}=e^{e^{x}-1}$。从 $0$ 开始，$B_{n}$ 的前若干项为 
 $$
 \begin{aligned}
 &1,1,2,5,15,52,203,877,\\
