@@ -24,6 +24,10 @@ date: 2019.03.20 15:40-20:40
 
 或者，我们可以发现区间长度递减的性质，我们枚举 $j$ 的时候只需要枚举到 $i-j\le \frac{i}{k}$ 即可，时间复杂度 $\mathcal{O}(m\log{n}+bs\log{b})$。
 
+## C. Ceiling Function
+
+二叉树 hash，直接用 map<pair> 即可。
+
 ## E. Forever Young
 
 签到题。
