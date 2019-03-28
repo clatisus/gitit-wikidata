@@ -26,7 +26,7 @@ date: 2019.03.20 15:40-20:40
 
 ## C. Ceiling Function
 
-二叉树 hash，直接用 map<pair> 即可。
+二叉树 hash，直接用 map\<pair\> 即可。
 
 ## E. Forever Young
 
