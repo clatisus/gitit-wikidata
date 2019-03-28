@@ -59,7 +59,7 @@ $$
 \tag{4}(q_i-p_{u(j)})\cdot(e_i-d_{u(j)})\le(q_i-p_{u(i)})\cdot(e_i-d_{u(i)})
 $$
 
- (3) 和 (4) 分别变形化简得到：
+(3) 和 (4) 分别变形化简得到：
 $$
 \tag{5}(p_{u(i)}-p_{u(j)})\cdot e_j+q_j\cdot(d_{u(i)}-d_{u(j)})-p_{u(i)}\cdot d_{u(i)}+p_{u(j)}\cdot d_{u(j)}>0
 $$
