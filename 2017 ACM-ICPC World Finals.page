@@ -38,7 +38,7 @@ date: 2019.03.26 16:25-21:25
 
 **题解**：答案为 $\max\limits_{i\in[1,n]}(\max\limits_{e_i\ge d_j} (q_i-p_j)\cdot(e_i-d_j))$。对于两个卖家 $i​$ 和 $j​$，如果 $d_i\le d_j​$ 且 $p_i\le p_j​$，那么卖家 $j​$ 一定没有卖家 $i​$ 更优。对于两个买家 $i​$ 和 $j​$，如果 $e_i\le e_j​$ 且 $q_i\le q_j​$，那么买家 $i​$ 一定没有买家 $j​$ 更优。
 
-只保留有用的买家和卖家，并按 $(d,e)$ 从大到小排序，令 $u(i)$ 为 $\max\limits_{e_i\ge d_j} (q_i-p_j)\cdot(e_i-d_j)$ 取到最值的最大的 $j$，则 $u(i)$ 单调不减，直接分治即可，时间复杂度 $\mathcal{O}(n\log{n})$。
+只保留有用的买家和卖家，并分别按照 $d,e$ 从大到小排序，令 $u(i)$ 为 $\max\limits_{e_i\ge d_j} (q_i-p_j)\cdot(e_i-d_j)$ 取到最值的最大的 $j$，则 $u(i)$ 单调不减，直接分治即可，时间复杂度 $\mathcal{O}(n\log{n})$。
 
 证明：
 
