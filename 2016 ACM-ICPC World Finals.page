@@ -28,6 +28,10 @@ date: 2019.03.20 15:40-20:40
 
 二叉树 hash，直接用 map\<pair\> 即可。
 
+## D. Clock Breaking
+
+模拟题.
+
 ## E. Forever Young
 
 签到题。
