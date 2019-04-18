@@ -127,10 +127,10 @@ $$b_i = \max(b_{i-1}, b_j + 1)$$
 
 - 出题人 Immortal.S
 
-题目即求 $(x\_i+a\*t\_i)\ mod\ n\_i$ 的所有结果。
+题目即求 $(x_i+a*t_i)\bmod n_i$ 的所有结果。
 
-令 $gys=gcd(t\_i, n\_i)$ ，可证:
+令 $\text{gys}=\text{gcd}(t_i, n_i)$ ，可证:
 
-$x\_i+a\_0\*t\_i=y\_i+b\_0\*n\_i$ 等价于 $x\_i+a\_1\*gys=y\_i+b\_1\*n\_i$
+$x_i+a_0*t_i=y_i+b_0*n_i$ 等价于 $x_i+a_1*\text{gys}=y_i+b_1*n_i$
 
-故只需计算 $(1+n\_i-x\_i)\ mod\ gys$ 的结果，若为0则说明1号会被抽中，否则不会。
+故只需计算 $(1+n_i-x_i)\bmod \text{gys}$ 的结果，若为 $0$ 则说明 $1$ 号会被抽中，否则不会。
