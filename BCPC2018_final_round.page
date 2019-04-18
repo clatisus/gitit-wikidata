@@ -75,7 +75,7 @@ $$b_i = \max(b_{i-1}, b_j + 1)$$
 
 ## E. 啷个的 Scramble String
 
-- 出题人
+- 出题人 braveTester
 
 ## F. 构造题
 
