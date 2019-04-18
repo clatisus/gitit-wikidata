@@ -91,7 +91,7 @@ $$b_i = \max(b_{i-1}, b_j + 1)$$
 
 每次询问直接进行树上$\text{dp}$，状态 $f _ i$ 表示以 $i$ 号节点为根的子树节点个数（包括根节点），状态 $g _ i$ 表示该子树中，所有点权为当次询问 $V$ 倍数的节点到 $i$ 号节点的距离之和。
 
-设某个节点为根 $\text{dfs}$ 整棵树（譬如我们设 $1$ 号节点为根, $\text{dfs(1)}$ ），对于每个节点 $i$ 依次遍历其子树，初始化 $f _ i=(v _ i\ \text{mod}\ V==0)$，$g _ i=0$ 。令 $j$ 号点为 $i$ 号点的下一层子节点（儿子节点），则先调用函数 $\text{dfs(j)}$ 获取 $f _ j$ 和 $g _ j$，随后用 $ f _ i \times (\text{dist(i, j)} \times f _ j + g _ j) + g _ i \times f _ j$ 的结果更新答案，其中 $\text{dist(i, j)}$ 表示树边 $<i,j>$ 的权值。
+设某个节点为根 $\text{dfs}$ 整棵树（譬如我们设 $1$ 号节点为根, $\text{dfs(1)}$ ），对于每个节点 $i$ 依次遍历其子树，初始化 $f _ i=(v _ i\ \text{mod}\ V==0)$，$g _ i=0$ 。令 $j$ 号点为 $i$ 号点的下一层子节点（儿子节点），则先调用函数 $\text{dfs(j)}$ 获取 $f_j$ 和 $g_j$，随后用 $ f_i \times (\text{dist(i, j)} \times f_j + g_j) + g_i \times f_j$ 的结果更新答案，其中 $\text{dist(i, j)}$ 表示树边 $<i,j>$ 的权值。
 
 然后更新 $f_i=f_i+f_j$，$g_i=g_i+f_j\times \text{dist(i,j)}+g_j$，再继续遍历 $i$ 号节点的下一个儿子节点。
 
