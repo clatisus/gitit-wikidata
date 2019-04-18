@@ -6,9 +6,13 @@
 
 ## A. wjj 的分手厨房
 
+- 出题人 MKibera
+
 把所有出现的菜相加即可。
 
 ## B. zzh 与子序列
+
+- 出题人 zhongzihao
 
 这道题可以采用数位 `dp` 的思想来解决。
 
@@ -35,6 +39,7 @@ ll mult(ll a, ll b){
 
 ## C. 未闻题名
 
+- 出题人 Chielo
 - 题目定位：推一推的签到题
 
 数据范围看起来很大，所以多半是个 $\mathcal{O}(n)$ 的。
@@ -63,5 +68,11 @@ $$b_i = \max(b_{i-1}, b_j + 1)$$
 
 时间复杂度 $\mathcal{O}(n)$。
 
+## D. 区间 mex
 
+- 出题人 coldwater
+- 题目定位：very hard
 
+## E. 啷个的 Scramble String
+
+出题人
