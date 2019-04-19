@@ -73,6 +73,20 @@ $$b_i = \max(b_{i-1}, b_j + 1)$$
 - 出题人 coldwater
 - 题目定位：very hard
 
+我们要最小化 \text{ans}=\frac{\text{len}+1-\text{mex}}{\text{len}+1+\text{mex}} ，容易发现，如果 \text{mex} 相等，那么要最小化 \text{len} （糖水不等式）。一个朴素的想法是，找到所有极小的区间 [l, r] ，满足 \text{mex}(l+1,r)<\text{mex}(l,r)，且 \text{mex}(l,r)>\text{mex}(l,r-1) 。那么只考虑这些区间对答案的贡献即可。后面证明这样的区间个数是 \mathcal{O}(n) 的。
+
+假设我们求出了所有的极小区间，那么问题转换为：有 \mathcal{O}(n) 个三元组 (l,r,\text{ans})，每次询问 L,R，输出满足 L\le l \le r \le R 的三元组中 \text{ans} 的最小值。如果离线的话，很容易用扫描线就解决了；如果硬要在线，也可以用可持久化线段树解决。复杂度都是一个 \log 。
+
+下面证明上述的极小区间是 \mathcal{O}(n)  的，证明过程也同时给出了解法：
+
+设原序列为 \{a_i\} ，再设 \text{next}_i=j  表示满足 i<j 且 a_i=a_j 的最小的 j。我们固定区间的左端点 l，考虑关于区间右端点 r 的函数 \text{mex}(r)(l\le r \le n) 。显然该函数是单调不降的，我们合并 \text{mex} 值相等的 r，这样会形成若干个关于 r 的小段，每段内函数值相同。那么只有每一小段的最左位置才能作为极小区间的 r，否则不满足极小性质的 \text{mex}(l,r)>\text{mex}(l,r-1)。
+
+当我们移动 l 的时候（将 l 加 1），我们找到 k=\text{next}_l ，那么对于满足 l<r<k  且 \text{mex}(r)>a_l 的 r ，我们需要将其 \text{mex} 值改为 a_l 。被修改的位置才能作为极小区间的 r，否则不满足极小性质的 \text{mex}(l+1,r)<\text{mex}(l,r) 。
+
+所以我们将同时满足两个条件（加粗语句）的 r 和当前固定的 l 组成区间 [l,r]，它一定是极小的。当 l=1 的时候，有 \mathcal{O}(n) 个关于 r 且函数值相同的小段。每次移动 l 的时候，我们会将若干小段合并成一段，每个小段会贡献 1 的复杂度（增加一个极小区间），并且我们还会将 k 所在的段拆开，所以每次最多增加 2 个小段。复杂度 \mathcal{O}(n) 。\Box
+
+[示例代码（map找极小区间，可持久化线段树在线回答询问）](https://paste.ubuntu.com/p/dTNv6cryDg/)
+
 ## E. 啷个的 Scramble String
 
 - 出题人 braveTester
