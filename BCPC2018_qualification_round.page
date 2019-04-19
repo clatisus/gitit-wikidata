@@ -20,6 +20,8 @@ $dp[i][j][k]$ 表示考虑了前 $i$ 段时间，kirito 的时间减去 ugo 的�
 
 出题人咕咕中。
 
+[验题人 Immortal.S 的代码](https://paste.ubuntu.com/p/FqfgNHHw4Y/)
+
 ## D. Bella 姐姐发辣条
 
 题目定位：签到题 2/3.
