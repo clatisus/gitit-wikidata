@@ -10,8 +10,8 @@ $\forall W\subseteq S, \displaystyle |W|\leq {\Bigl |}\bigcup _{A\in W}A{\Bigr |
 
 ## 图论形式
 
-$G=(X+Y, E)$ 为一个有穷二分图。对于任意的 $W\subseteq S$，令 $N_G(W)$ 表示它的邻点集（在二分图中同时也是 $Y$ 的一个子集）。存在一个匹配覆盖 $X$ 的充要条件为：
+$G=(X+Y, E)$ 为一个有穷二分图。对于任意的 $W\subseteq X$，令 $N_G(W)$ 表示它的邻点集（在二分图中同时也是 $Y$ 的一个子集）。存在一个匹配覆盖 $X$ 的充要条件为：
 
-$\forall W\subseteq S, \displaystyle |W|\leq {\Bigl |}N_G(W){\Bigr |}$
+$\forall W\subseteq X, \displaystyle |W|\leq {\Bigl |}N_G(W){\Bigr |}$
 
 换言之，对于 $X$ 的任意子集 $W$，在 $Y$ 中都有足够多的邻点。
