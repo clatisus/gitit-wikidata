@@ -15,3 +15,22 @@ $G=(X+Y, E)$ 为一个有穷二分图。对于任意的 $W\subseteq X$，令 $N_
 $\forall W\subseteq X, \displaystyle |W|\leq {\Bigl |}N_G(W){\Bigr |}$
 
 换言之，对于 $X$ 的任意子集 $W$，在 $Y$ 中都有足够多的邻点。
+
+# 例题
+
+## Pair
+
+**来源**：LOJ 6062 (2017 山东一轮集训 Day2)
+
+**题目大意**：
+
+**题解**：[tmp](https://zigzagk.top/2018/06/01/loj6062)
+
+## Exhausted?
+
+**来源**：AtCoder ARC 076 F
+
+**题目大意**：
+
+**题解**：[tmp](https://www.cnblogs.com/ogiso-setsuna/p/8455396.html)
+
