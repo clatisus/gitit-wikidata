@@ -112,6 +112,66 @@ $$
 
 签到题。
 
+## K. Tarot Sham Boast
+
+**题目大意**：给你 $s$ 个长度相同的字符串，$\Sigma=3$。现在有一个长度为 $n$ 的串，每个位置是 $3$ 种字符中的一种，等概率随机，位置之间相互独立。要求你把给出的字符串按照在这个串中出现的概率排序。
+
+**题解**：设串长为 $l$，字符集为 $k\ge3$。对于一个串 $s$，定义 $S=\mathbb{Z}\cap[1,l-1]\cap\{i|s_{1..l-i}=s_{i+1..l}\}$。定义 $g_{S}(n)$ 为 $S$ 下长度为 $n+l-1$ 的串中，只有 $1..l$ 为目标串的概率。这又可以理解成只有 $n..n+l-1$ 为目标串的概率，即为目标串在 $n$ 处首次出现的概率。因此 $\sum_{i=1}^{n}g_{S}(i)$ 即为长度 $n+l-1$ 的串中目标串出现的概率。记为 $f_{S}(n)$。
+
+考虑用容斥计算 $g_{S}(n)$。枚举目标串第二次出现的位置，我们有
+$$
+g_{S}(n)=\frac{1}{k^{l}}-\sum_{i=1}^{n-l}\frac{g_{S}(i)}{k^{l}}-\sum_{i\in S}\frac{g_{S}(n-i)}{k^{i}}
+$$
+那么有
+$$
+\begin{aligned}
+f_{S}(n)&=\sum_{j=1}^{n}\left(\frac{1}{k^{l}}-\sum_{i=1}^{j-l}\frac{g_{S}(i)}{k^{l}}-\sum_{i\in S}\frac{g_{S}(j-i)}{k^{i}}\right)\\
+&=\frac{n}{k^{l}}-\sum_{j=1}^{n}\frac{f_{S}(j-l)}{k^{l}}-\sum_{i\in S}\frac{f_{S}(n-i)}{k^{i}}\\
+&=\frac{n}{k^{l}}-\sum_{i=1}^{n-l}\frac{f_{S}(i)}{k^{l}}-\sum_{i\in S}\frac{f_{S}(n-i)}{k^{i}}
+\end{aligned}
+$$
+这里需要证明一个引理：$g_{S}(n)\ge\frac{k-1}{k}g_{S}(n-1)$。因为新加入的字符至少有 $\frac{k-1}{k}$ 的概率不是目标串的最后一个字符。
+
+考虑两个集合 $S$ 和 $T$，设 $\min\{T-S\}=r,\min\{S-T\}>r$。记 $D(n)=f_{S}(n)-f_{T}(n)$，则有
+$$
+\begin{aligned}
+D(n)&=-\sum_{i=1}^{n-l}\frac{D(i)}{k^{l}}-\sum_{i\in S\cap T}\frac{D(n-i)}{k^{i}}-\sum_{i\in S-T}\frac{f_{S}(n-i)}{k^{i}}+\sum_{i\in T-S}\frac{f_{T}(n-i)}{k^{i}}\\
+&=-\sum_{i=1}^{n-l}\frac{D(i)}{k^{l}}-\sum_{i\in S}\frac{D(n-i)}{k^{i}}-\sum_{i\in S-T}\frac{f_{T}(n-i)}{k^{i}}+\sum_{i\in T-S}\frac{f_{T}(n-i)}{k^{i}}
+\end{aligned}
+$$
+当 $n\le r$ 时，显然右边各项均为 $0$，因此 $D(n)=0$，$n=r+1$ 时，$\displaystyle{D(n)=\frac{1}{k^{r+l}}}$。下面我们归纳证明：$D(n)\ge\frac{k-1}{k}D(n-1)$，这样我们就有：$n\le r$ 时，$f_{S}(n)=f_{T}(n)$；$n>r$ 时，$f_{S}(n)>f_{T}(n)$。
+
+$n\le r+1$ 时显然成立。
+
+$n>r+1$ 时，考虑
+$$
+\begin{aligned}
+\Delta D(n)&=-\frac{D(n-l)}{k^{l}}-\sum_{i\in S}\frac{\Delta D(n-i)}{k^{i}}-\sum_{i\in S-T}\frac{g_{T}(n-i)}{k^{i}}+\sum_{i\in T-S}\frac{g_{T}(n-i)}{k^{i}}\\
+&\ge-\frac{D(n-l)}{k^{l}}-\sum_{i\in S}\frac{\Delta D(n-i)}{k^{i}}-\sum_{i=r+1}^{+\infty}\frac{g_{T}(n-i)}{k^{i}}+\frac{g_{T}(n-r)}{k^{r}}\\
+&\ge-\frac{D(n-l)}{k^{l}}-\sum_{i\in S}\frac{\Delta D(n-i)}{k^{i}}-\sum_{i=1}^{+\infty}\frac{g_{T}(n-r)}{k^{r}(k-1)^{i}}+\frac{g_{T}(n-r)}{k^{r}}\\
+&\ge-\frac{D(n-l)}{k^{l}}-\sum_{i\in S}\frac{\Delta D(n-i)}{k^{i}}
+\end{aligned}
+$$
+由于 $D(n-i-1)\ge0$，因此 $\Delta D(n-i)\le D(n-i)$，因此
+$$
+\begin{aligned}
+\Delta D(n)&\ge-\frac{D(n-l)}{k^{l}}-\sum_{i\in S}\frac{D(n-i)}{k^{i}}\\
+&=-\sum_{i\in S\cup\{l\}}\frac{D(n-i)}{k^{i}}\\
+&\ge-\sum_{i=\min\{S\}}^{+\infty}\frac{D(n-i)}{k^{i}}\\
+\end{aligned}
+$$
+容易发现，$\forall x\in S,y\in\mathbb{N}^{+},xy\le l-1,xy\in S$。因此显然 $\min\{S\}\ge2$。因此
+$$
+\begin{aligned}
+\Delta D(n)&\ge-\sum_{i=2}^{+\infty}\frac{D(n-i)}{k^{i}}\\
+&\ge-\sum_{i=1}^{+\infty}\frac{D(n-1)}{k\cdot(k-1)^{i}}\\
+&\ge-\frac{D(n-1)}{k}
+\end{aligned}
+$$
+即 $D(n)\ge\frac{1}{k}D(n-1)$。$\Box$
+
+$k=2$ 时测了一些也没有反例，但是也没法用上面的办法证明（$k=2$ 时上面的等比级数是发散的）。不会证。
+
 ## L. Visual Python++
 
 **题目大意**：棋盘中有许多矩形，它们的关系只有相离和内含。不同矩形不能共享边界。现在给出了 $n$（$1\le n\le 10^5$）个矩形的左上角和 $n$ 个矩形的右下角，让你给出一种合法的对应关系。
