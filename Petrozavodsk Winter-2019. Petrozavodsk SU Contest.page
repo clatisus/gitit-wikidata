@@ -26,7 +26,7 @@ date: 2019.05.22 16:42-21:42
 
 显然构成$k$的二元组，一部分是正数内部产生的，另一部分是正数与负数产生的，显然可以通过调整，让每一个负数与任意个正数产生贡献。
 
-设正数有$0\le x\le n$个，则可以产生的和大于$0$的无序的二元组最少为$\displaystyle\frac{x(x-1)}{2}$个，最多为$\displaystyle\frac{x(x-1)}{2} + x(n-x)$个，即$\displaystyle\frac{x(x-1)}{2}\le k\le\frac{x(x-1)}{2} + x(n-x) $。可以解出$x$的范围来。
+设正数有$0\le x\le n$个，则可以产生的和大于$0$的无序的二元组最少为$\displaystyle\frac{x(x-1)}{2}$个，最多为$\displaystyle\frac{x(x-1)}{2} + x(n-x)$个，即$\displaystyle\frac{x(x-1)}{2}\le k\le\frac{x(x-1)}{2} + x(n-x)$。可以解出$x$的范围来。
 
 要最大化$\displaystyle\frac{x(x-1)}{2}+\frac{(n-x)(n-x-1)}{2}$，化简后发现是个$A>0$的二次函数，直接输出两个端点处的较大值即可。
 
