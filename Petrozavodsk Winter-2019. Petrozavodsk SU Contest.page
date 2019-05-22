@@ -5,3 +5,9 @@ date: 2019.05.22 16:42-21:42
 [practice link](http://opentrains.snarknews.info/~ejudge/team.cgi?contest_id=001538)
 
 # Solutions
+
+## B. Word Squared
+
+**题目大意**：给出一个$1\cdots n$的排列，构造一个最小的$m\times m$矩阵，满足每一行每一列都至少存在一个连续子串是该排列。$n\le 500$.
+
+**题解**：将该排列复制一份接在后面，然后$2n-2$次`rotate`一位得到下一行，最后去掉第$2n$列即可。
