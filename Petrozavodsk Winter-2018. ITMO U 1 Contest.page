@@ -75,7 +75,7 @@ $$
 
 **题解**：对列记录该列有哪些格子是 $1$，以及 $0$ 的格子之间的连通情况，状态有 $2161$ 个，转移有 $96219$ 个。然后 `BM` 即可。
 
-复杂度 $\mathcal{O}(ST+T^{2}\log m)$。如果你想用 `FFT` 优化到 $\mathcal{O}(ST+T\log T\log m)$，那自然也是极好的。不过抄板可能会累死你 : P
+复杂度 $\mathcal{O}(ST+S^{2}\log m)$。如果你想用 `FFT` 优化到 $\mathcal{O}(ST+S\log S\log m)$，那自然也是极好的。不过抄板可能会累死你 : P
 
 ## G. Game of Chairs
 
