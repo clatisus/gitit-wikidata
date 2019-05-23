@@ -69,7 +69,7 @@ $$
 &s_{i}+\sum_{j=1}^{k}c_{j}s_{i-j}\\
 =&XA^{i}Y+\sum_{j=1}^{k}p_{k-j}XA^{i-j}Y\\
 =&XC(A)A^{i-k}Y\\
-=&\mathcal{O}\Box
+=&0\Box
 \end{aligned}
 $$
 
