@@ -60,6 +60,10 @@ XOOO     XOOO
 
 签到题。
 
+## H. Rocket Powered Hovercraft
+
+不知道出题人怎么证明是凸的。以后有缘再补吧。
+
 ## I. Cutting Strings
 
 **题目大意**：给出一个长度为$n\le10^5$的字符串$s$，至多删去$k$个不相交的子区间，使得剩下的字符串字典序最长。
