@@ -96,7 +96,7 @@ $$
 
 ## G. Numb
 
-**题目大意**：$n(2\le n\le 1000)$ 是一个偶数，构造一个二进制数 $a = \overline{a_1a_2\cdots a_n}$，满足 $n\mid a$，且 $\overline{a_1a_2\cdots a_i}(i = 1, 2, \dots, n)$ 模 $n$ 余数互不相同。
+**题目大意**：$n(2\le n\le 1000)$ 是一个偶数，构造一个二进制数 $a = \overline{a_1a_2\cdots a_n}$，满足 $n\mid a$，且 $\overline{a_1a_2\cdots a_i}(i = 1, 2, \dots, n)$ 模 $n$ 余数互不相同。不允许前导 $0$，可以证明在给定限制下一定有解。
 
 **题解**：
 
