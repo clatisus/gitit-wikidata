@@ -8,6 +8,8 @@
 
 从克罗内克乘积的角度重新理解 FWT
 
+$O(n^{2})$ 插值的板子稍微有一点点点繁琐，有心情改一下。
+
 ## 计算几何
 
 [An overnight dance in discotheque](http://codeforces.com/problemset/problem/814/D)圆的包含关系(nlogn)
