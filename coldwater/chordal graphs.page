@@ -1,3 +1,5 @@
 # 定义
 
-一个图被称为弦图，满足对于它的任意一个顶点数大于 3 的环，都至少有一条弦。
+一个图被称为弦图（chordal graphs），满足对于它的任意一个顶点数大于 3 的环，都至少有一条弦。
+
+[链接](https://fancydreams.ink/2018/07/03/%E5%BC%A6%E5%9B%BE%E5%8C%BA%E9%97%B4%E5%9B%BEmcsclique-treepqtree%E5%8F%8A%E5%85%B6%E4%BB%96/)
