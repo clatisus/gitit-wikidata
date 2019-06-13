@@ -3,3 +3,19 @@
 [practice link](https://arena.topcoder.com/)
 
 # Solutions
+
+## A. CentipedeSocks
+
+**题目大意**：你有 $C$ 只宠物，每只要穿 $F$ 只同色的袜子。现在你有一些袜子，要任取 $X$ 只出来，问 $X$ 至少是多少才能满足不管怎么取都满足要求。
+
+**题解**：最坏情况就是小于 $F-1$ 只的颜色全部被取，大于等于 $F-1$ 只的颜色被取 $kF+(F-1)$ 只。贪心即可。
+
+## B. MatchNim
+
+**题目大意**：有 $n\le 9$ 堆火柴，在上面玩 Nim，每次从一堆取至少一根火柴，然后你可以用其中的若干根火柴把其它的堆烧掉（当然是一根烧一堆），也可以不烧。问谁胜。
+
+**题解**：如果某堆火柴大于 $7$ 根，那么先手必胜。否则暴搜，注意火柴堆顺序无关，这样可以减很多状态。
+
+## C. Consensus
+
+[原题]([http://clatisus.com/zhongzihao/Codeforces%20Round%20432%20(Div.%201)#f.-rainbow-balls](http://clatisus.com/zhongzihao/Codeforces Round 432 (Div. 1)#f.-rainbow-balls)
