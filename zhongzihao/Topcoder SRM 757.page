@@ -2,6 +2,8 @@
 
 [practice link](https://arena.topcoder.com/)
 
+# Solutions
+
 ## A. CentipedeSocks
 
 **题目大意**：你有 $C$ 只宠物，每只要穿 $F$ 只同色的袜子。现在你有一些袜子，要任取 $X$ 只出来，问 $X$ 至少是多少才能满足不管怎么取都满足要求。
