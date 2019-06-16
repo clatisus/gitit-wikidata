@@ -1,4 +1,4 @@
-```
+```c++
 #include <bits/stdc++.h>
 
 const int max_N = 1000 + 21;
