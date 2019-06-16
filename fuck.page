@@ -1,0 +1,112 @@
+```
+#include <bits/stdc++.h>
+
+const int max_N = 1000 + 21;
+
+int n;
+
+char s[max_N];
+
+std::string opt = "+-*/%";
+
+bool is_opt(int c) {
+    return opt.find(c) != std::string::npos;
+}
+
+namespace ERROR {
+    std::vector<int> num, op;
+
+    void error() {
+        puts("error");
+        exit(0);
+    }
+
+    void op_pop() {
+        if (op.empty()) error();
+        if (num.size() < 2) error();
+        op.pop_back();
+        num.pop_back();
+        num.pop_back();
+    }
+
+    void check() {
+        std::string str = s;
+        str = "(" + str + ")";
+        for (int i = 0; i < str.length(); ++i) {
+            int c = str[i];
+            if (c == '(') {
+                if (i && (islower(str[i - 1]) || str[i - 1] == ')')) {
+                    error();
+                }
+                op.push_back(c);
+            } else if (c == ')') {
+                if (!i || is_opt(str[i - 1]) || str[i - 1] == '(') error();
+                while (!op.empty() && op.back() != '(') {
+                    op_pop();
+                }
+                if (op.empty() || op.back() != '(') error();
+                op.pop_back();
+            } else if (is_opt(c)) {
+                if (!i || is_opt(str[i - 1]) || str[i - 1] == '(') error();
+                op.push_back(c);
+            } else {
+                if (i && islower(str[i - 1])) error();
+                num.push_back(c);
+            }
+        }
+        if (!op.empty() || !num.empty()) error();
+    }
+}
+
+namespace PROPER {
+    int cur;
+
+    void item();
+    void exp();
+
+    void error() {
+        puts("improper");
+        exit(0);
+    }
+
+    void item() {
+        if (islower(s[cur])) {
+            ++cur;
+        } else if (s[cur] == '(') {
+            ++cur;
+            exp();
+            if (s[cur] != ')') error();
+            ++cur;
+        } else {
+            error();
+        }
+    }
+
+    void exp() {
+        if (islower(s[cur]) || s[cur] == '(') {
+            item();
+            if (opt.find(s[cur]) != std::string::npos) {
+                ++cur;
+                item();
+            } else {
+                error();
+            }
+        } else {
+            error();
+        }
+    }
+
+    void check() {
+        exp();
+        if (cur != n) error();
+    }
+}
+
+int main() {
+    while ((s[n] = getchar()) != EOF)
+        if (!isspace(s[n])) ++n;
+    ERROR::check();
+    PROPER::check();
+    puts("proper");
+}
+```
