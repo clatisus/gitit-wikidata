@@ -1,112 +1,107 @@
 ```c++
 #include <bits/stdc++.h>
 
-const int max_N = 1000 + 21;
+using std::string;
 
-int n;
-
-char s[max_N];
-
-std::string opt = "+-*/%";
-
-bool is_opt(int c) {
-    return opt.find(c) != std::string::npos;
-}
-
-namespace ERROR {
-    std::vector<int> num, op;
-
-    void error() {
-        puts("error");
-        exit(0);
-    }
-
-    void op_pop() {
-        if (op.empty()) error();
-        if (num.size() < 2) error();
-        op.pop_back();
-        num.pop_back();
-        num.pop_back();
-    }
-
-    void check() {
-        std::string str = s;
-        str = "(" + str + ")";
-        for (int i = 0; i < str.length(); ++i) {
-            int c = str[i];
-            if (c == '(') {
-                if (i && (islower(str[i - 1]) || str[i - 1] == ')')) {
-                    error();
-                }
-                op.push_back(c);
-            } else if (c == ')') {
-                if (!i || is_opt(str[i - 1]) || str[i - 1] == '(') error();
-                while (!op.empty() && op.back() != '(') {
-                    op_pop();
-                }
-                if (op.empty() || op.back() != '(') error();
-                op.pop_back();
-            } else if (is_opt(c)) {
-                if (!i || is_opt(str[i - 1]) || str[i - 1] == '(') error();
-                op.push_back(c);
-            } else {
-                if (i && islower(str[i - 1])) error();
-                num.push_back(c);
-            }
-        }
-        if (!op.empty() || !num.empty()) error();
+void readInt(int &x) {
+    int c;
+    while (!isdigit(c = getchar()));
+    x = c - '0';
+    while (isdigit(c = getchar())) {
+        x = x * 10 + c - '0';
     }
 }
 
-namespace PROPER {
-    int cur;
+const int max_M = 1000 + 21;
+const int max_N = max_M * max_M;
+const int log_N = 21;
 
-    void item();
-    void exp();
+int h, w, n, p[max_N];
 
-    void error() {
-        puts("improper");
-        exit(0);
+std::vector<int> vec[max_N];
+
+inline void add_edge(int u, int v) {
+    vec[u].push_back(v);
+    vec[v].push_back(u);
+}
+
+inline int get_id(int x, int y) {
+    return (x - 1) * w + y;
+}
+
+string readLine() {
+    string ret;
+    for (int i = 1; i <= 2 * w + 1; ++i) {
+        ret += getchar();
     }
+    getchar();
+    return ret;
+}
 
-    void item() {
-        if (islower(s[cur])) {
-            ++cur;
-        } else if (s[cur] == '(') {
-            ++cur;
-            exp();
-            if (s[cur] != ')') error();
-            ++cur;
-        } else {
-            error();
+int anc[log_N][max_N], dep[max_N];
+
+void dfs(int u) {
+    for (int i = 1; i < log_N; ++i) {
+        anc[i][u] = anc[i - 1][anc[i - 1][u]];
+    }
+    for (auto &v : vec[u]) {
+        if (v == anc[0][u]) continue;
+        anc[0][v] = u;
+        dep[v] = dep[u] + 1;
+        dfs(v);
+    }
+}
+
+int lca(int u, int v) {
+    if (dep[u] > dep[v]) {
+        std::swap(u, v);
+    }
+    int k = dep[v] - dep[u];
+    for (int i = 0; k; ++i, k >>= 1){
+        if (k & 1) {
+            v = anc[i][v];
         }
     }
-
-    void exp() {
-        if (islower(s[cur]) || s[cur] == '(') {
-            item();
-            if (opt.find(s[cur]) != std::string::npos) {
-                ++cur;
-                item();
-            } else {
-                error();
-            }
-        } else {
-            error();
-        }
+    if (u == v) return u;
+    for (int i = log_N - 1; ~i; --i) {
+        if (anc[i][u] == anc[i][v]) continue;
+        u = anc[i][u];
+        v = anc[i][v];
     }
+    return anc[0][u];
+}
 
-    void check() {
-        exp();
-        if (cur != n) error();
-    }
+inline int dis(int u, int v) {
+    return dep[u] + dep[v] - 2 * dep[lca(u, v)];
 }
 
 int main() {
-    while ((s[n] = getchar()) != EOF)
-        if (!isspace(s[n])) ++n;
-    ERROR::check();
-    PROPER::check();
-    puts("proper");
+    freopen("output.txt", "w", stdout);
+    readInt(h), readInt(w);
+    readLine();
+    for (int i = 1; i <= h; ++i) {
+        string s = readLine();
+        puts(s.c_str());
+        for (int j = 1; j <= w; ++j) {
+            if (s[2 * j - 1] == ' ') {
+                add_edge(get_id(i, j), get_id(i + 1, j));
+            }
+        }
+        for (int j = 1; j <= w - 1; ++j) {
+            if (s[2 * j] == ' ') {
+                add_edge(get_id(i, j), get_id(i, j + 1));
+            }
+        }
+    }
+    dfs(1);
+    long long ans = 1;
+    scanf("%d", &n);
+    for (int i = 1; i <= n; ++i) {
+        readInt(p[i]);
+        if (i > 1) {
+            ans += dis(p[i], p[i - 1]) + 1;
+        }
+    }
+    printf("%lld\n", ans);
 }
 ```
