@@ -5,3 +5,47 @@ date: 2019.07.21 13:30-18:30
 [practice link](http://opentrains.snarknews.info/~ejudge/team.cgi?contest_id=001506)
 
 # Solutions
+
+## E. Seats
+
+**题目大意**：有 $n$ 个人和 $n$ 个座位，每个座位的价值是 $a_{i}>0$。现在每个人会以 $p_{i}$ 的概率抢座位 $i$，且每个人都是独立同分布的。一个座位如有多个人抢，只有等概率随机的一个人能获得价值。要求你确定 $p_{i}$，使得每个人获得价值的期望最大。
+
+**题解**：显然每个人的期望相同，于是我们要让总期望最大。考虑每个座位被占的概率是 $1-(1-p_{i})^{n}$，那么期望就是 $f(\mathbf{p})=\sum_{i=1}^{n}a_{i}(1-(1-p_{i})^{n})$。我们要求这个函数的最大值。限制条件有 $p_{i}\ge0$，$\sum_{i=1}^{n}p_{i}=1$。
+
+注意到该函数是一个定义在凸集上的凸函数，因此 kkt 条件是取得全局最优的充要条件。
+
+即
+$$
+\begin{cases}
+&\nabla f(\mathbf{p})+\lambda\nabla h(\mathbf{p})+\sum_{i=1}^{n}\mu_{i}\nabla g_{i}(\mathbf{p})=0\\
+&h(\mathbf{p})=0\\
+&\mu_{i}g_{i}(\mathbf{p})=0\\
+&\mu_{i}\ge0\\
+&g_{i}(\mathbf{p})\le0
+\end{cases}
+$$
+其中 $g_{i}(\mathbf{p})=-p_{i}$，$h(\mathbf{p})=\sum_{i=1}^{n}p_{i}-1$。
+
+由于 $\frac{\partial f}{\partial p_{i}}=a_{i}n(1-p_{i})^{n-1}$，因此 $a_{i}n(1-p_{i})^{n-1}+\lambda-\mu_{i}=0$。
+
+设 $S$ 为满足 $\mu_{i}=0$ 的 $i$ 的集合。若 $i\notin S$，则 $p_{i}=0$，因此 $\sum_{i\in S}p_{i}=1$。从而
+$$
+\begin{aligned}
+a_{i}n(1-p_{i})^{n-1}+\lambda&=0\\
+(1-p_{i})^{n-1}&=-\frac{\lambda}{a_{i}n}\\
+1-p_{i}&=\sqrt[n-1]{-\frac{\lambda}{a_{i}n}}\\
+|S|-1&=\sum_{i\in S}\sqrt[n-1]{-\frac{\lambda}{a_{i}n}}\\
+\lambda&=-\left(\frac{|S|-1}{\sum_{i\in S}\sqrt[n-1]{\frac{1}{a_{i}n}}}\right)^{n-1}\\
+1-p_{j}&=\frac{(|S|-1)\sqrt[n-1]{\frac{1}{a_{j}n}}}{\sum_{i\in S\sqrt[n-1]{\frac{1}{a_{i}n}}}}
+\end{aligned}
+$$
+由于 $p_{j}\ge0$，有 $\displaystyle{\frac{(|S|-1)\sqrt[n-1]{\frac{1}{a_{j}n}}}{\sum_{i\in S\sqrt[n-1]{\frac{1}{a_{i}n}}}}\le1}$。
+
+对于 $j\notin S$，有
+$$
+\mu_{j}=a_{j}n+\lambda
+$$
+由于 $\mu_{j}\le0$，有 $\displaystyle{\frac{(|S|-1)\sqrt[n-1]{\frac{1}{a_{j}n}}}{\sum_{i\in S\sqrt[n-1]{\frac{1}{a_{i}n}}}}\ge1}$。
+
+要使上述不等式成立，$S$ 中的所有元素都要大于等于 $\sim S$ 中的所有元素。这里 $\mathcal{O}(n)$ `check` 就可以了。
+
