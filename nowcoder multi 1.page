@@ -1,0 +1,41 @@
+# Contest Info
+
+date: 2018.08.11 12:00-17:00
+
+[practice link](https://ac.nowcoder.com/acm/contest/881#question)
+
+# Solutions
+
+## C. Euclidean Distance
+
+**题目大意**：求 $\min_{\mathbf{x}}(\parallel\mathbf{x}-\mathbf{p}\parallel)$，其中 $x_{i}\ge0$，$\sum_{i=1}^{n}x_{i}=1$。
+
+**题解**：根据 kkt 条件
+$$
+\begin{cases}
+\nabla f(\mathbf{x})+\lambda\nabla h(\mathbf{x})+\sum_{i=1}^{n}\mu_{i}\nabla g_{i}(\mathbf{x})=0\\
+h(\mathbf{x})=0\\
+\mu_{i}g_{i}(\mathbf{x})=0\\
+\mu_{i}\ge0\\
+g_{i}(\mathbf{x})\le0
+\end{cases}
+$$
+其中 $f(\mathbb{x})=\parallel\mathbf{x}-\mathbf{p}\parallel$，$g(\mathbf{x})=-x_{i}$，$h(\mathbf{x})=\sum_{i=1}^{n}x_{i}-1$。
+
+化简得 $2(x_{i}-p_{i})+\lambda-\mu_{i}=0$。
+
+设 $S$ 为满足 $\mu_{i}=0$ 的 $i$ 的集合，有
+$$
+2-2\sum_{i\in S}p_{i}+|S|\lambda=0\\
+\lambda=\frac{2\sum_{i\in S}p_{i}-2}{|S|}\\
+x_{j}=p_{j}-\frac{\sum_{i\in S}p_{i}-1}{|S|}
+$$
+由于 $x_{j}\ge0$，所以 $\frac{\sum_{i\in S}p_{i}-1}{|S|}\le p_{j}$。
+
+对于 $j\notin S$，有
+$$
+\mu_{j}=\frac{2\sum_{i\in S}p_{i}-2}{|S|}-2p_{j}
+$$
+由于 $\mu_{j}\ge0$，所以 $\frac{\sum_{i\in S}p_{i}-1}{|S|}\ge p_{j}$。
+
+从而 $S$ 中的每个元素都要比 $\sim S$ 中的每个元素大，$\mathcal{O}(n)$ check 即可。
