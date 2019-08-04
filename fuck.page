@@ -1,107 +1,87 @@
 ```c++
 #include <bits/stdc++.h>
 
-using std::string;
+using PII = std::pair<int, int>;
 
-void readInt(int &x) {
-    int c;
-    while (!isdigit(c = getchar()));
-    x = c - '0';
-    while (isdigit(c = getchar())) {
-        x = x * 10 + c - '0';
+const int max_N = (int)2e5 + 21;
+
+const int inf = 0x3f3f3f3f;
+
+int n, m, k;
+
+int ql, qr;
+
+PII qa;
+
+#define ls(x) ((x) << 1)
+#define rs(x) (ls(x) | 1)
+#define mid ((l + r) >> 1)
+#define lch ls(x), l, mid
+#define rch rs(x), mid + 1, r
+
+PII seg[max_N << 2];
+
+void update(PII &x, const PII& y) {
+    if (x.first == -1 && x.second == -1) {
+        x = y;
+        return;
+    }
+    if (x.first == inf && x.second == inf) {
+        return;
+    }
+    if (y.first == -1 && y.second == -1) {
+        return;
+    }
+    if (x.second + 1 == y.first) {
+        x.second = y.second;
+    } else {
+        x = {inf, inf};
     }
 }
 
-const int max_M = 1000 + 21;
-const int max_N = max_M * max_M;
-const int log_N = 21;
-
-int h, w, n, p[max_N];
-
-std::vector<int> vec[max_N];
-
-inline void add_edge(int u, int v) {
-    vec[u].push_back(v);
-    vec[v].push_back(u);
+inline void down(int x) {
+    update(seg[ls(x)], seg[x]);
+    update(seg[rs(x)], seg[x]);
+    seg[x] = {-1, -1};
 }
 
-inline int get_id(int x, int y) {
-    return (x - 1) * w + y;
-}
-
-string readLine() {
-    string ret;
-    for (int i = 1; i <= 2 * w + 1; ++i) {
-        ret += getchar();
+void modify(int x = 1, int l = 1, int r = n) {
+    if (seg[x].first == inf && seg[x].second == inf) {
+        return;
     }
-    getchar();
-    return ret;
-}
-
-int anc[log_N][max_N], dep[max_N];
-
-void dfs(int u) {
-    for (int i = 1; i < log_N; ++i) {
-        anc[i][u] = anc[i - 1][anc[i - 1][u]];
-    }
-    for (auto &v : vec[u]) {
-        if (v == anc[0][u]) continue;
-        anc[0][v] = u;
-        dep[v] = dep[u] + 1;
-        dfs(v);
+    if (ql <= l && r <= qr) {
+        update(seg[x], qa);
+    } else {
+       down(x);
+       if (ql <= mid) modify(lch);
+       if (qr >  mid) modify(rch);
     }
 }
 
-int lca(int u, int v) {
-    if (dep[u] > dep[v]) {
-        std::swap(u, v);
-    }
-    int k = dep[v] - dep[u];
-    for (int i = 0; k; ++i, k >>= 1){
-        if (k & 1) {
-            v = anc[i][v];
-        }
-    }
-    if (u == v) return u;
-    for (int i = log_N - 1; ~i; --i) {
-        if (anc[i][u] == anc[i][v]) continue;
-        u = anc[i][u];
-        v = anc[i][v];
-    }
-    return anc[0][u];
-}
+int ans;
 
-inline int dis(int u, int v) {
-    return dep[u] + dep[v] - 2 * dep[lca(u, v)];
+void query(int x = 1, int l = 1, int r = n) {
+    if (seg[x].first == inf && seg[x].second == inf) {
+        return;
+    }
+    if (l == r) {
+        ans += seg[x].first == 1 && seg[x].second == k;
+        return;
+    }
+    down(x);
+    query(lch);
+    query(rch);
 }
 
 int main() {
-    freopen("output.txt", "w", stdout);
-    readInt(h), readInt(w);
-    readLine();
-    for (int i = 1; i <= h; ++i) {
-        string s = readLine();
-        puts(s.c_str());
-        for (int j = 1; j <= w; ++j) {
-            if (s[2 * j - 1] == ' ') {
-                add_edge(get_id(i, j), get_id(i + 1, j));
-            }
-        }
-        for (int j = 1; j <= w - 1; ++j) {
-            if (s[2 * j] == ' ') {
-                add_edge(get_id(i, j), get_id(i, j + 1));
-            }
-        }
+    memset(seg, -1, sizeof seg);
+    scanf("%d%d%d", &n, &k, &m);
+    for (int i = 1, x; i <= m; ++i) {
+        scanf("%d%d%d", &ql, &qr, &x);
+        qa = {x, x};
+        modify();
     }
-    dfs(1);
-    long long ans = 1;
-    scanf("%d", &n);
-    for (int i = 1; i <= n; ++i) {
-        readInt(p[i]);
-        if (i > 1) {
-            ans += dis(p[i], p[i - 1]) + 1;
-        }
-    }
-    printf("%lld\n", ans);
+    query();
+    printf("%d\n", ans);
 }
 ```
