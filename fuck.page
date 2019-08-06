@@ -1,87 +1,96 @@
 ```c++
 #include <bits/stdc++.h>
 
-using PII = std::pair<int, int>;
+const int moder = 998244353;
+const int N = 20;
+const int M = 4000010;
 
-const int max_N = (int)2e5 + 21;
+int l[N], r[N];
+int inv[M];
 
-const int inf = 0x3f3f3f3f;
-
-int n, m, k;
-
-int ql, qr;
-
-PII qa;
-
-#define ls(x) ((x) << 1)
-#define rs(x) (ls(x) | 1)
-#define mid ((l + r) >> 1)
-#define lch ls(x), l, mid
-#define rch rs(x), mid + 1, r
-
-PII seg[max_N << 2];
-
-void update(PII &x, const PII& y) {
-    if (x.first == -1 && x.second == -1) {
-        x = y;
-        return;
+int getinv(int i){
+    if (i < M){
+        return inv[i];
     }
-    if (x.first == inf && x.second == inf) {
-        return;
-    }
-    if (y.first == -1 && y.second == -1) {
-        return;
-    }
-    if (x.second + 1 == y.first) {
-        x.second = y.second;
-    } else {
-        x = {inf, inf};
-    }
+    return moder - 1ll * (moder / i) * getinv(moder % i) % moder;
 }
 
-inline void down(int x) {
-    update(seg[ls(x)], seg[x]);
-    update(seg[rs(x)], seg[x]);
-    seg[x] = {-1, -1};
-}
-
-void modify(int x = 1, int l = 1, int r = n) {
-    if (seg[x].first == inf && seg[x].second == inf) {
-        return;
+void solve(int n){
+    typedef std::pair <int, int> pii;
+    std::vector <pii> vec;
+    vec.push_back({0, 1});
+    for (int i = 0; i < n; ++ i){
+        scanf("%d%d", &l[i], &r[i]);
     }
-    if (ql <= l && r <= qr) {
-        update(seg[x], qa);
-    } else {
-       down(x);
-       if (ql <= mid) modify(lch);
-       if (qr >  mid) modify(rch);
+    for (int i = 0; i < n; ++ i){
+        std::vector <pii> tmp;
+        for (auto u : vec){
+            tmp.push_back({u.first + l[i], u.second});
+            tmp.push_back({u.first + r[i] + 1, -u.second});
+        }
+        vec = tmp;
     }
-}
-
-int ans;
-
-void query(int x = 1, int l = 1, int r = n) {
-    if (seg[x].first == inf && seg[x].second == inf) {
-        return;
+    std::sort(vec.begin(), vec.end());
+    int prob = 0, expe = 0, comb = 1;
+    int sz = vec.size();
+    int ans = 0;
+    for (int i = sz - 1, now = -1; i >= 0; -- i){
+        if (vec[i].first > 0){
+            continue;
+        }
+        while (now < -vec[i].first){
+            ++ now;
+            if (now > 0) {
+                comb = 1ll * comb * (n - 1 + now) % moder * getinv(now) % moder;
+            }
+            prob += comb;
+            prob -= prob >= moder ? moder : 0;
+            expe = (expe + 1ll * comb * now) % moder;
+        }
+        ans = (ans - (expe + 1ll * vec[i].first * prob)) % moder;
     }
-    if (l == r) {
-        ans += seg[x].first == 1 && seg[x].second == k;
-        return;
+    const int MAX = 15000100;
+    comb = 1;
+    int comb1 = 1;
+    for (int i = sz - 1, now = -1, now1 = -1; i >= 0; -- i){
+        while (now < MAX - vec[i].first) {
+            ++now;
+            if (now > 0) {
+                comb = 1ll * comb * (n - 1 + now) % moder * getinv(now) % moder;
+            }
+            prob += comb;
+            prob -= prob >= moder ? moder : 0;
+            expe = (expe + 1ll * comb * now) % moder;
+        }
+        if (vec[i].first < 0){
+            while (now1 < -vec[i].first - 1){
+                ++now1;
+                if (now1 > 0) {
+                    comb1 = 1ll * comb1 * (n - 1 + now1) % moder * getinv(now1) % moder;
+                }
+                prob -= comb1;
+                prob += prob >= moder ? moder : 0;
+                expe = (expe - 1ll * comb1 * now1) % moder;
+            }
+        }
+        ans = (ans + (expe + 1ll * vec[i].first * prob)) % moder;
     }
-    down(x);
-    query(lch);
-    query(rch);
-}
-
-int main() {
-    memset(seg, -1, sizeof seg);
-    scanf("%d%d%d", &n, &k, &m);
-    for (int i = 1, x; i <= m; ++i) {
-        scanf("%d%d%d", &ql, &qr, &x);
-        qa = {x, x};
-        modify();
+    ans += ans < 0 ? moder : 0;
+    for (int i = 0; i < n; ++ i){
+        ans = 1ll * ans * getinv(r[i] - l[i] + 1) % moder;
     }
-    query();
     printf("%d\n", ans);
 }
+
+int main(){
+    inv[1] = 1;
+    for (int i = 2; i < M; ++ i){
+        inv[i] = moder - 1ll * (moder / i) * inv[moder % i] % moder;
+    }
+    int n;
+    scanf("%d", &n);
+    solve(n);
+    return 0;
+}
+
 ```
