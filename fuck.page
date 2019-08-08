@@ -5,9 +5,29 @@
 
 #include <bits/stdc++.h>
 
+const int max_N = (int)4e5 + 21;
+
+int n, opt[2][233], L[max_N], R[max_N];
+
+int x[max_N], y[max_N];
+
+void gen(int* num, int *opt) {
+    num[1] = opt[0];
+    num[2] = opt[1];
+    for (int i = 3; i <= n; ++i) {
+        num[i] = (1LL * opt[2] * num[i - 1] + 1LL * opt[3] * num[i - 2] + opt[4]) % opt[5];
+    }
+}
+
+std::set<int> set;
+
+int tot, st[max_N * 4];
+
 using LL = long long;
 
-const int max_N = (int)1e5 + 21;
+int cnt[max_N * 16];
+
+LL sum[max_N * 16];
 
 #define ls(x) ((x) << 1)
 #define rs(x) (ls(x) | 1)
@@ -15,48 +35,29 @@ const int max_N = (int)1e5 + 21;
 #define lch ls(x), l, mid
 #define rch rs(x), mid + 1, r
 
-int n, h[max_N], c[max_N], p[max_N], Q[max_N];
+int ql, qr;
 
-int m, hh[max_N];
-
-inline int rk(int x) {
-    return std::lower_bound(hh + 1, hh + 1 + m, x) - hh;
-}
-
-LL suf_c[max_N], suf_p[max_N];
-
-LL siz[max_N * 4], sum[max_N * 4];
-
-void build(int x = 1, int l = 1, int r = m) {
-    siz[x] = sum[x] = 0;
-    if (l == r) return;
-    build(lch);
-    build(rch);
-}
-
-int qt;
-
-LL qa;
-
-void modify(int x = 1, int l = 1, int r = m) {
-    siz[x] += qa;
-    sum[x] += qa * hh[qt];
-    if (l == r) return;
-    if (l <= mid) {
-        modify(lch);
+void modify(int x = 1, int l = 1, int r = tot) {
+    if (ql <= l && r <= qr) {
+        ++cnt[x];
+        sum[x] += st[r + 1] - st[l];
     } else {
-        modify(rch);
+        if (ql <= mid) modify(lch);
+        if (qr >  mid) modify(rch);
+        sum[x] = sum[ls(x)] + sum[rs(x)] + 1LL * cnt[x] * (st[r + 1] - st[l]);
     }
 }
 
-LL query(LL k) {
-    if (!k) return 0;
-    int x = 1, l = 1, r = m;
-    LL ret = 0;
+void query() {
+    LL total = sum[1];
+    int x = 1, l = 1, r = tot;
+    LL count = 0;
+    LL k = (total + 1) / 2;
     while (l < r) {
-        if (siz[ls(x)] < k) {
-            k -= siz[ls(x)];
-            ret += sum[ls(x)];
+        count += cnt[x];
+        LL left_s = sum[ls(x)] + count * (st[mid + 1] - st[l]);
+        if (left_s < k) {
+            k -= left_s;
             x = rs(x);
             l = mid + 1;
         } else {
@@ -64,57 +65,36 @@ LL query(LL k) {
             r = mid;
         }
     }
-    ret += k * hh[l];
-    return ret;
-}
-
-LL ans;
-
-void testCase() {
-    for (int i = 1; i <= n; ++i) {
-        Q[i] = i;
-        scanf("%d%d%d", h + i, c + i, p + i);
-        hh[i] = c[i];
-    }
-    std::sort(Q + 1, Q + 1 + n, [&](int x, int y) { return h[x] < h[y];});
-    std::sort(hh + 1, hh + 1 + n);
-    m = std::unique(hh + 1, hh + 1 + n) - hh - 1;
-    build();
-    ans = LLONG_MAX;
-    suf_c[n + 1] = suf_p[n + 1] = 0;
-    for (int i = n; i; --i) {
-        suf_c[i] = suf_c[i + 1] + 1LL * p[Q[i]] * c[Q[i]];
-        suf_p[i] = suf_p[i + 1] + p[Q[i]];
-    }
-    for (int i = 1, j; i <= n; i = j) {
-        for (j = i + 1; j <= n && h[Q[i]] == h[Q[j]]; ++j);
-        LL cur_siz = suf_p[i] - suf_p[j];
-        LL cost = suf_c[j];
-        LL k = std::max(0LL, suf_p[1] - suf_p[j] - 2 * cur_siz + 1);
-        cost += query(k);
-        ans = std::min(ans, cost);
-        for (int k = i; k < j; ++k) {
-            qt = rk(c[Q[k]]);
-            qa = p[Q[k]];
-            modify();
-        }
-    }
-    printf("%lld\n", ans);
+    count += cnt[x];
+    int offset = (k + count- 1) / count;
+    printf("%d\n", st[l] + offset - 1);
 }
 
 int main() {
-    while (~scanf("%d", &n)) {
-        testCase();
+    scanf("%d", &n);
+    for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < 6; ++j) {
+            scanf("%d", opt[i] + j);
+        }
+    }
+    gen(x, opt[0]);
+    gen(y, opt[1]);
+    for (int i = 1; i <= n; ++i) {
+        L[i] = std::min(x[i], y[i]);
+        R[i] = std::max(x[i], y[i]);
+        set.insert(L[i]);
+        set.insert(R[i]);
+    }
+    set.insert(1);
+    set.insert(1e9);
+    for (const auto& x : set) {
+        st[++tot] = x;
+    }
+    for (int i = 1; i <= n; ++i) {
+        ql = std::lower_bound(st + 1, st + 1 + tot, L[i]) - st;
+        qr = std::lower_bound(st + 1, st + 1 + tot, R[i]) - st;
+        modify();
+        query();
     }
 }
-/*
-3
-999 1 1
-20 100 1
-10 2 3
-3
-50 200 10
-20 100 10
-1 9999 1
- */
 ```
