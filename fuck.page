@@ -1,78 +1,120 @@
 ```c++
+//
+// Created by zzh on 2019/8/8.
+//
+
 #include <bits/stdc++.h>
 
-const int BIT = 30;
-typedef long long ll;
+using LL = long long;
 
-ll dp[BIT + 1][2][2][3][3];
+const int max_N = (int)1e5 + 21;
 
-void solve(){
-    memset(dp, 0, sizeof(dp));
-    int a, b, c;
-    scanf("%d%d%d", &a, &b, &c);
-    dp[BIT][0][0][1][1] = 1;
-    for (int i = BIT - 1; i >= 0; -- i){
-        for (int aSmall = 0; aSmall <= 1; ++ aSmall){
-            for (int bSmall = 0; bSmall <= 1; ++ bSmall){
-                for (int ctype = 0; ctype <= 2; ++ ctype) {
-                    for (int ctype2 = 0; ctype2 <= 2; ++ ctype2) {
-                        for (int aValue = 0; aValue <= 1; ++aValue) {
-                            for (int bValue = 0; bValue <= 1; ++bValue) {
-                                int abit = a >> i & 1;
-                                int bbit = b >> i & 1;
-                                if (!aSmall && aValue > abit || !bSmall && bValue > bbit) {
-                                    continue;
-                                }
-                                int naSmall = aSmall, nbSmall = bSmall;
-                                if (!aSmall && aValue < abit) {
-                                    naSmall = 1;
-                                }
-                                if (!bSmall && bValue < bbit) {
-                                    nbSmall = 1;
-                                }
-                                int cbit = c >> i & 1;
-                                int cValue1 = aValue & bValue;
-                                int nctype = ctype;
-                                if (ctype == 1 && cValue1 != cbit){
-                                    nctype = cValue1 < cbit ? 0 : 2;
-                                }
-                                int cValue2 = aValue ^ bValue;
-                                int nctype2 = ctype;
-                                if (ctype == 1 && cValue2 != cbit){
-                                    nctype2 = cValue2 < cbit ? 0 : 2;
-                                }
-                                dp[i][naSmall][nbSmall][nctype][nctype2] += dp[i + 1][aSmall][bSmall][ctype][ctype2];
-                            }
-                        }
-                    }
-                }
-            }
+#define ls(x) ((x) << 1)
+#define rs(x) (ls(x) | 1)
+#define mid ((l + r) >> 1)
+#define lch ls(x), l, mid
+#define rch rs(x), mid + 1, r
+
+int n, h[max_N], c[max_N], p[max_N], Q[max_N];
+
+int m, hh[max_N];
+
+inline int rk(int x) {
+    return std::lower_bound(hh + 1, hh + 1 + m, x) - hh;
+}
+
+LL suf_c[max_N], suf_p[max_N];
+
+LL siz[max_N * 4], sum[max_N * 4];
+
+void build(int x = 1, int l = 1, int r = m) {
+    siz[x] = sum[x] = 0;
+    if (l == r) return;
+    build(lch);
+    build(rch);
+}
+
+int qt;
+
+LL qa;
+
+void modify(int x = 1, int l = 1, int r = m) {
+    siz[x] += qa;
+    sum[x] += qa * hh[qt];
+    if (l == r) return;
+    if (l <= mid) {
+        modify(lch);
+    } else {
+        modify(rch);
+    }
+}
+
+LL query(LL k) {
+    if (!k) return 0;
+    int x = 1, l = 1, r = m;
+    LL ret = 0;
+    while (l < r) {
+        if (siz[ls(x)] < k) {
+            k -= siz[ls(x)];
+            ret += sum[ls(x)];
+            x = rs(x);
+            l = mid + 1;
+        } else {
+            x = ls(x);
+            r = mid;
         }
     }
-    ll ans = 0;
-    for (int i = 0; i <= 1; ++ i){
-        for (int j = 0; j <= 1; ++ j){
-            for (int u = 0; u <= 2; ++ u){
-                for (int v = 0; v <= 2; ++ v){
-                    if (u == 2 || v == 0){
-                        ans += dp[0][i][j][u][v];
-                    }
-                }
-            }
+    ret += k * hh[l];
+    return ret;
+}
+
+LL ans;
+
+void testCase() {
+    for (int i = 1; i <= n; ++i) {
+        Q[i] = i;
+        scanf("%d%d%d", h + i, c + i, p + i);
+        hh[i] = c[i];
+    }
+    std::sort(Q + 1, Q + 1 + n, [&](int x, int y) { return h[x] < h[y];});
+    std::sort(hh + 1, hh + 1 + n);
+    m = std::unique(hh + 1, hh + 1 + n) - hh - 1;
+    build();
+    ans = LLONG_MAX;
+    suf_c[n + 1] = suf_p[n + 1] = 0;
+    for (int i = n; i; --i) {
+        suf_c[i] = suf_c[i + 1] + 1LL * p[Q[i]] * c[Q[i]];
+        suf_p[i] = suf_p[i + 1] + p[Q[i]];
+    }
+    for (int i = 1, j; i <= n; i = j) {
+        for (j = i + 1; j <= n && h[Q[i]] == h[Q[j]]; ++j);
+        LL cur_siz = suf_p[i] - suf_p[j];
+        LL cost = suf_c[j];
+        LL k = std::max(0LL, suf_p[1] - suf_p[j] - 2 * cur_siz + 1);
+        cost += query(k);
+        ans = std::min(ans, cost);
+        for (int k = i; k < j; ++k) {
+            qt = rk(c[Q[k]]);
+            qa = p[Q[k]];
+            modify();
         }
     }
-    ans -= std::min(b, c - 1);
-    ans -= 1;
-    ans -= std::min(a, c - 1);
     printf("%lld\n", ans);
 }
 
-int main(){
-    int test;
-    scanf("%d", &test);
-    while (test --){
-        solve();
+int main() {
+    while (~scanf("%d", &n)) {
+        testCase();
     }
-    return 0;
 }
+/*
+3
+999 1 1
+20 100 1
+10 2 3
+3
+50 200 10
+20 100 10
+1 9999 1
+ */
 ```
