@@ -1,96 +1,78 @@
 ```c++
 #include <bits/stdc++.h>
 
-const int moder = 998244353;
-const int N = 20;
-const int M = 4000010;
+const int BIT = 30;
+typedef long long ll;
 
-int l[N], r[N];
-int inv[M];
+ll dp[BIT + 1][2][2][3][3];
 
-int getinv(int i){
-    if (i < M){
-        return inv[i];
-    }
-    return moder - 1ll * (moder / i) * getinv(moder % i) % moder;
-}
-
-void solve(int n){
-    typedef std::pair <int, int> pii;
-    std::vector <pii> vec;
-    vec.push_back({0, 1});
-    for (int i = 0; i < n; ++ i){
-        scanf("%d%d", &l[i], &r[i]);
-    }
-    for (int i = 0; i < n; ++ i){
-        std::vector <pii> tmp;
-        for (auto u : vec){
-            tmp.push_back({u.first + l[i], u.second});
-            tmp.push_back({u.first + r[i] + 1, -u.second});
-        }
-        vec = tmp;
-    }
-    std::sort(vec.begin(), vec.end());
-    int prob = 0, expe = 0, comb = 1;
-    int sz = vec.size();
-    int ans = 0;
-    for (int i = sz - 1, now = -1; i >= 0; -- i){
-        if (vec[i].first > 0){
-            continue;
-        }
-        while (now < -vec[i].first){
-            ++ now;
-            if (now > 0) {
-                comb = 1ll * comb * (n - 1 + now) % moder * getinv(now) % moder;
-            }
-            prob += comb;
-            prob -= prob >= moder ? moder : 0;
-            expe = (expe + 1ll * comb * now) % moder;
-        }
-        ans = (ans - (expe + 1ll * vec[i].first * prob)) % moder;
-    }
-    const int MAX = 15000100;
-    comb = 1;
-    int comb1 = 1;
-    for (int i = sz - 1, now = -1, now1 = -1; i >= 0; -- i){
-        while (now < MAX - vec[i].first) {
-            ++now;
-            if (now > 0) {
-                comb = 1ll * comb * (n - 1 + now) % moder * getinv(now) % moder;
-            }
-            prob += comb;
-            prob -= prob >= moder ? moder : 0;
-            expe = (expe + 1ll * comb * now) % moder;
-        }
-        if (vec[i].first < 0){
-            while (now1 < -vec[i].first - 1){
-                ++now1;
-                if (now1 > 0) {
-                    comb1 = 1ll * comb1 * (n - 1 + now1) % moder * getinv(now1) % moder;
+void solve(){
+    memset(dp, 0, sizeof(dp));
+    int a, b, c;
+    scanf("%d%d%d", &a, &b, &c);
+    dp[BIT][0][0][1][1] = 1;
+    for (int i = BIT - 1; i >= 0; -- i){
+        for (int aSmall = 0; aSmall <= 1; ++ aSmall){
+            for (int bSmall = 0; bSmall <= 1; ++ bSmall){
+                for (int ctype = 0; ctype <= 2; ++ ctype) {
+                    for (int ctype2 = 0; ctype2 <= 2; ++ ctype2) {
+                        for (int aValue = 0; aValue <= 1; ++aValue) {
+                            for (int bValue = 0; bValue <= 1; ++bValue) {
+                                int abit = a >> i & 1;
+                                int bbit = b >> i & 1;
+                                if (!aSmall && aValue > abit || !bSmall && bValue > bbit) {
+                                    continue;
+                                }
+                                int naSmall = aSmall, nbSmall = bSmall;
+                                if (!aSmall && aValue < abit) {
+                                    naSmall = 1;
+                                }
+                                if (!bSmall && bValue < bbit) {
+                                    nbSmall = 1;
+                                }
+                                int cbit = c >> i & 1;
+                                int cValue1 = aValue & bValue;
+                                int nctype = ctype;
+                                if (ctype == 1 && cValue1 != cbit){
+                                    nctype = cValue1 < cbit ? 0 : 2;
+                                }
+                                int cValue2 = aValue ^ bValue;
+                                int nctype2 = ctype;
+                                if (ctype == 1 && cValue2 != cbit){
+                                    nctype2 = cValue2 < cbit ? 0 : 2;
+                                }
+                                dp[i][naSmall][nbSmall][nctype][nctype2] += dp[i + 1][aSmall][bSmall][ctype][ctype2];
+                            }
+                        }
+                    }
                 }
-                prob -= comb1;
-                prob += prob >= moder ? moder : 0;
-                expe = (expe - 1ll * comb1 * now1) % moder;
             }
         }
-        ans = (ans + (expe + 1ll * vec[i].first * prob)) % moder;
     }
-    ans += ans < 0 ? moder : 0;
-    for (int i = 0; i < n; ++ i){
-        ans = 1ll * ans * getinv(r[i] - l[i] + 1) % moder;
+    ll ans = 0;
+    for (int i = 0; i <= 1; ++ i){
+        for (int j = 0; j <= 1; ++ j){
+            for (int u = 0; u <= 2; ++ u){
+                for (int v = 0; v <= 2; ++ v){
+                    if (u == 2 || v == 0){
+                        ans += dp[0][i][j][u][v];
+                    }
+                }
+            }
+        }
     }
-    printf("%d\n", ans);
+    ans -= std::min(b, c - 1);
+    ans -= 1;
+    ans -= std::min(a, c - 1);
+    printf("%lld\n", ans);
 }
 
 int main(){
-    inv[1] = 1;
-    for (int i = 2; i < M; ++ i){
-        inv[i] = moder - 1ll * (moder / i) * inv[moder % i] % moder;
+    int test;
+    scanf("%d", &test);
+    while (test --){
+        solve();
     }
-    int n;
-    scanf("%d", &n);
-    solve(n);
     return 0;
 }
-
 ```
