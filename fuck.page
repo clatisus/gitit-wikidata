@@ -2,84 +2,184 @@
 // Created by zzh on 2019/8/10.
 //
 ```c++
+//
+// Created by zzh on 2019/8/10.
+//
+
 #include <bits/stdc++.h>
 
-const int N = 20000010;
-typedef long long ll;
-const int moder = 998244353;
-const int M = 10000010;
+const int max_N = (int) 1e5 + 21;
 
-int fac[N], inv[N], invf[N];
-int dp[M], pre[M];
+int siz[3], max, q;
 
-int comb(ll n, ll m){
-    if (n < m || m < 0){
-        return 0;
+const int inf = 0x3f3f3f3f;
+
+int siz1, siz2;
+
+struct SegmentTree {
+#define ls(x) ((x) << 1)
+#define rs(x) (ls(x) | 1)
+#define mid(l, r) ((l + r) >> 1)
+    int seg[max_N * 4];
+
+    bool clr[max_N * 4];
+
+    void clr_it(int x) {
+        seg[x] = inf;
+        clr[x] = true;
     }
-    return 1ll * fac[n] * invf[m] % moder * invf[n - m] % moder;
-}
 
-struct poly{
-    int coe;
-    ll up, down;
-};
-
-struct event{
-    int t, p;
-
-    bool operator <(const event &e)const{
-        return t < e.t;
-    }
-};
-
-int getpos(std::vector <poly> &vec, int pos){
-    int ans = 0;
-    for (auto u : vec){
-        ans = (ans + 1ll * u.coe * comb(pos - u.up + u.down - 1, u.down - 1)) % moder;
-    }
-    return ans;
-}
-
-int main(){
-    fac[0] = invf[0] = 1;
-    for (int i = 1; i < N; ++ i){
-        fac[i] = 1ll * i * fac[i - 1] % moder;
-        inv[i] = i == 1 ? 1 : moder - 1ll * (moder / i) * inv[moder % i] % moder;
-        invf[i] = 1ll * invf[i - 1] * inv[i] % moder;
-    }
-    std::vector <poly> vec = {{1, 0, 0}};
-    int l, d, m;
-    scanf("%d%d%d", &l, &d, &m);
-    dp[0] = pre[0] = 1;
-    for (int i = 1; i < M; ++ i){
-        dp[i] = i - d >= 0 ? pre[i - d] : 0;
-        pre[i] = pre[i - 1] + dp[i];
-        pre[i] -= pre[i] >= moder ? moder : 0;
-    }
-    std::vector <event> evec(m);
-    for (int i = 0; i < m; ++ i){
-        scanf("%d%d", &evec[i].t, &evec[i].p);
-    }
-    std::sort(evec.begin(), evec.end());
-    int cur = 0, pos = 0;
-    int ans = dp[l];
-    while (pos < m){
-        int diff = evec[pos].t - cur;
-        cur += diff;
-        for (auto &u : vec){
-            u.up += 1ll * diff * d;
-            u.down += diff;
-        }
-        while (pos < m && evec[pos].t == cur){
-            int coe = -getpos(vec, evec[pos].p);
-            vec.push_back({coe, evec[pos].p, 0});
-            ans = (ans + 1ll * coe * dp[l - evec[pos].p]) % moder;
-            ++ pos;
+    void down(int x) {
+        if (clr[x]) {
+            clr_it(ls(x));
+            clr_it(rs(x));
+            clr[x] = false;
         }
     }
-    ans += ans < 0 ? moder : 0;
-    printf("%d\n", ans);
-    return 0;
+
+    void modify(int p1, int p2, int val,
+        int d = 0, int x = 1,
+        int l1 = 1, int r1 = siz1,
+        int l2 = 1, int r2 = siz2) {
+        seg[x] = std::min(seg[x], val);
+        if (l1 == r1 && l2 == r2) {
+            return;
+        } else {
+            if ((!d && l1 == r1) || (d && l2 == r2)) {
+                d ^= 1;
+            }
+            down(x);
+            if (!d) {
+                if (p1 <= mid(l1, r1)) {
+                    modify(p1, p2, val, d ^ 1, ls(x), l1, mid(l1, r1), l2, r2);
+                } else {
+                    modify(p1, p2, val, d ^ 1, rs(x), mid(l1, r1) + 1, l2, r2);
+                }
+            } else {
+                if (p2 <= mid(l2, r2)) {
+                    modify(p1, p2, val, d ^ 1, ls(x), l1, r1, l2, mid(l2, r2));
+                } else {
+                    modify(p1, p2, val, d ^ 1, rs(x), l1, r1, mid(l2, r2) + 1, r2);
+                }
+            }
+        }
+    }
+
+    int query(int ql1, int qr1, int ql2, int qr2,
+              int d = 0, int x = 1,
+              int l1 = 1, int r1 = siz1,
+              int l2 = 1, int r2 = siz2) {
+        if (ql1 <= l1 && r1 <= qr1 && ql2 <= l2 && r2 <= qr2) {
+            return seg[x];
+        } else {
+            if ((!d && l1 == r1) || (d && l2 == r2)) {
+                d ^= 1;
+            }
+            down(x);
+            int ret = inf;
+            if (!d) {
+                if (ql1 <= mid(l1, r1)) {
+                    ret = std::min(ret, query(ql1, qr1, ql2, qr2, d ^ 1, ls(x), l1, mid(l1, r1), l2, r2));
+                }
+                if (qr1 >  mid(l1, r1)) {
+                    ret = std::min(ret, query(ql1, qr1, ql2, qr2, d ^ 1, rs(x), mid(l1, r1) + 1, r1, l2, r2));
+                }
+            } else {
+                if (ql2 <= mid(l2, r2)) {
+                    ret = std::min(ret, query(ql1, qr1, ql2, qr2, d ^ 1, l1 , r1, l2, mid(l2, r2)));
+                } else {
+                    ret = std::min(ret, query(ql1, qr1, ql2, qr2, d ^ 1, l1, r1, mid(l2, r2) + 1, r2));
+                }
+            }
+            return ret;
+        }
+    }
+} tree[4];
+
+int Q[max_N], tmp[max_N], op[max_N], cor[3][max_N], ret[max_N];
+
+bool cmp(int x, int y) {
+    if (cor[max][x] == cor[max][y]) {
+        return op[x] < op[y];
+    }
+    return cor[max][x] < cor[max][y];
+}
+
+void cdq(int l, int r) {
+    if (l == r) return;
+    int mid = (l + r) >> 1;
+    cdq(l, mid);
+    cdq(mid + 1, r);
+    std::merge(Q + l, Q + mid + 1, Q + mid + 1, Q + r + 1, tmp + l, cmp);
+
+    // 0 : x <= qx, y <= qy : (qx + qy) + (-x - y) + |qz - z|
+    // 1 : x <= qx, y >= qy : (qx - qy) + (-x + y) + |qz - z|
+    // 2 : x >= qx, y <= qy : (-qx + qy) + (x - y) + |qz - z|
+    // 3 : x >= qx, y >= qy : (-qx - qy) + (x + y) + |qz - z|
+
+    // z inc
+    for (int i = 0; i < 4; ++i) tree[i].clr_it(1);
+    for (int i = l; i <= r; ++i) {
+        Q[i] = tmp[i];
+        int p1 = cor[(max + 1) % 3][Q[i]];
+        int p2 = cor[(max + 2) % 3][Q[i]];
+        int p3 = cor[max][Q[i]];
+        if (Q[i] <= mid && op[Q[i]] == 1) {
+            tree[0].modify(p1, p2, -p1 - p2 - p3);
+            tree[1].modify(p1, p2, -p1 + p2 - p3);
+            tree[2].modify(p1, p2, p1 - p2 - p3);
+            tree[3].modify(p1, p2, p1 + p2 - p3);
+        } else if (Q[i] > mid && op[Q[i]] == 2) {
+            ret[Q[i]] = std::min(ret[Q[i]], p1 + p2 + p3 + tree[0].query(1, p1, 1, p2));
+            ret[Q[i]] = std::min(ret[Q[i]], p1 - p2 + p3 + tree[1].query(1, p1, p2, siz2));
+            ret[Q[i]] = std::min(ret[Q[i]], -p1 + p2 + p3 + tree[2].query(p1, siz1, 1, p2));
+            ret[Q[i]] = std::min(ret[Q[i]], -p1 - p2 + p3 + tree[3].query(p1, siz1, p2, siz2));
+        }
+    }
+
+    // z dec
+    for (int i = 0; i < 4; ++i) tree[i].clr_it(1);
+    for (int i = r; i >= l; --i) {
+        Q[i] = tmp[i];
+        int p1 = cor[(max + 1) % 3][Q[i]];
+        int p2 = cor[(max + 2) % 3][Q[i]];
+        int p3 = cor[max][Q[i]];
+        if (Q[i] <= mid && op[Q[i]] == 1) {
+            tree[0].modify(p1, p2, -p1 - p2 + p3);
+            tree[1].modify(p1, p2, -p1 + p2 + p3);
+            tree[2].modify(p1, p2, p1 - p2 + p3);
+            tree[3].modify(p1, p2, p1 + p2 + p3);
+        } else if (Q[i] > mid && op[Q[i]] == 2) {
+            ret[Q[i]] = std::min(ret[Q[i]], p1 + p2 - p3 + tree[0].query(1, p1, 1, p2));
+            ret[Q[i]] = std::min(ret[Q[i]], p1 - p2 - p3 + tree[1].query(1, p1, p2, siz2));
+            ret[Q[i]] = std::min(ret[Q[i]], -p1 + p2 - p3 + tree[2].query(p1, siz1, 1, p2));
+            ret[Q[i]] = std::min(ret[Q[i]], -p1 - p2 - p3 + tree[3].query(p1, siz1, p2, siz2));
+        }
+    }
+}
+
+int main() {
+    for (int i = 0; i < 3; ++i) {
+        scanf("%d", siz + i);
+        if (siz[max] < siz[i]) max = i;
+    }
+    siz1 = siz[(max + 1) % 3];
+    siz2 = siz[(max + 2) % 3];
+    scanf("%d", &q);
+    for (int i = 1; i <= q; ++i) {
+        scanf("%d", op + i);
+        for (int j = 0; j < 3; ++j) {
+            scanf("%d", cor[j] + i);
+        }
+        Q[i] = i;
+        ret[i] = inf;
+    }
+    cdq(1, q);
+    for (int i = 1; i <= q; ++i) {
+        if (op[i] == 2) {
+            printf("%d\n", ret[i]);
+        }
+    }
 }
 
 ```
