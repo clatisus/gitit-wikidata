@@ -84,7 +84,8 @@ struct SegmentTree {
             } else {
                 if (ql2 <= mid(l2, r2)) {
                     ret = std::min(ret, query(ql1, qr1, ql2, qr2, d ^ 1, ls(x), l1 , r1, l2, mid(l2, r2)));
-                } else {
+                } 
+                if (qr2 >  mid(l2, r2)){
                     ret = std::min(ret, query(ql1, qr1, ql2, qr2, d ^ 1, rs(x), l1, r1, mid(l2, r2) + 1, r2));
                 }
             }
