@@ -1,137 +1,98 @@
 ```c++
-//
-// Created by zzh on 2019/8/10.
-//
-
 #include <bits/stdc++.h>
 
-using LL = long long;
+const int N = 100010;
+const int M = 60;
 
-const int max_N = (int)3e5 + 21;
+int type[N], x[N], y[N], z[N];
+std::set <int> set[M][M];
 
-int n;
-
-namespace SegmentTree {
-const int seg_N = max_N * 12;
-
-int tot, ls[max_N], rs[max_N], cnt[seg_N];
-
-LL sum[max_N];
-
-std::vector<int> node;
-
-int new_node() {
-    int x;
-    if (node.empty()) {
-        x = ++tot;
-    } else {
-        x = node.back();
-        node.pop_back();
+int main(){
+    int n, m, h;
+    scanf("%d%d%d", &n, &m, &h);
+    int q;
+    scanf("%d", &q);
+    for (int i = 0; i < q; ++ i){
+        scanf("%d%d%d%d", &type[i], &x[i], &y[i], &z[i]);
+        -- x[i], -- y[i], -- z[i];
     }
-    sum[x] = ls[x] = rs[x] = cnt[x] = 0;
-}
-
-#define mid ((l + r) >> 1)
-
-void modify(int ql, int qr, int &x, int l = 1, int r = n) {
-    if (!x) x = new_node();
-    if (ql <= l && r <= qr) {
-        ++cnt[x];
-        sum[x] += qr - ql + 1;
-    } else {
-        if (ql <= mid) modify(ql, qr, ls[x], l, mid);
-        if (qr >  mid) modify(ql, qr, rs[x], mid + 1, r);
-        sum[x] = sum[ls[x]] + sum[rs[x]] + 1LL * cnt[x] * (qr - ql + 1);
+    bool flag1 = false, flag2 = false, flag3 = false;
+    if (n > m){
+        flag1 = true;
+        std::swap(n, m);
     }
-}
-
-LL query(int ql, int qr, int x, int l = 1, int r = n) {
-    if (!x) return 0;
-    if (ql <= l && r <= qr) {
-        return sum[x];
-    } else {
-        LL ret = 0;
-        if (ql <= mid) ret += query(ql, qr, ls[x], l, mid);
-        if (qr >  mid) ret += query(ql, qr, rs[x], mid + 1, r);
-        int L = std::max(ql, l);
-        int R = std::min(qr, r);
-        ret += 1LL * cnt[x] * (R - L + 1);
-        return ret;
+    if (m > h){
+        flag2 = true;
+        std::swap(m, h);
     }
-}
-
-void rec(int x) {
-    if (!x) return;
-    node.push_back(x);
-    rec(ls[x]);
-    rec(rs[x]);
-}
-}
-
-int m, q, p[max_N], l[max_N], r[max_N], ql[max_N], qr[max_N];
-
-LL ret[max_N];
-
-std::vector<int> vec[max_N], qy[max_N];
-
-int siz[max_N], max[max_N];
-
-void dfs1(int u) {
-    siz[u] = 1;
-    max[u] = 0;
-    for (auto &v : vec[u]) {
-        dfs1(v);
-        siz[v] += siz[u];
-        if (siz[max[u]] < siz[v]) {
-            max[u] = v;
+    if (n > h){
+        flag3 = true;
+        std::swap(n, h);
+    }
+    for (int i = 0; i < q; ++ i){
+        if (flag1){
+            std::swap(x[i], y[i]);
+        }
+        if (flag2){
+            std::swap(y[i], z[i]);
+        }
+        if (flag3){
+            std::swap(x[i], z[i]);
         }
     }
+    if (n * m <= 50){
+        for (int _ = 0; _ < q; ++ _){
+            if (type[_] == 1){
+                set[x[_]][y[_]].insert(z[_]);
+            }
+            else{
+                int ans = INT_MAX;
+                for (int i = 0; i < n; ++ i){
+                    for (int j = 0; j < m; ++ j){
+                        if (set[i][j].empty()){
+                            continue;
+                        }
+                        auto u = set[i][j].lower_bound(z[_]);
+                        if (u != set[i][j].end()){
+                            ans = std::min(ans, *u - z[_] + std::abs(x[_] - i) + std::abs(y[_] - j));
+                        }
+                        if (u != set[i][j].begin()){
+                            -- u;
+                            ans = std::min(ans, *u - z[_] + std::abs(x[_] - i) + std::abs(y[_] - j));
+                        }
+                    }
+                }
+                printf("%d\n", ans);
+            }
+        }
+    }
+    else{
+        std::vector <std::vector <std::vector <int>>> ans(n);
+        for (int i = 0; i < n; ++ i) {
+            ans[i].resize(m);
+            for (int j = 0; j < m; ++ j){
+                ans[i][j].resize(h, INT_MAX);
+            }
+        }
+        for (int _ = 0; _ < q; ++ _){
+            if (type[_] == 1){
+                for (int i = 0; i < n; ++ i){
+                    for (int j = 0; j < m; ++ j){
+                        int &u = ans[i][j][z[_]];
+                        u = std::min(u, std::abs(i - x[_]) + std::abs(j - y[_]));
+                    }
+                }
+            }
+            else{
+                int aans = INT_MAX;
+                for (int k = 0; k < h; ++ k){
+                    aans = std::min(aans, std::abs(z[_] - k) + ans[x[_]][y[_]][k]);
+                }
+                printf("%d\n", aans);
+            }
+        }
+    }
+    return 0;
 }
 
-int rt[max_N];
-
-void merge(int u, int &rt) {
-    SegmentTree::modify(l[u], r[u], rt);
-    for (auto &v : vec[u]) {
-        merge(v, rt);
-    }
-}
-
-void dfs2(int u, int head) {
-    if (max[u]) dfs2(max[u], head);
-    for (auto &v : vec[u]) {
-        if (v == max[u]) continue;
-        dfs2(v, v);
-        SegmentTree::rec(rt[v]);
-        merge(v, rt[head]);
-    }
-    SegmentTree::modify(l[u], r[u], rt[head]);
-    for (auto &i : qy[u]) {
-        ret[i] = SegmentTree::query(ql[i], qr[i], rt[head]);
-    }
-}
-
-int main() {
-    scanf("%d%d", &n, &m);
-    for (int i = 1, u, v, L, R; i <= m; ++i) {
-        scanf("%d%d%d%d", &u, &v, &L, &R);
-        vec[u].push_back(v);
-        p[v] = u;
-        l[v] = L;
-        r[v] = R;
-    }
-    p[1] = 0;
-    l[1] = 1;
-    r[1] = n;
-    dfs1(1);
-    scanf("%d", &q);
-    for (int i = 1, x; i <= q; ++i) {
-        scanf("%d%d%d", &x, ql + i, qr + i);
-        qy[x].push_back(i);
-    }
-    dfs2(1, 1);
-    for (int i = 1; i <= q; ++i) {
-        printf("%lld\n", ret[i]);
-    }
-}
 ```
