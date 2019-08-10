@@ -4,182 +4,82 @@
 ```c++
 #include <bits/stdc++.h>
 
-const int max_N = (int)2e5 + 21;
+const int N = 20000010;
+typedef long long ll;
+const int moder = 998244353;
+const int M = 10000010;
 
-namespace LCT {
-using ptr = struct node*;
-ptr null, tail, rt[max_N];
+int fac[N], inv[N], invf[N];
+int dp[M], pre[M];
 
-struct node {
-    int val, rev;
-    ptr min, p, ch[2];
-
-    void updt() {
-        min = this;
-        if (ch[0]->min->val < min->val) {
-            min = ch[0]->min;
-        }
-        if (ch[1]->min->val < min->val) {
-            min = ch[1]->min;
-        }
+int comb(ll n, ll m){
+    if (n < m || m < 0){
+        return 0;
     }
+    return 1ll * fac[n] * invf[m] % moder * invf[n - m] % moder;
+}
 
-    void down() {
-        if (!rev) return;
-        std::swap(ch[0], ch[1]);
-        ch[0]->rev ^= 1;
-        ch[1]->rev ^= 1;
-        rev = 0;
+struct poly{
+    int coe;
+    ll up, down;
+};
+
+struct event{
+    int t, p;
+
+    bool operator <(const event &e)const{
+        return t < e.t;
     }
+};
 
-    int dir() {
-        if (p->ch[0] == this) return 0;
-        if (p->ch[1] == this) return 1;
-        return -1;
-    }
-
-    void set_ch(node* x, int d) {
-        if (~d) ch[d] = x;
-        if (x != null) x->p = this;
-    }
-} pool[max_N];
-
-ptr new_node(int val) {
-    ptr x = tail++;
-    x->val = val;
-    x->rev = 0;
-    x->ch[0] = x->ch[1] = x->p = null;
-    return x->min = x;
-}
-
-void rot(ptr x) {
-    ptr y = x->p;
-    int d = x->dir(), dd = y->dir();
-    y->p->set_ch(x, dd);
-    y->set_ch(x->ch[d ^ 1], d);
-    y->updt();
-    x->set_ch(y, d ^ 1);
-}
-
-void putdown(ptr x) {
-    if (~x->dir()) putdown(x->p);
-    x->down();
-}
-
-void splay(ptr x) {
-    putdown(x);
-    int d, dd;
-    for (; ~(d = x->dir()); rot(x)) {
-        if (~(dd = x->p->dir())) {
-            rot((d ^ dd) ? x : x->p);
-        }
-    }
-    x->updt();
-}
-
-void access(ptr x) {
-    ptr y = x, rch = null;
-    for (; x != null; x = x->p) {
-        splay(x);
-        x->set_ch(rch, 1);
-        x->updt();
-        rch = x;
-    }
-    splay(y);
-}
-
-void evert(ptr x) {
-    access(x);
-    x->rev ^= 1;
-}
-
-ptr path(ptr x, ptr y) {
-    return evert(x), access(y), y;
-}
-
-void link(ptr x, ptr y) {
-    evert(x), x->p = y;
-}
-
-void cut(ptr x, ptr y) {
-    path(x, y);
-    x->p = null;
-    y->set_ch(null, 0);
-    y->updt();
-}
-
-ptr find(ptr x) {
-    access(x);
-    while (x->down(), x->ch[0] != null) {
-        x = x->ch[0];
-    }
-    return x;
-}
-
-const int inf = 0x3f3f3f3f;
-
-void init() {
-    tail = pool;
-    null = tail++;
-    null->val = inf;
-    null->rev = 0;
-    null->ch[0] = null->ch[1] = null->p = null->min = null;
-}
-}
-
-int n, m, tot, u[max_N], v[max_N], l[max_N], r[max_N];
-
-bool is_tree[max_N];
-
-std::pair<int, int> event[max_N];
-
-void add(int id) {
-    if (LCT::find(LCT::rt[u[id]]) == LCT::find(LCT::rt[v[id]])) {
-        auto path = LCT::path(LCT::rt[u[id]], LCT::rt[v[id]]);
-        if (path->min->val >= r[id] + 1) return;
-        int ntr_id = path->min - LCT::pool - n;
-        is_tree[ntr_id] = false;
-        LCT::cut(LCT::rt[n + ntr_id], LCT::rt[v[ntr_id]]);
-    }
-    is_tree[id] = true;
-    LCT::link(LCT::rt[n + id], LCT::rt[v[id]]);
-}
-
-void del(int id) {
-    if (!is_tree[id]) return;
-    is_tree[id] = false;
-    LCT::cut(LCT::rt[n + id], LCT::rt[v[id]]);
-}
-
-int main() {
-    LCT::init();
-    scanf("%d%d", &n, &m);
-    for (int i = 1; i <= n; ++i) {
-       LCT::rt[i] = LCT::new_node(LCT::inf);
-    }
-    for (int i = 1; i <= m; ++i) {
-        scanf("%d%d%d%d", u + i, v + i, l + i, r + i);
-        auto& rt = LCT::rt[n + i];
-        rt = LCT::new_node(r[i] + 1);
-        rt->p = LCT::rt[u[i]];
-        event[++tot] = {l[i], i};
-        event[++tot] = {r[i] + 1, -i};
-    }
-    std::sort(event + 1, event + 1 + tot);
+int getpos(std::vector <poly> &vec, int pos){
     int ans = 0;
-    for (int i = 1, j; i <= tot; i = j) {
-        for (j = i + 1; j <= tot && event[i].first == event[j].first; ++j) {
-            if (event[j].second > 0) {
-                add(event[j].second);
-            } else {
-                del(-event[j].second);
-            }
+    for (auto u : vec){
+        ans = (ans + 1ll * u.coe * comb(pos - u.up + u.down - 1, u.down - 1)) % moder;
+    }
+    return ans;
+}
+
+int main(){
+    fac[0] = invf[0] = 1;
+    for (int i = 1; i < N; ++ i){
+        fac[i] = 1ll * i * fac[i - 1] % moder;
+        inv[i] = i == 1 ? 1 : moder - 1ll * (moder / i) * inv[moder % i] % moder;
+        invf[i] = 1ll * invf[i - 1] * inv[i] % moder;
+    }
+    std::vector <poly> vec = {{1, 0, 0}};
+    int l, d, m;
+    scanf("%d%d%d", &l, &d, &m);
+    dp[0] = pre[0] = 1;
+    for (int i = 1; i < M; ++ i){
+        dp[i] = i - d >= 0 ? pre[i - d] : 0;
+        pre[i] = pre[i - 1] + dp[i];
+        pre[i] -= pre[i] >= moder ? moder : 0;
+    }
+    std::vector <event> evec(m);
+    for (int i = 0; i < m; ++ i){
+        scanf("%d%d", &evec[i].t, &evec[i].p);
+    }
+    std::sort(evec.begin(), evec.end());
+    int cur = 0, pos = 0;
+    int ans = dp[l];
+    while (pos < m){
+        int diff = evec[pos].t - cur;
+        cur += diff;
+        for (auto &u : vec){
+            u.up += 1ll * diff * d;
+            u.down += diff;
         }
-        if (LCT::find(LCT::rt[1]) == LCT::find(LCT::rt[n])) {
-            assert(j <= tot);
-            ans += event[j].first - event[i].first;
+        while (pos < m && evec[pos].t == cur){
+            int coe = -getpos(vec, evec[pos].p);
+            vec.push_back({coe, evec[pos].p, 0});
+            ans = (ans + 1ll * coe * dp[l - evec[pos].p]) % moder;
+            ++ pos;
         }
     }
+    ans += ans < 0 ? moder : 0;
     printf("%d\n", ans);
+    return 0;
 }
+
 ```
