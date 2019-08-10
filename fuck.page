@@ -1,100 +1,185 @@
+//
+// Created by zzh on 2019/8/10.
+//
 ```c++
-//
-// Created by zzh on 2019/8/8.
-//
-
 #include <bits/stdc++.h>
 
-const int max_N = (int)4e5 + 21;
+const int max_N = (int)2e5 + 21;
 
-int n, opt[2][233], L[max_N], R[max_N];
+namespace LCT {
+using ptr = struct node*;
+ptr null, tail, rt[max_N];
 
-int x[max_N], y[max_N];
+struct node {
+    int val, rev;
+    ptr min, p, ch[2];
 
-void gen(int* num, int *opt) {
-    num[1] = opt[0];
-    num[2] = opt[1];
-    for (int i = 3; i <= n; ++i) {
-        num[i] = (1LL * opt[2] * num[i - 1] + 1LL * opt[3] * num[i - 2] + opt[4]) % opt[5];
-    }
-}
-
-std::set<int> set;
-
-int tot, st[max_N * 4];
-
-using LL = long long;
-
-int cnt[max_N * 16];
-
-LL sum[max_N * 16];
-
-#define ls(x) ((x) << 1)
-#define rs(x) (ls(x) | 1)
-#define mid ((l + r) >> 1)
-#define lch ls(x), l, mid
-#define rch rs(x), mid + 1, r
-
-int ql, qr;
-
-void modify(int x = 1, int l = 1, int r = tot) {
-    if (ql <= l && r <= qr) {
-        ++cnt[x];
-        sum[x] += st[r + 1] - st[l];
-    } else {
-        if (ql <= mid) modify(lch);
-        if (qr >  mid) modify(rch);
-        sum[x] = sum[ls(x)] + sum[rs(x)] + 1LL * cnt[x] * (st[r + 1] - st[l]);
-    }
-}
-
-void query() {
-    LL total = sum[1];
-    int x = 1, l = 1, r = tot;
-    LL count = 0;
-    LL k = (total + 1) / 2;
-    while (l < r) {
-        count += cnt[x];
-        LL left_s = sum[ls(x)] + count * (st[mid + 1] - st[l]);
-        if (left_s < k) {
-            k -= left_s;
-            x = rs(x);
-            l = mid + 1;
-        } else {
-            x = ls(x);
-            r = mid;
+    void updt() {
+        min = this;
+        if (ch[0]->min->val < min->val) {
+            min = ch[0]->min;
+        }
+        if (ch[1]->min->val < min->val) {
+            min = ch[1]->min;
         }
     }
-    count += cnt[x];
-    int offset = (k + count- 1) / count;
-    printf("%d\n", st[l] + offset - 1);
+
+    void down() {
+        if (!rev) return;
+        std::swap(ch[0], ch[1]);
+        ch[0]->rev ^= 1;
+        ch[1]->rev ^= 1;
+        rev = 0;
+    }
+
+    int dir() {
+        if (p->ch[0] == this) return 0;
+        if (p->ch[1] == this) return 1;
+        return -1;
+    }
+
+    void set_ch(node* x, int d) {
+        if (~d) ch[d] = x;
+        if (x != null) x->p = this;
+    }
+} pool[max_N];
+
+ptr new_node(int val) {
+    ptr x = tail++;
+    x->val = val;
+    x->rev = 0;
+    x->ch[0] = x->ch[1] = x->p = null;
+    return x->min = x;
+}
+
+void rot(ptr x) {
+    ptr y = x->p;
+    int d = x->dir(), dd = y->dir();
+    y->p->set_ch(x, dd);
+    y->set_ch(x->ch[d ^ 1], d);
+    y->updt();
+    x->set_ch(y, d ^ 1);
+}
+
+void putdown(ptr x) {
+    if (~x->dir()) putdown(x->p);
+    x->down();
+}
+
+void splay(ptr x) {
+    putdown(x);
+    int d, dd;
+    for (; ~(d = x->dir()); rot(x)) {
+        if (~(dd = x->p->dir())) {
+            rot((d ^ dd) ? x : x->p);
+        }
+    }
+    x->updt();
+}
+
+void access(ptr x) {
+    ptr y = x, rch = null;
+    for (; x != null; x = x->p) {
+        splay(x);
+        x->set_ch(rch, 1);
+        x->updt();
+        rch = x;
+    }
+    splay(y);
+}
+
+void evert(ptr x) {
+    access(x);
+    x->rev ^= 1;
+}
+
+ptr path(ptr x, ptr y) {
+    return evert(x), access(y), y;
+}
+
+void link(ptr x, ptr y) {
+    evert(x), x->p = y;
+}
+
+void cut(ptr x, ptr y) {
+    path(x, y);
+    x->p = null;
+    y->set_ch(null, 0);
+    y->updt();
+}
+
+ptr find(ptr x) {
+    access(x);
+    while (x->down(), x->ch[0] != null) {
+        x = x->ch[0];
+    }
+    return x;
+}
+
+const int inf = 0x3f3f3f3f;
+
+void init() {
+    tail = pool;
+    null = tail++;
+    null->val = inf;
+    null->rev = 0;
+    null->ch[0] = null->ch[1] = null->p = null->min = null;
+}
+}
+
+int n, m, tot, u[max_N], v[max_N], l[max_N], r[max_N];
+
+bool is_tree[max_N];
+
+std::pair<int, int> event[max_N];
+
+void add(int id) {
+    if (LCT::find(LCT::rt[u[id]]) == LCT::find(LCT::rt[v[id]])) {
+        auto path = LCT::path(LCT::rt[u[id]], LCT::rt[v[id]]);
+        if (path->min->val >= r[id] + 1) return;
+        int ntr_id = path->min - LCT::pool - n;
+        is_tree[ntr_id] = false;
+        LCT::cut(LCT::rt[n + ntr_id], LCT::rt[v[ntr_id]]);
+    }
+    is_tree[id] = true;
+    LCT::link(LCT::rt[n + id], LCT::rt[v[id]]);
+}
+
+void del(int id) {
+    if (!is_tree[id]) return;
+    is_tree[id] = false;
+    LCT::cut(LCT::rt[n + id], LCT::rt[v[id]]);
 }
 
 int main() {
-    scanf("%d", &n);
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 6; ++j) {
-            scanf("%d", opt[i] + j);
+    LCT::init();
+    scanf("%d%d", &n, &m);
+    for (int i = 1; i <= n; ++i) {
+       LCT::rt[i] = LCT::new_node(LCT::inf);
+    }
+    for (int i = 1; i <= m; ++i) {
+        scanf("%d%d%d%d", u + i, v + i, l + i, r + i);
+        auto& rt = LCT::rt[n + i];
+        rt = LCT::new_node(r[i] + 1);
+        rt->p = LCT::rt[u[i]];
+        event[++tot] = {l[i], i};
+        event[++tot] = {r[i] + 1, -i};
+    }
+    std::sort(event + 1, event + 1 + tot);
+    int ans = 0;
+    for (int i = 1, j; i <= tot; i = j) {
+        for (j = i + 1; j <= tot && event[i].first == event[j].first; ++j) {
+            if (event[j].second > 0) {
+                add(event[j].second);
+            } else {
+                del(-event[j].second);
+            }
+        }
+        if (LCT::find(LCT::rt[1]) == LCT::find(LCT::rt[n])) {
+            assert(j <= tot);
+            ans += event[j].first - event[i].first;
         }
     }
-    gen(x, opt[0]);
-    gen(y, opt[1]);
-    for (int i = 1; i <= n; ++i) {
-        L[i] = std::min(x[i], y[i]);
-        R[i] = std::max(x[i], y[i]);
-        set.insert(L[i]);
-        set.insert(R[i]);
-    }
-    set.insert(1);
-    set.insert(1e9);
-    for (const auto& x : set) {
-        st[++tot] = x;
-    }
-    for (int i = 1; i <= n; ++i) {
-        ql = std::lower_bound(st + 1, st + 1 + tot, L[i]) - st;
-        qr = std::lower_bound(st + 1, st + 1 + tot, R[i]) - st;
-        modify();
-        query();
-    }
+    printf("%d\n", ans);
 }
 ```
