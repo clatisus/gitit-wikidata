@@ -30,8 +30,10 @@ LL bit_query(LL* bit, int x) {
 }
 
 void add(int x, LL y) {
-    bit_add(bit[0], x, y);
-    bit_add(bit[1], x + 1, x * y);
+    if (!x) return;
+    bit_add(bit[0], 1, y);
+    bit_add(bit[0], x, -y);
+    bit_add(bit[1], x, x * y);
 }
 
 LL query(int x) {
@@ -116,6 +118,7 @@ void testCase(int id) {
             p = sam.go[p][c];
             ++len;
         }
+        printf("len[%d] = %d\n", i, len);
         if (len) {
             add(i - len, -1);
             add(i, 1);
