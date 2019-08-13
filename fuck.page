@@ -1,98 +1,142 @@
 ```c++
+//
+// Created by zzh on 2019/8/13.
+//
+
 #include <bits/stdc++.h>
 
-const int N = 100010;
-const int M = 60;
+using LL = long long;
 
-int type[N], x[N], y[N], z[N];
-std::set <int> set[M][M];
+const int max_N = (int)1e5 + 21;
 
-int main(){
-    int n, m, h;
-    scanf("%d%d%d", &n, &m, &h);
-    int q;
-    scanf("%d", &q);
-    for (int i = 0; i < q; ++ i){
-        scanf("%d%d%d%d", &type[i], &x[i], &y[i], &z[i]);
-        -- x[i], -- y[i], -- z[i];
+int T, n, m, q;
+
+char s1[max_N], s2[max_N];
+
+LL bit[2][max_N];
+
+void bit_add(LL* bit, int x, LL y) {
+    for (; x && x <= n; x += (x & -x)) {
+        bit[x] += y;
     }
-    bool flag1 = false, flag2 = false, flag3 = false;
-    if (n > m){
-        flag1 = true;
-        std::swap(n, m);
-    }
-    if (m > h){
-        flag2 = true;
-        std::swap(m, h);
-    }
-    if (n > h){
-        flag3 = true;
-        std::swap(n, h);
-    }
-    for (int i = 0; i < q; ++ i){
-        if (flag1){
-            std::swap(x[i], y[i]);
-        }
-        if (flag2){
-            std::swap(y[i], z[i]);
-        }
-        if (flag3){
-            std::swap(x[i], z[i]);
-        }
-    }
-    if (n * m <= 50){
-        for (int _ = 0; _ < q; ++ _){
-            if (type[_] == 1){
-                set[x[_]][y[_]].insert(z[_]);
-            }
-            else{
-                int ans = INT_MAX;
-                for (int i = 0; i < n; ++ i){
-                    for (int j = 0; j < m; ++ j){
-                        if (set[i][j].empty()){
-                            continue;
-                        }
-                        auto u = set[i][j].lower_bound(z[_]);
-                        if (u != set[i][j].end()){
-                            ans = std::min(ans, *u - z[_] + std::abs(x[_] - i) + std::abs(y[_] - j));
-                        }
-                        if (u != set[i][j].begin()){
-                            -- u;
-                            ans = std::min(ans, *u - z[_] + std::abs(x[_] - i) + std::abs(y[_] - j));
-                        }
-                    }
-                }
-                printf("%d\n", ans);
-            }
-        }
-    }
-    else{
-        std::vector <std::vector <std::vector <int>>> ans(n);
-        for (int i = 0; i < n; ++ i) {
-            ans[i].resize(m);
-            for (int j = 0; j < m; ++ j){
-                ans[i][j].resize(h, INT_MAX);
-            }
-        }
-        for (int _ = 0; _ < q; ++ _){
-            if (type[_] == 1){
-                for (int i = 0; i < n; ++ i){
-                    for (int j = 0; j < m; ++ j){
-                        int &u = ans[i][j][z[_]];
-                        u = std::min(u, std::abs(i - x[_]) + std::abs(j - y[_]));
-                    }
-                }
-            }
-            else{
-                int aans = INT_MAX;
-                for (int k = 0; k < h; ++ k){
-                    aans = std::min(aans, std::abs(z[_] - k) + ans[x[_]][y[_]][k]);
-                }
-                printf("%d\n", aans);
-            }
-        }
-    }
-    return 0;
 }
 
+LL bit_query(LL* bit, int x) {
+    LL ret = 0;
+    for (; x; x -= (x & -x)) {
+        ret += bit[x];
+    }
+    return ret;
+}
+
+void add(int x, LL y) {
+    bit_add(bit[0], x, y);
+    bit_add(bit[1], x + 1, x * y);
+}
+
+LL query(int x) {
+   LL ret = bit_query(bit[0], x) * x;
+   ret += bit_query(bit[1], x);
+   return ret;
+}
+
+const int SAM_N = max_N * 2;
+const int sigma = 26;
+
+struct SAM {
+    int tot, root, last;
+    int len[SAM_N], go[SAM_N][sigma], par[SAM_N];
+
+    int new_node(int L) {
+        len[++tot] = L;
+        memset(go[tot], 0, sizeof go[tot]);
+        par[tot] = 0;
+        return tot;
+    }
+
+    void init() {
+        root = last = new_node(tot = 0);
+    }
+
+    void extend(int c) {
+        int p = last;
+        int np = new_node(len[p] + 1);
+        par[last = np] = root;
+        for (; p && !go[p][c]; p = par[p]) {
+            go[p][c] = np;
+        }
+        if (p) {
+            int q = par[np] = go[p][c];
+            if (len[q] != len[p] + 1) {
+                int nq = new_node(len[p] + 1);
+                par[nq] = par[q];
+                memcpy(go[nq], go[q], sizeof go[q]);
+                par[np] = par[q] = nq;
+                for (; p && go[p][c] == q; p = par[p]) {
+                    go[p][c] = nq;
+                }
+            }
+        }
+    }
+} sam;
+
+int ql[max_N], qr[max_N], Q[max_N];
+
+LL ret[max_N];
+
+void testCase(int id) {
+    scanf("%s%s", s1, s2);
+    n = strlen(s1);
+    for (int i = 1; i <= n; ++i) {
+        bit[0][i] = bit[1][i] = 0;
+    }
+    sam.init();
+    m = strlen(s2);
+    for (int i = 0; i < m; ++i) {
+        sam.extend(s2[i] - 'a');
+    }
+    scanf("%d", &q);
+    for (int i = 1; i <= q; ++i) {
+        scanf("%d%d", ql + i, qr + i);
+        Q[i] = i;
+    }
+    std::sort(Q + 1, Q + 1 + n, [&](int x, int y) { return qr[x] < qr[y]; });
+    int p = sam.root;
+    int len = 0;
+    for (int i = 1, j = 1; i <= n; ++i) {
+        int c = s1[i - 1] - 'a';
+        while (p && !sam.go[p][c]) {
+            p = sam.par[p];
+            len = sam.len[p];
+        }
+        if (!p) {
+            p = sam.root;
+            len = 0;
+        } else {
+            p = sam.go[p][c];
+            ++len;
+        }
+        if (len) {
+            add(i - len, -1);
+            add(i, 1);
+        }
+        LL sum = query(i);
+        while (j <= q && qr[Q[j]] == i) {
+            ret[Q[j]] = sum - query(ql[Q[j]] - 1);
+            ++j;
+        }
+    }
+    printf("Case %d:\n", id);
+    for (int i = 1; i <= q; ++i) {
+        printf("%lld\n", ret[i]);
+    }
+}
+
+int main() {
+    // freopen
+    scanf("%d", &T);
+    for (int i = 1; i <= T; ++i) {
+        testCase(i);
+    }
+}
 ```
