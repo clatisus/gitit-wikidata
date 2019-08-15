@@ -1,145 +1,64 @@
 ```c++
-//
-// Created by zzh on 2019/8/13.
-//
-
 #include <bits/stdc++.h>
 
-using LL = long long;
+typedef unsigned long long ull;
+const int BIT = 19;
+const int MAX = 1 << 19;
+const int moder = (int) 1e9 + 7;
 
-const int max_N = (int)1e5 + 21;
+int lowPre[MAX];
+std::vector <ull> cnts[MAX];
+bool vis[MAX];
 
-int T, n, m, q;
-
-char s1[max_N], s2[max_N];
-
-LL bit[2][max_N];
-
-void bit_add(LL* bit, int x, LL y) {
-    for (; x && x <= n; x += (x & -x)) {
-        bit[x] += y;
+int bf(ull n, ull m){
+    int ans = 0;
+    for (ull i = 0; i <= n; ++ i){
+        ans = (ans + ((i * m) & m)) % moder;
     }
+    return ans;
 }
 
-LL bit_query(LL* bit, int x) {
-    LL ret = 0;
-    for (; x; x -= (x & -x)) {
-        ret += bit[x];
+int main(){
+    ull n, m;
+    scanf("%llu%llu", &n, &m);
+    for (int i = 1; i < MAX; ++ i){
+        lowPre[i] = (lowPre[i - 1] + (((ull) i * m) & (MAX - 1) & m)) % moder;
     }
-    return ret;
-}
-
-void add(int x, LL y) {
-    if (!x) return;
-    bit_add(bit[0], 1, y);
-    bit_add(bit[0], x, -y);
-    bit_add(bit[1], x, x * y);
-}
-
-LL query(int x) {
-   LL ret = bit_query(bit[0], x) * x;
-   ret += bit_query(bit[1], x);
-   return ret;
-}
-
-const int SAM_N = max_N * 2;
-const int sigma = 26;
-
-struct SAM {
-    int tot, root, last;
-    int len[SAM_N], go[SAM_N][sigma], par[SAM_N];
-
-    int new_node(int L) {
-        len[++tot] = L;
-        memset(go[tot], 0, sizeof go[tot]);
-        par[tot] = 0;
-        return tot;
+    int ans1 = ((n / MAX) % moder * lowPre[MAX - 1] + lowPre[n % MAX]) % moder;
+    for (int i = 0; i < MAX; ++ i){
+        cnts[((i * m) / MAX) & (MAX - 1)].push_back(n / MAX + (n % MAX >= i));
     }
-
-    void init() {
-        root = last = new_node(tot = 0);
-    }
-
-    void extend(int c) {
-        int p = last;
-        int np = new_node(len[p] + 1);
-        par[last = np] = root;
-        for (; p && !go[p][c]; p = par[p]) {
-            go[p][c] = np;
+    int ans2 = 0;
+    for (int i = 0; i < MAX; ++ i){
+        if (vis[i]){
+            continue;
         }
-        if (p) {
-            int q = par[np] = go[p][c];
-            if (len[q] != len[p] + 1) {
-                int nq = new_node(len[p] + 1);
-                par[nq] = par[q];
-                memcpy(go[nq], go[q], sizeof go[q]);
-                par[np] = par[q] = nq;
-                for (; p && go[p][c] == q; p = par[p]) {
-                    go[p][c] = nq;
-                }
+        int x = i;
+        std::vector <int> vec;
+        while (true){
+            vec.push_back(x);
+            vis[x] = true;
+            x = (x + m) & (MAX - 1);
+            if (vis[x]){
+                break;
+            }
+        }
+        int sz = vec.size();
+        std::vector <int> pre(sz);
+        for (int j = 0; j < sz; ++ j){
+            pre[j] = ((j ? pre[j - 1] : 0) + (vec[j] & (m / MAX))) % moder;
+        }
+        for (int j = 0; j < sz; ++ j){
+            for (auto u : cnts[vec[j]]){
+                ans2 = (ans2 - (j ? pre[j - 1] : 0)) % moder;
+                ull len = u + j - 1;
+                ans2 = (ans2 + 1ll * pre[sz - 1] * ((len / sz) % moder) + pre[len % sz]) % moder;
             }
         }
     }
-} sam;
-
-int ql[max_N], qr[max_N], Q[max_N];
-
-LL ret[max_N];
-
-void testCase(int id) {
-    scanf("%s%s", s1, s2);
-    n = strlen(s1);
-    for (int i = 1; i <= n; ++i) {
-        bit[0][i] = bit[1][i] = 0;
-    }
-    sam.init();
-    m = strlen(s2);
-    for (int i = 0; i < m; ++i) {
-        sam.extend(s2[i] - 'a');
-    }
-    scanf("%d", &q);
-    for (int i = 1; i <= q; ++i) {
-        scanf("%d%d", ql + i, qr + i);
-        Q[i] = i;
-    }
-    std::sort(Q + 1, Q + 1 + n, [&](int x, int y) { return qr[x] < qr[y]; });
-    int p = sam.root;
-    int len = 0;
-    for (int i = 1, j = 1; i <= n; ++i) {
-        int c = s1[i - 1] - 'a';
-        while (p && !sam.go[p][c]) {
-            p = sam.par[p];
-            len = sam.len[p];
-        }
-        if (!p) {
-            p = sam.root;
-            len = 0;
-        } else {
-            p = sam.go[p][c];
-            ++len;
-        }
-        printf("len[%d] = %d\n", i, len);
-        if (len) {
-            add(i - len, -1);
-            add(i, 1);
-        }
-        LL sum = query(i);
-        while (j <= q && qr[Q[j]] == i) {
-            ret[Q[j]] = sum - query(ql[Q[j]] - 1);
-            ++j;
-        }
-    }
-    printf("Case %d:\n", id);
-    for (int i = 1; i <= q; ++i) {
-        printf("%lld\n", ret[i]);
-    }
+    int ans = (ans1 + 1ll * MAX * ans2) % moder;
+    printf("%d\n", ans);
+    printf("%d\n", bf(n, m));
 }
 
-int main() {
-    // freopen
-    scanf("%d", &T);
-    for (int i = 1; i <= T; ++i) {
-        testCase(i);
-    }
-}
 ```
