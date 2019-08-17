@@ -1,64 +1,46 @@
 ```c++
 #include <bits/stdc++.h>
 
-typedef unsigned long long ull;
-const int BIT = 19;
-const int MAX = 1 << 19;
-const int moder = (int) 1e9 + 7;
+using LL = long long;
 
-int lowPre[MAX];
-std::vector <ull> cnts[MAX];
-bool vis[MAX];
+const int max_N = 5000 + 21;
 
-int bf(ull n, ull m){
-    int ans = 0;
-    for (ull i = 0; i <= n; ++ i){
-        ans = (ans + ((i * m) & m)) % moder;
-    }
-    return ans;
+int n, k;
+
+std::pair<int, int> p[max_N];
+
+LL s[max_N], w[max_N], f[max_N / 2][max_N];
+
+inline LL calc(int k, int j, int i) {
+  return f[k - 1][j] + s[i] - s[j] - p[j + 1].first * (w[i] - w[j]);
 }
 
-int main(){
-    ull n, m;
-    scanf("%llu%llu", &n, &m);
-    for (int i = 1; i < MAX; ++ i){
-        lowPre[i] = (lowPre[i - 1] + (((ull) i * m) & (MAX - 1) & m)) % moder;
-    }
-    int ans1 = ((n / MAX) % moder * lowPre[MAX - 1] + lowPre[n % MAX]) % moder;
-    for (int i = 0; i < MAX; ++ i){
-        cnts[((i * m) / MAX) & (MAX - 1)].push_back(n / MAX + (n % MAX >= i));
-    }
-    int ans2 = 0;
-    for (int i = 0; i < MAX; ++ i){
-        if (vis[i]){
-            continue;
-        }
-        int x = i;
-        std::vector <int> vec;
-        while (true){
-            vec.push_back(x);
-            vis[x] = true;
-            x = (x + m) & (MAX - 1);
-            if (vis[x]){
-                break;
-            }
-        }
-        int sz = vec.size();
-        std::vector <int> pre(sz);
-        for (int j = 0; j < sz; ++ j){
-            pre[j] = ((j ? pre[j - 1] : 0) + (vec[j] & (m / MAX))) % moder;
-        }
-        for (int j = 0; j < sz; ++ j){
-            for (auto u : cnts[vec[j]]){
-                ans2 = (ans2 - (j ? pre[j - 1] : 0)) % moder;
-                ull len = u + j - 1;
-                ans2 = (ans2 + 1ll * pre[sz - 1] * ((len / sz) % moder) + pre[len % sz]) % moder;
-            }
-        }
-    }
-    int ans = (ans1 + 1ll * MAX * ans2) % moder;
-    printf("%d\n", ans);
-    printf("%d\n", bf(n, m));
+void solve(int l, int r, int ql, int qr) {
+  if (l > r) return;
+  int mid = (l + r) >> 1;
+  int qm = ql;
+  for (int i = ql + 1; i < mid && i <= qr; ++i) {
+    if (calc(k, qm, mid) > calc(k, i, mid)) qm = i;
+  }
+  f[k][mid] = calc(k, qm, mid);
+  solve(l, mid - 1, ql, qm);
+  solve(mid + 1, r, qm, qr);
 }
 
+int main() {
+  scanf("%d%d", &n, &k);
+  for (int i = 1; i <= n; ++i) {
+    scanf("%d%d", &p[i].second, &p[i].first);
+  }
+  std::sort(p + 1, p + 1 + n);
+  for (int i = 1; i <= n; ++i) {
+    s[i] = s[i - 1] + 1LL * p[i].first * p[i].second;
+    w[i] = s[i - 1] + p[i].second;
+    f[1][i] = s[i] - w[i] * p[1].first;
+  }
+  for (int i = 2; i <= k; ++i) {
+    solve(i, n, i - 1, n);
+  }
+  printf("%lld\n", f[k][n]);
+}
 ```
