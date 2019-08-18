@@ -11,109 +11,105 @@ std::set<int> posible_recover[MAXN];
 std::map<std::pair<int, int>, int> map;
 
 struct node {
-    int u, i, j;
+  int u, i, j;
 
-    node(int u, int i, int j) : u(u), i(i), j(j) {}
+  node(int u, int i, int j) : u(u), i(i), j(j) {}
 
-    bool operator<(const node &rhs) const {
-        return u > rhs.u;
-    }
+  bool operator<(const node &rhs) const {
+    return u > rhs.u;
+  }
 };
 
 int main() {
-    scanf("%d", &n);
-    std::vector<int> h;
-    for (int i = 1; i <= n; ++i) {
-        scanf("%d", a + i);
-        h.push_back(a[i]);
-    }
-    std::sort(h.begin(), h.end());
-    h.erase(std::unique(h.begin(), h.end()), h.end());
-    for (int i = 1; i <= n; ++i) {
-        a[i] = std::lower_bound(h.begin(), h.end(), a[i]) - h.begin() + 1;
-        ++cnt[a[i]];
-    }
-    std::set<int> cut;
+  scanf("%d", &n);
+  std::vector<int> h;
+  for (int i = 1; i <= n; ++i) {
+    scanf("%d", a + i);
+    h.push_back(a[i]);
+  }
+  std::sort(h.begin(), h.end());
+  h.erase(std::unique(h.begin(), h.end()), h.end());
+  for (int i = 1; i <= n; ++i) {
+    a[i] = std::lower_bound(h.begin(), h.end(), a[i]) - h.begin() + 1;
+    ++cnt[a[i]];
+  }
+  std::set<int> cut;
 
-    for (int i = 1, j; i <= n; i = j) {
-        for (j = i + 1; j <= n && a[j - 1] <= a[j]; ++j);
-        // [i, j)
-        std::vector<std::pair<int, int>> vec;
-        for (int k = i, t; k < j; k = t) {
-            std::vector<int> tmp;
-            for (t = k; t < j; ++t) {
-                if (cnt[a[t]] == 1 && (tmp.empty() || tmp.back() + 1 == a[t])) {
-                    tmp.push_back(a[t]);
-                } else {
-                    break;
-                }
-            }
-            std::pair<int, int> now;
-            if (tmp.empty()) {
-                now.first = a[t];
-                now.second = t++;
-            } else {
-                now.first = tmp[0];
-                now.second = t - 1;
-            }
-            if (vec.empty() || vec.back().first != now.first) {
-                vec.push_back(now);
-            } else if (vec.back().first == now.first) {
-                vec.back().second = now.second;
-            }
-        }
-        cut.insert(j - 1);
-        seg.push_back(vec);
-    }
-
-    int m = seg.size(), ans = m - 1;
-    std::vector<int> last(m);
-
-
-    std::priority_queue<node> pq;
-    for (int i = 0; i < m; ++i) {
-        pq.emplace(seg[i][0].first, i, 0);
-    }
-
-    int pre = -1, last_flag = -1;
-    while (!pq.empty()) {
-        int u = pq.top().u;
-        std::vector<int> flag;
-        while (!pq.empty() && pq.top().u == u) {
-            int i = pq.top().i, j = pq.top().j;
-            pq.pop();
-            cut.insert(seg[i][j].second);
-            if (last[i] == pre && i != last_flag) {
-                flag.push_back(i);
-                posible_recover[u].insert(i);
-                map[{u, i}] = j ? seg[i][j - 1].second : -1;
-                // if (j) seg[i][j - 1].second
-            }
-            last[i] = u;
-            if (j + 1 < seg[i].size()) {
-                pq.emplace(seg[i][j + 1].first, i, j + 1);
-                ++ans;
-            }
-        }
-        if (flag.size() >= 1) {
-            --ans;
-            if (flag.size() == 1) last_flag = flag[0];
-            else last_flag = -1;
+  for (int i = 1, j; i <= n; i = j) {
+    for (j = i + 1; j <= n && a[j - 1] <= a[j]; ++j);
+    // [i, j)
+    std::vector<std::pair<int, int>> vec;
+    for (int k = i, t; k < j; k = t) {
+      std::vector<int> tmp;
+      for (t = k; t < j; ++t) {
+        if (cnt[a[t]] == 1 && (tmp.empty() || tmp.back() + 1 == a[t])) {
+          tmp.push_back(a[t]);
         } else {
-            last_flag = -1;
+          break;
         }
-        pre = u;
+      }
+      std::pair<int, int> now;
+      if (tmp.empty()) {
+        now.first = a[t];
+        now.second = t++;
+      } else {
+        now.first = tmp[0];
+        now.second = t - 1;
+      }
+      if (vec.empty() || vec.back().first != now.first) {
+        vec.push_back(now);
+      } else if (vec.back().first == now.first) {
+        vec.back().second = now.second;
+      }
     }
-    for (int u = h.size() - 1; u >= 1; --u) {
-        if (posible_recover[u].size() == 0) continue;
-        int a = *posible_recover[u].begin();
-        posible_recover[u - 1].erase(a);
-        if (map[{u, a}] != -1) cut.erase(map[{u, a}]);
+    cut.insert(j - 1);
+    seg.push_back(vec);
+  }
+
+  int m = seg.size(), ans = m - 1;
+  std::vector<int> last(m);
+
+
+  std::priority_queue<node> pq;
+  for (int i = 0; i < m; ++i) {
+    pq.emplace(seg[i][0].first, i, 0);
+  }
+
+  int pre = -1, last_flag = -1;
+  while (!pq.empty()) {
+    int u = pq.top().u;
+    while (!pq.empty() && pq.top().u == u) {
+      int i = pq.top().i, j = pq.top().j;
+      pq.pop();
+      cut.insert(seg[i][j].second);
+      if (last[i] == pre) {
+        posible_recover[u].insert(i);
+        map[{u, i}] = j ? seg[i][j - 1].second : -1;
+        // if (j) seg[i][j - 1].second
+      }
+      last[i] = u;
+      if (j + 1 < seg[i].size()) {
+        pq.emplace(seg[i][j + 1].first, i, j + 1);
+        ++ans;
+      }
     }
-    for (auto u : cut) {
-        printf("%d\n", u);
-    }
-    printf("%d\n", ans);
-    return 0;
+    pre = u;
+  }
+  for (int u = h.size(); u >= 2; --u) {
+    if (posible_recover[u].size() == 0) continue;
+    int a = *posible_recover[u].begin();
+    posible_recover[u - 1].erase(a);
+    if (map[{u, a}] != -1) cut.erase(map[{u, a}]);
+  }
+  printf("%d\n", cut.size());
+  std::vector<int> tt;
+  for (auto u : cut) {
+    tt.push_back(u);
+  }
+  for (int i = 0; i < cut.size(); ++i) {
+    printf("%d%c", i ? (tt[i] - tt[i - 1]) : tt[i], " \n"[i == cut.size() - 1]);
+  }
+  //printf("%d\n", ans);
+  return 0;
 }
 ```
