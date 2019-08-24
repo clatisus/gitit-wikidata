@@ -8,10 +8,6 @@
 
 从克罗内克乘积的角度重新理解 FWT
 
-$\mathcal{O}(n^{2})$ 插值的板子稍微有一点点点繁琐，有心情改一下。
-
-Reeds–Sloane algorithm，BM 在质数幂上的扩展
-
 ## 计算几何
 
 [An overnight dance in discotheque](http://codeforces.com/problemset/problem/814/D)圆的包含关系(nlogn)
@@ -69,6 +65,8 @@ hdu 3239
 [斜率优化模板详解](slope_opt)
 
 [BM算法学习笔记](BM)
+
+[RS算法学习笔记](RS)
 
 # unsolved
 
