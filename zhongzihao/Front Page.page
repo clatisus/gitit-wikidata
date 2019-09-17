@@ -48,7 +48,9 @@ hdu 3239
 
 高维FFT板子的复杂度好像不对，参见算导P540 30-3
 
-整理一份 $ax^{2}-by^{2}=c$ 的佩尔方程求解技巧。
+[也许以后有时间看的丢番图方程](http://www.numbertheory.org/pdfs/general_quadratic_solution.pdf)
+
+
 
 # 数学！
 
