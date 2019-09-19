@@ -63,6 +63,22 @@
 
 最后的答案可以通过一个简单的数位 $dp$ 得到，这里就不再赘述了。
 
+## 613. Pythagorean Ant
+
+**题目大意**：有一个边长 $3,4,5$ 的三角形，一只蚂蚁等概率随机地在三角形中一点，然后等概率选择一个方向沿射线走。问穿过斜边的概率。
+
+**题解**：其实就是个二重积分，但是第二重好像很恶心的样子，所以就只积了一重，第二重数值积分：
+
+$$
+\begin{aligned}
+&\int\pi-\arctan\frac{3-y}{x}+\arctan\frac{y}{4-x}\mathrm{d}y\\
+=&\pi y+x\left[\frac{3-y}{x}\arctan\frac{3-y}{x}-\frac{1}{2}\ln\left(1+(\frac{3-y}{x})^{2}\right)\right]+\\
+&(4-x)\left[\frac{y}{4-x}\arctan\frac{y}{4-x}-\frac{1}{2}\ln\left(1+(\frac{y}{4-x})^{2}\right)\right]+C
+\end{aligned}
+$$
+
+我爱 python，我爱 scipy！
+
 ## 622. Riffle Shuffles
 
 **题目大意**：设排列 $p=(0,n,1,n+1,2,n+2,\cdots,n-1,2n-1)$，求出所有使得最小循环节为 $60$ 的 $2n$ 之和。
