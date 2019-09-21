@@ -1,115 +1,67 @@
 ```c++
-#include <bits/stdc++.h>
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <algorithm>
+#include <vector>
+#include <cstring>
+#include <queue>
 
-const int MAXN = 100010;
-#define mp std::make_pair
+const int max_N = 200010;
 
-int n;
-int a[MAXN], cnt[MAXN];
-std::vector<std::vector<std::pair<int, int>>> seg;
-std::set<int> posible_recover[MAXN];
-std::map<std::pair<int, int>, int> map;
-
-struct node {
-  int u, i, j;
-
-  node(int u, int i, int j) : u(u), i(i), j(j) {}
-
-  bool operator<(const node &rhs) const {
-    return u > rhs.u;
-  }
-};
+namespace sais {
+    int t[max_N << 1], sa[max_N], rk[max_N], ht[max_N];
+    int p[max_N], cnt[max_N], cur[max_N];
+#define pS(x) sa[cur[s[x]]--] = x
+#define pL(x) sa[cur[s[x]]++] = x
+#define rep(i, a, b) for (int i = (a); i < (b); ++i)
+#define per(i, a, b) for (int i = (a); i > (b); --i)
+#define inducedSort(v) \
+    std::fill_n(sa, n, -1), std::fill_n(cnt, m, 0); \
+    rep(i, 0, n) cnt[s[i]]++; \
+    rep(i, 1, m) cnt[i] += cnt[i - 1]; \
+    rep(i, 0, m) cur[i] = cnt[i] - 1; \
+    per(i, n1 - 1, -1) pS(v[i]); \
+    rep(i, 1, m) cur[i] = cnt[i - 1]; \
+    rep(i, 0, n) if (sa[i] > 0 && t[sa[i] - 1]) pL(sa[i] - 1); \
+    rep(i, 0, m) cur[i] = cnt[i] - 1; \
+    per(i, n - 1, -1) if (sa[i] > 0 && !t[sa[i] - 1]) pS(sa[i] - 1)
+    void sais(int n, int m, int *s, int *t, int *p) {
+        int n1 = t[n - 1] = 0, ch = rk[0] = -1, *s1 = s + n;
+        per(i, n - 2, -1) t[i] = s[i] == s[i + 1] ? t[i + 1] : s[i] > s[i + 1];
+        rep(i, 1, n) rk[i] = t[i - 1] && !t[i] ? (p[n1] = i, n1++) : -1;
+        inducedSort(p);
+        for (int i = 0, x, y; i < n; ++i) {
+            if (~(x = rk[sa[i]])) {
+                if (ch < 1 || p[x + 1] - p[x] != p[y + 1] - p[y]) ++ch;
+                else for (int j = p[x], k = p[y]; j <= p[x + 1]; ++j, ++k) 
+                    if ((s[j] << 1 | t[j]) != (s[k] << 1 | t[k])) {
+                        ++ch;
+                        break;
+                    }
+                s1[y = x] = ch;
+            }
+        }
+        if (ch + 1 < n1) sais(n1, ch + 1, s1, t + n, p + n1);
+        else rep(i, 0, n1) sa[s1[i]] = i;
+        rep(i, 0, n1) s1[i] = p[sa[i]];
+        inducedSort(s1);
+    }
+    // ensure s[n] is the unique smallest
+    void solve(int *s, int n, int m) { // s[max_N << 1]
+        sais(++n, m, s, t, p);
+        rep(i, 0, n) rk[sa[i]] = i;
+        for (int i = 0, h = ht[0] = 0; i < n - 1; ++i) {
+            int j = sa[rk[i] - 1];
+            while (i + h < n && j + h < n && s[i + h] == s[j + h]) ++h;
+            if (ht[rk[i]] = h) --h;
+        }
+    }
+}
 
 int main() {
-  scanf("%d", &n);
-  std::vector<int> h;
-  for (int i = 1; i <= n; ++i) {
-    scanf("%d", a + i);
-    h.push_back(a[i]);
-  }
-  std::sort(h.begin(), h.end());
-  h.erase(std::unique(h.begin(), h.end()), h.end());
-  for (int i = 1; i <= n; ++i) {
-    a[i] = std::lower_bound(h.begin(), h.end(), a[i]) - h.begin() + 1;
-    ++cnt[a[i]];
-  }
-  std::set<int> cut;
-
-  for (int i = 1, j; i <= n; i = j) {
-    for (j = i + 1; j <= n && a[j - 1] <= a[j]; ++j);
-    // [i, j)
-    std::vector<std::pair<int, int>> vec;
-    for (int k = i, t; k < j; k = t) {
-      std::vector<int> tmp;
-      for (t = k; t < j; ++t) {
-        if (cnt[a[t]] == 1 && (tmp.empty() || tmp.back() + 1 == a[t])) {
-          tmp.push_back(a[t]);
-        } else {
-          break;
-        }
-      }
-      std::pair<int, int> now;
-      if (tmp.empty()) {
-        now.first = a[t];
-        now.second = t++;
-      } else {
-        now.first = tmp[0];
-        now.second = t - 1;
-      }
-      if (vec.empty() || vec.back().first != now.first) {
-        vec.push_back(now);
-      } else if (vec.back().first == now.first) {
-        vec.back().second = now.second;
-      }
-    }
-    cut.insert(j - 1);
-    seg.push_back(vec);
-  }
-
-  int m = seg.size(), ans = m - 1;
-  std::vector<int> last(m);
-
-
-  std::priority_queue<node> pq;
-  for (int i = 0; i < m; ++i) {
-    pq.emplace(seg[i][0].first, i, 0);
-  }
-
-  int pre = -1, last_flag = -1;
-  while (!pq.empty()) {
-    int u = pq.top().u;
-    while (!pq.empty() && pq.top().u == u) {
-      int i = pq.top().i, j = pq.top().j;
-      pq.pop();
-      cut.insert(seg[i][j].second);
-      if (last[i] == pre) {
-        posible_recover[u].insert(i);
-        map[{u, i}] = j ? seg[i][j - 1].second : -1;
-        // if (j) seg[i][j - 1].second
-      }
-      last[i] = u;
-      if (j + 1 < seg[i].size()) {
-        pq.emplace(seg[i][j + 1].first, i, j + 1);
-        ++ans;
-      }
-    }
-    pre = u;
-  }
-  for (int u = h.size(); u >= 2; --u) {
-    if (posible_recover[u].size() == 0) continue;
-    int a = *posible_recover[u].begin();
-    posible_recover[u - 1].erase(a);
-    if (map[{u, a}] != -1) cut.erase(map[{u, a}]);
-  }
-  printf("%d\n", cut.size());
-  std::vector<int> tt;
-  for (auto u : cut) {
-    tt.push_back(u);
-  }
-  for (int i = 0; i < cut.size(); ++i) {
-    printf("%d%c", i ? (tt[i] - tt[i - 1]) : tt[i], " \n"[i == cut.size() - 1]);
-  }
-  //printf("%d\n", ans);
-  return 0;
+    return 0;
 }
+
+
 ```
