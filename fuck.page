@@ -1,124 +1,331 @@
 ```c++
-#include <iostream>
-#include <cstdlib>
-#include <cstdio>
-#include <algorithm>
-#include <vector>
-#include <cstring>
-#include <queue>
-#include <map>
+//
+// Created by Wu Junjie on 2019/10/7.
+//
 
-std::queue<int> deck[2];
-std::vector<int> hand[2], field[2], grave[2];
-// 0, 1, 2, 3, 4
-// P, S, M, I, F
-int play_rank[5] = {
-        1, 0, 2, 4, 3
-        // S, P, M, F, I
-};
-int discard_rank[5] = {
-        2, 3, 1, 0, 4
-        // I, M, P, S, F
-};
-int destroy_rank[5] = {
-        3, 4, 2, 1, 0
-        // F, I, M, P, S
-};
-int recycle_rank[5] = {
-        4, 1, 2, 3, 0
-        // F, S, M, I, P
-};
-bool has_effect[5] = {
-        true, true, true, false, true
-};
+#include <bits/stdc++.h>
 
-// high 0
-// medium 1
-// low 2
-int get_priority(int card, int role) {
-    bool same = false;
-    for (auto i : field[role]) {
-        if (i == card) {
-            same = true;
-            break;
+#define debug
+
+template<typename T>
+inline void read(T *x) {
+    int c;
+    while (!isdigit(c = getchar()));
+    *x = c - '0';
+    while (isdigit(c = getchar())) {
+        (*x *= 10) += c - '0';
+    }
+}
+
+const int max_N = (int) 1e6 + 21;
+
+namespace Union {
+    int f[max_N], sz[max_N];
+
+    void init(int n) {
+        for (int i = 1; i <= n; ++i) {
+            f[i] = i;
+            sz[i] = 1;
         }
     }
-    if (same) return 2;
-    if (has_effect[card]) return 0;
-    return 1;
-}
 
-bool run(int role) {
-    // draw phase
-    if (!deck[role].empty()) {
-        hand[role].push_back(deck[role].front());
-        deck[role].pop();
-    }
-    // main phase
-
-    // play strategy
-    if (hand[role].empty()) return false;
-
-    int pri[5] = {0};
-    for (int i = 0; i < 4; ++i) {
-        pri[i] = get_priority(i, role);
-    }
-    std::sort(hand[role].begin(), hand[role].end(), [&](const int &i, const int &j) {
-        if (pri[i] != pri[j]) return pri[i] < pri[j];
-        return play_rank[i] < play_rank[j];
-    });
-    
-    if (pri[hand[role][0]] == 2) {
-        return false;
+    int find(int x) {
+        int r = x, y;
+        while (r != f[r]) {
+            r = f[r];
+        }
+        while (x != r) {
+            y = f[x];
+            f[x] = r;
+            x = y;
+        }
+        return r;
     }
 
-    // end phase
+    void merge(int u, int v) {
+        u = find(u);
+        v = find(v);
+        if (u == v) {
+            return;
+        }
+        if (sz[u] > sz[v]) {
+            std::swap(u, v);
+        }
+        f[u] = v;
+        sz[v] += sz[u];
+    }
+
+    int solve(int n) {
+        int ret = 0;
+        for (int i = 1; i <= n; ++i) {
+            if (f[i] == i) {
+                ++ret;
+            }
+        }
+        return ret;
+    }
 }
 
-bool check_draw() {
-    return false;
+int n, d;
+
+std::vector<int> vec[max_N];
+
+namespace Centroid {
+    int p[max_N], sz[max_N], mx[max_N];
+
+    int Q[max_N], tot;
+
+    bool vis[max_N];
+
+    int find(int u) {
+        Q[tot = 1] = u;
+        p[u] = 0;
+        for (int i = 1; i <= tot; ++i) {
+            u = Q[i];
+            sz[u] = 1;
+            mx[u] = 0;
+            for (const int &v : vec[u]) {
+                if (vis[v] || v == p[u]) {
+                    continue;
+                }
+                Q[++tot] = v;
+                p[v] = u;
+            }
+        }
+        for (int i = tot; i; --i) {
+            u = Q[i];
+            mx[u] = std::max(mx[u], tot - sz[u]);
+            if (2 * mx[u] <= tot) {
+                return u;
+            }
+            sz[p[u]] += sz[u];
+            mx[p[u]] = std::max(mx[p[u]], sz[u]);
+        }
+        assert(0);
+    }
+
+    int dis[max_N], rt[max_N], cnt[max_N];
+    bool dis_vis[max_N];
+    std::vector<int> dis_vec[max_N], cnt_vec[max_N];
+
+    inline void updt_cnt(int x, int y) {
+        if (++cnt[x] <= 2) {
+            cnt_vec[x].push_back(y);
+        }
+    }
+
+    void dfs(int u) {
+        dis[u] = dis[p[u]] + 1;
+        dis_vec[dis[u]].push_back(u);
+        if (!dis_vis[dis[u]]) {
+            updt_cnt(dis[u], rt[u]);
+            dis_vis[dis[u]] = true;
+        }
+        for (const int &v : vec[u]) {
+            if (vis[v] || v == p[u]) {
+                continue;
+            }
+            p[v] = u;
+            rt[v] = rt[u];
+            dfs(v);
+        }
+    }
+
+    void solve(int u) {
+        u = find(u);
+
+        p[u] = 0;
+        dis[u] = 0;
+        for (const int &v : vec[u]) {
+            if (vis[v]) {
+                continue;
+            }
+            p[v] = u;
+            rt[v] = v;
+            dfs(v);
+            for (int i = 1; i < max_N; ++i) {
+                if (!dis_vis[i]) {
+                    break;
+                }
+                dis_vis[i] = false;
+            }
+        }
+
+        if (cnt[d] > 0) {
+            for (const int &v : dis_vec[d]) {
+                Union::merge(u, v);
+            }
+        }
+
+        for (int i = 1; i * 2 <= d; ++i) {
+            if (!cnt[i]) {
+                break;
+            }
+            if (!cnt[d - i]) {
+                continue;
+            }
+            if (cnt[i] >= 3 || cnt[d - i] >= 3) {
+                for (const int& v : dis_vec[i]) {
+                    Union::merge(dis_vec[i][0], v);
+                }
+                for (const int& v : dis_vec[d - i]) {
+                    Union::merge(dis_vec[i][0], v);
+                }
+            } else if (cnt[i] == 1) {
+                if (cnt[d - i] >= 2 || (cnt[d - i] == 1 && cnt_vec[i][0] != cnt_vec[d - i][0])) {
+                    for (const int& v : dis_vec[i]) {
+                        Union::merge(dis_vec[i][0], v);
+                    }
+                    for (const int& v : dis_vec[d - i]) {
+                        if (rt[v] == cnt_vec[i][0]) {
+                            continue;
+                        }
+                        Union::merge(dis_vec[i][0], v);
+                    }
+                }
+            } else if (cnt[i] == 2) {
+                if (cnt[d - i] == 1) {
+                    for (const int& v : dis_vec[d - i]) {
+                        Union::merge(dis_vec[d - i][0], v);
+                    }
+                    for (const int& v : dis_vec[i]) {
+                        if (rt[v] == cnt_vec[d - i][0]) {
+                            continue;
+                        }
+                        Union::merge(dis_vec[d - i][0], v);
+                    }
+                } else if (cnt[d - i] == 2) {
+                    int u1 = -1, u2 = -1;
+                    for (const int& v : dis_vec[i]) {
+                        if (rt[v] == cnt_vec[i][0]) {
+                            if (u1 == -1) {
+                                u1 = v;
+                            } else {
+                                Union::merge(u1, v);
+                            }
+                        } else {
+                            if (u2 == -1) {
+                                u2 = v;
+                            } else {
+                                Union::merge(u2, v);
+                            }
+                        }
+                    }
+                    for (const int& v : dis_vec[d - i]) {
+                        if (rt[v] != rt[u1]) {
+                            Union::merge(u1, v);
+                        }
+                        if (rt[v] != rt[u2]) {
+                            Union::merge(u2, v);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = 1; i < max_N; ++i) {
+            if (!cnt[i]) {
+                break;
+            }
+            cnt[i] = 0;
+            cnt_vec[i].clear();
+            dis_vec[i].clear();
+        }
+
+        vis[u] = true;
+        for (const int &v : vec[u]) {
+            if (vis[v]) {
+                continue;
+            }
+            solve(v);
+        }
+    }
 }
+
+#ifdef debug
+namespace bl {
+    int rt, f[max_N], dis[max_N];
+
+    int find(int x) {
+        return x == f[x] ? x : f[x] = find(f[x]);
+    }
+
+    void dfs(int u, int p) {
+        if (dis[u] == d) {
+            f[find(rt)] = find(u);
+        }
+        for (const int& v : vec[u]) {
+            if (v == p) {
+                continue;
+            }
+            dis[v] = dis[u] + 1;
+            dfs(v, u);
+        }
+    }
+
+    int solve() {
+        for (int i = 1; i <= n; ++i) {
+            f[i] = i;
+        }
+        for (rt = 1; rt <= n; ++rt) {
+            dis[rt] = 0;
+            dfs(rt, 0);
+        }
+        int ret = 0;
+        for (int i = 1; i <= n; ++i) {
+            if (i == f[i]) {
+                ++ret;
+            }
+        }
+        return ret;
+    }
+}
+#endif
 
 int main() {
-    int T;
-    scanf("%d", &T);
-
-    for (int cs = 1; cs <= T; ++cs) {
-        for (int i = 1; i <= 25; ++i) {
-            int card;
-            scanf("%d", &card);
-            if (i <= 5) hand[0].push_back(card);
-            else deck[0].push(card);
-        }
-        for (int i = 1; i <= 25; ++i) {
-            int card;
-            scanf("%d", &card);
-            if (i <= 5) hand[1].push_back(card);
-            else deck[1].push(card);
-        }
-        bool flag = false;
-        for (int i = 1; i <= 100; ++i) {
-            if (run(0)) {
-                printf("Case %d: Alice %d\n", cs, i);
-                flag = true;
-                break;
-            }
-            if (run(1)) {
-                printf("Case %d: Bob %d\n", cs, i);
-                flag = true;
-                break;
-            }
-            if (check_draw()) {
-                printf("Case %d: Draw %d\n", cs, i);
-                flag = true;
-                break;
-            }
-        }
-        if (!flag) {
-            printf("Case %d: Draw 100\n", cs);
-        }
+#ifdef debug
+    srand(time(0));
+    n = 200;
+    d = 13;
+    // printf("%d %d\n", n, d);
+    for (int i = 1; i < n; ++i) {
+        int u = i + 1;
+        int v = rand() % i + 1;
+        // printf("%d %d\n", u, v);
+        vec[u].push_back(v);
+        vec[v].push_back(u);
     }
-    return 0;
+    int bl_ret = bl::solve();
+#else
+    read(&n);
+    read(&d);
+    for (int i = 1, u, v; i < n; ++i) {
+        read(&u);
+        read(&v);
+        vec[u].push_back(v);
+        vec[v].push_back(u);
+    }
+#endif
+    Union::init(n);
+    Centroid::solve(1);
+    int ret = Union::solve(n);
+    printf("%d\n", ret);
+#ifdef debug
+    assert(bl_ret == ret);
+#endif
 }
 
+/*
+11 3
+1 2
+2 3
+3 8
+2 4
+4 9
+2 5
+2 6
+2 7
+2 10
+10 11
+ */
 ```
