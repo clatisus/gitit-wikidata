@@ -10,7 +10,9 @@ typedef long long ll;
 
 // 如果没有 __int128 就只能这么写啦 
 ll multmod(ll a, ll b, ll moder){
-	return (a * b - (ll)((long double) a * b / moder) * moder) % moder;
+    ll ans = (a * b - (ll)((long double) a * b / moder) * moder) % moder;
+    ans += ans < 0 ? moder : 0;
+    return ans;
 }
 
 template <typename T> 
