@@ -377,13 +377,13 @@ $$
 - 若 $a\ge c$ 或 $b\ge c$，有：
 
 $$
-原式=\frac{n(n+1)}{2}\lfloor\frac{a}{c}\rfloor+(n+1)\lfloor\frac{b}{c}\rfloor+f(a\%c,b\%c,c,n,t_{1},t_{2})
+原式=\frac{n(n+1)}{2}\lfloor\frac{a}{c}\rfloor+(n+1)\lfloor\frac{b}{c}\rfloor+f(a\%c,b\%c,c,n)
 $$
 
 - 若 $0\le a,b<c$，有：
 
 $$
-原式=nm-f(c,c-b-1,a,m-1,t_{1},t_{2})
+原式=nm-f(c,c-b-1,a,m-1)
 $$
 
 [证明](similar_euclid)
