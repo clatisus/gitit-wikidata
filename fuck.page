@@ -1,184 +1,140 @@
-```c++
 #include <bits/stdc++.h>
 
-template<typename T>
-inline void read(T *x) {
-    int c;
-    while (!isdigit(c = getchar()));
-    *x = c - '0';
-    while (isdigit(c = getchar())) {
-        (*x *= 10) += c - '0';
-    }
-}
+const int max_N = 200010;
 
-const int max_N = (int) 1e5 + 21;
+int n;
+struct SAM {
+    int tot, root, last;
 
-inline namespace lct {
-    using star = struct node *;
-#define SZ(x) ((x) ? (x)->siz : 0)
+    int go[max_N * 2][26], par[max_N * 2], len[max_N * 2];
 
-    struct node {
-        int siz;
-        star p, ch[2];
-
-        void update() {
-            siz = SZ(ch[0]) + 1 + SZ(ch[1]);
-        }
-
-        int dir() {
-            if (!p) return -1;
-            if (p->ch[0] == this) return 0;
-            if (p->ch[1] == this) return 1;
-            return -1;
-        }
-
-        void set(star x, int d) {
-            if (~d && this) ch[d] = x;
-            if (x) x->p = this;
-        }
-    } pool[max_N], *tail = pool;
-
-    star new_node() {
-        star x = tail++;
-        x->siz = 1;
-        x->ch[0] = x->ch[1] = x->p = 0;
+    int new_node(int L) {
+        int x = ++tot;
+        memset(go[x], 0, sizeof go[x]);
+        par[x] = 0;
+        len[x] = L;
         return x;
     }
 
-    void rot(star x) {
-        star y = x->p;
-        int d = x->dir(), d1 = y->dir();
-        y->p->set(x, d1);
-        y->set(x->ch[d ^ 1], d), y->update();
-        x->set(y, d ^ 1);
+    void init() {
+        tot = 0;
+        root = last = new_node(0);
     }
 
-    void splay(star x) {
-        for (int d, d1; ~(d = x->dir()); rot(x)) {
-            if (~(d1 = x->p->dir()))
-                rot((d ^ d1) ? x : x->p);
+    int extend(int c) {
+        int p = last;
+        int np = last = new_node(len[p] + 1);
+        par[np] = root;
+        for (; p && !go[p][c]; p = par[p]) {
+            go[p][c] = np;
         }
-        x->update();
-    }
-
-    void access(star x) {
-        star rch = 0;
-        for (star y = x; y; rch = y, y = y->p) {
-            splay(y);
-            y->set(rch, 1);
-            y->update();
-        }
-        splay(x);
-    }
-
-    void link(star x, star y) { // p[x] = y;
-        access(x);
-        assert(!x->p);
-        x->p = y;
-    }
-
-    void cut(star x, star y) { // p[x] = y;
-        access(x);
-        x->ch[0]->p = 0;
-        x->ch[0] = 0;
-        x->update();
-    }
-
-    int kth(star x, int k) {
-        while (x) {
-            int rk = SZ(x->ch[0]) + 1;
-            if (k == rk) break;
-            if (k < rk) x = x->ch[0];
-            else k -= rk, x = x->ch[1];
-        }
-        splay(x);
-        return x - pool;
-    }
-
-    int find(star x) {
-        access(x);
-        return kth(x, 1);
-    }
-}
-
-int n, m, u[max_N], v[max_N], p[max_N];
-
-bool vis[max_N];
-
-star rt[max_N];
-
-std::vector<int> un_vis;
-
-inline void my_link(int x, int y) { // p[y] = x
-    if (find(rt[x]) != find(rt[y])) {
-        link(rt[y], rt[x]);
-    }
-}
-
-inline void my_cut(int x, int y) { // p[y] = x
-    int par = find(rt[y]);
-    if (par != y) {
-        cut(rt[y], rt[x]);
-        if (find(rt[par]) != find(rt[u[p[par]]])) {
-            link(rt[par], rt[u[p[par]]]);
-        }
-    }
-}
-
-void dfs(int cur) {
-    if (cur == un_vis.size()) {
-        access(rt[v[p[1]]]);
-        if (rt[v[p[1]]]->siz == n) {
-            printf("1");
-            for (int x = 1; u[p[x]] != 1; x = u[p[x]]) {
-                printf(" %d", x);
+        if (p) {
+            int q = par[np] = go[p][c];
+            if (len[q] != len[p] + 1) {
+                int nq = ++tot;
+                memcpy(go[nq], go[q], sizeof go[q]);
+                par[nq] = par[q];
+                par[q] = par[np] = nq;
+                len[nq] = len[p] + 1;
+                for (; p && go[p][c] == q; p = par[p]) {
+                    go[p][c] = nq;
+                }
             }
-            puts("");
-            exit(0);
         }
+        return np;
+    }
+} sam;
+
+char s[max_N];
+
+const int inf = 0x3f3f3f3f;
+
+struct node {
+    int val, mx[2], ls, rs;
+
+    node() : val(inf), ls(0), rs(0) {
+        mx[0] = inf;
+        mx[1] = -inf;
+    }
+} T[max_N * 45];
+
+#define mid ((l + r) >> 1)
+
+void update(int x) {
+    int ls = T[x].ls, rs = T[x].rs;
+    T[x].val = std::min(T[ls].val, T[rs].val);
+    if (T[ls].mx[0] < inf && T[rs].mx[0] < inf) {
+        T[x].val = std::min(T[x].val, T[rs].mx[0] - T[ls].mx[1]);
+    }
+    T[x].mx[0] = std::min(T[ls].mx[0], T[rs].mx[0]);
+    T[x].mx[1] = std::max(T[ls].mx[1], T[rs].mx[1]);
+}
+
+int merge(int x, int y, int l, int r) {
+    if (!x || !y) {
+        return x + y;
+    }
+    if (l == r) {
+        return x;
+    }
+    T[x].ls = merge(T[x].ls, T[y].ls, l, mid);
+    T[x].rs = merge(T[x].rs, T[y].rs, mid + 1, r);
+    update(x);
+    return x;
+}
+
+int tot;
+
+void build(int &x, int l, int r, int p) {
+    x = ++tot;
+    T[x].mx[0] = T[x].mx[1] = p;
+    if (l == r) {
         return;
     }
-    dfs(cur + 1);
-    int i = un_vis[cur];
-    int j = p[v[i]];
-    if (vis[j]) {
-        my_cut(u[j], v[j]);
-        my_link(u[i], v[i]);
-        dfs(cur + 1);
-        my_cut(u[i], v[i]);
-        my_link(u[j], v[j]);
+    if (p <= mid) {
+        build(T[x].ls, l, mid, p);
+    } else {
+        build(T[x].rs, mid + 1, r, p);
+    }
+}
+
+std::vector<int> vec[max_N * 2];
+
+int rt[max_N * 2];
+
+long long p = 1, q = 1;
+
+void dfs(int u) {
+    for (const int& v : vec[u]) {
+        dfs(v);
+        rt[u] = merge(rt[u], rt[v], 1, n);
+    }
+    int diff = T[rt[u]].val;
+    if (diff < inf) {
+        int np = sam.len[u] + diff;
+        int nq = diff;
+        if (p * nq < np * q) {
+            p = np;
+            q = nq;
+        }
     }
 }
 
 int main() {
-    read(&n);
-    read(&m);
-    for (int i = 1; i <= m; ++i) {
-        read(&u[i]);
-        read(&v[i]);
-        p[v[i]] = i;
-    }
-    for (int i = 0; i <= n; ++i) {
-        rt[i] = new_node();
-    }
+    scanf("%s", s);
+    n = strlen(s);
+    sam.init();
     for (int i = 1; i <= n; ++i) {
-        if (!p[i]) {
-            puts("There is no route, Karl!");
-            return 0;
-        }
-        vis[p[i]] = true;
-        int j = u[p[i]];
-        if (find(rt[i]) != find(rt[j])) {
-            link(rt[i], rt[j]);
-        }
+        int pos = sam.extend(s[i - 1] - 'a');
+        build(rt[pos], 1, n, i);
     }
-    for (int i = 1; i <= m; ++i) {
-        if (!vis[i]) {
-            //printf("push_back %d to un_vis\n", i);
-            un_vis.push_back(i);
-        }
+    for (int i = 2; i <= sam.tot; ++i) {
+        vec[sam.par[i]].push_back(i);
     }
-    dfs(0);
-    puts("There is no route, Karl!");
+    dfs(sam.root);
+    auto g = std::__gcd(p, q);
+    p /= g;
+    q /= g;
+    printf("%lld/%lld\n", p, q);
+    return 0;
 }
-```
