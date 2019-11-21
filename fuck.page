@@ -1,140 +1,187 @@
+```
 #include <bits/stdc++.h>
 
-const int max_N = 200010;
+const int moder = 998244353;
+const int N = 100010;
+const int M = 256;
+const int K = 64;
+const int BIT = 18;
+const int TMP = 10000;
 
-int n;
-struct SAM {
-    int tot, root, last;
-
-    int go[max_N * 2][26], par[max_N * 2], len[max_N * 2];
-
-    int new_node(int L) {
-        int x = ++tot;
-        memset(go[x], 0, sizeof go[x]);
-        par[x] = 0;
-        len[x] = L;
-        return x;
-    }
-
-    void init() {
-        tot = 0;
-        root = last = new_node(0);
-    }
-
-    int extend(int c) {
-        int p = last;
-        int np = last = new_node(len[p] + 1);
-        par[np] = root;
-        for (; p && !go[p][c]; p = par[p]) {
-            go[p][c] = np;
+int powermod(int a, int exp){
+    int ret = 1;
+    for ( ; exp > 0; exp >>= 1){
+        if (exp & 1){
+            ret = 1ll * ret * a % moder;
         }
-        if (p) {
-            int q = par[np] = go[p][c];
-            if (len[q] != len[p] + 1) {
-                int nq = ++tot;
-                memcpy(go[nq], go[q], sizeof go[q]);
-                par[nq] = par[q];
-                par[q] = par[np] = nq;
-                len[nq] = len[p] + 1;
-                for (; p && go[p][c] == q; p = par[p]) {
-                    go[p][c] = nq;
+        a = 1ll * a * a % moder;
+    }
+    return ret;
+}
+
+int min[N], phi[N];
+std::vector <int> prime;
+bool invalid[M];
+int trans[BIT][K][K];
+int trans1[TMP][K][K];
+int trans_to[K][4];
+int cur[K], cur1[K];
+
+int main(){
+    phi[1] = 1;
+    for (int i = 2; i < N; ++ i){
+        if (!min[i]){
+            min[i] = i;
+            phi[i] = i - 1;
+            prime.push_back(i);
+        }
+        for (auto u : prime){
+            if (i * u >= N) break;
+            min[i * u] = u;
+            if (i % u == 0){
+                phi[i * u] = phi[i] * (u - 1);
+                break;
+            }
+            phi[i * u] = phi[i] * u;
+        }
+    }
+    int n, m;
+    scanf("%d%d", &n, &m);
+    std::vector <int> fact;
+    for (int i = 4; i <= n; ++ i){
+        if (n % i == 0){
+            fact.push_back(i);
+        }
+    }
+    for (int i = 0; i < m; ++ i){
+        int x = 0;
+        std::vector <int> vec(4);
+        for (int j = 0; j < 4; ++ j){
+            scanf("%d", &vec[j]);
+        }
+        for (int j = 3; j >= 0; -- j){
+            x = x * 4 + vec[j];
+        }
+        invalid[x] = true;
+    }
+    for (int i = 0; i < K; ++ i){
+        for (int j = 0; j < 4; ++ j){
+            int ni = i + (j << 6);
+            if (!invalid[i] && !invalid[ni]){
+                trans[0][i][ni / 4] = 1;
+                trans_to[i][j] = ni / 4;
+            }
+            else{
+                trans_to[i][j] = -1;
+            }
+        }
+    }
+    for (int u = 1; u < BIT; ++ u){
+        for (int k = 0; k < K; ++ k){
+            for (int i = 0; i < K; ++ i){
+                for (int j = 0; j < K; ++ j){
+                    trans[u][i][j] = (trans[u][i][j] + 1ll * trans[u - 1][i][k] * trans[u - 1][k][j]) % moder;
                 }
             }
         }
-        return np;
     }
-} sam;
-
-char s[max_N];
-
-const int inf = 0x3f3f3f3f;
-
-struct node {
-    int val, mx[2], ls, rs;
-
-    node() : val(inf), ls(0), rs(0) {
-        mx[0] = inf;
-        mx[1] = -inf;
+    for (int i = 0; i < K; ++ i){
+        trans1[0][i][i] = 1;
     }
-} T[max_N * 45];
-
-#define mid ((l + r) >> 1)
-
-void update(int x) {
-    int ls = T[x].ls, rs = T[x].rs;
-    T[x].val = std::min(T[ls].val, T[rs].val);
-    if (T[ls].mx[0] < inf && T[rs].mx[0] < inf) {
-        T[x].val = std::min(T[x].val, T[rs].mx[0] - T[ls].mx[1]);
-    }
-    T[x].mx[0] = std::min(T[ls].mx[0], T[rs].mx[0]);
-    T[x].mx[1] = std::max(T[ls].mx[1], T[rs].mx[1]);
-}
-
-int merge(int x, int y, int l, int r) {
-    if (!x || !y) {
-        return x + y;
-    }
-    if (l == r) {
-        return x;
-    }
-    T[x].ls = merge(T[x].ls, T[y].ls, l, mid);
-    T[x].rs = merge(T[x].rs, T[y].rs, mid + 1, r);
-    update(x);
-    return x;
-}
-
-int tot;
-
-void build(int &x, int l, int r, int p) {
-    x = ++tot;
-    T[x].mx[0] = T[x].mx[1] = p;
-    if (l == r) {
-        return;
-    }
-    if (p <= mid) {
-        build(T[x].ls, l, mid, p);
-    } else {
-        build(T[x].rs, mid + 1, r, p);
-    }
-}
-
-std::vector<int> vec[max_N * 2];
-
-int rt[max_N * 2];
-
-long long p = 1, q = 1;
-
-void dfs(int u) {
-    for (const int& v : vec[u]) {
-        dfs(v);
-        rt[u] = merge(rt[u], rt[v], 1, n);
-    }
-    int diff = T[rt[u]].val;
-    if (diff < inf) {
-        int np = sam.len[u] + diff;
-        int nq = diff;
-        if (p * nq < np * q) {
-            p = np;
-            q = nq;
+    for (int i = 1; i < TMP; ++ i){
+        for (int j = 0; j < K; ++ j){
+            for (int k = 0; k < 4; ++ k){
+                int nj = trans_to[j][k];
+                if (nj == -1){
+                    continue;
+                }
+                for (int u = 0; u < K; ++ u){
+                    int &w = trans1[i][nj][u];
+                    w += trans1[i - 1][j][u];
+                    w -= w >= moder ? moder : 0;
+                }
+            }
         }
     }
-}
-
-int main() {
-    scanf("%s", s);
-    n = strlen(s);
-    sam.init();
-    for (int i = 1; i <= n; ++i) {
-        int pos = sam.extend(s[i - 1] - 'a');
-        build(rt[pos], 1, n, i);
+    int sum = 0;
+    for (int i = 0; i < K; ++ i){
+        memset(cur, 0, sizeof(cur));
+        cur[i] = 1;
+        int cur_pow = 3;
+        for (auto u : fact){
+            memset(cur1, 0, sizeof(cur1));
+            int diff = u - cur_pow;
+            if (diff < TMP){
+                for (int j = 0; j < K; ++ j){
+                    for (int k = 0; k < K; ++ k){
+                        cur1[j] = (cur1[j] + 1ll * cur[k] * trans1[diff][j][k]) % moder;
+                    }
+                }
+            }
+            else{
+                for (int bit = 0; bit < BIT; ++ bit){
+                    memset(cur1, 0, sizeof(cur1));
+                    if (!(diff >> bit & 1)){
+                        continue;
+                    }
+                    for (int j = 0; j < K; ++ j){
+                        for (int k = 0; k < K; ++ k){
+                            cur1[j] = (cur1[j] + 1ll * cur[k] * trans[bit][j][k]) % moder;
+                        }
+                    }
+                    memcpy(cur, cur1, sizeof(cur1));
+                }
+            }
+            for (int j = 0; j < K; ++ j){
+                bool flag = true;
+                int x = j + (i << 6);
+                for (int k = 0; k < 3; ++ k){
+                    if (invalid[(x >> (k * 2)) & 255]){
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag){
+                    sum = (sum + 1ll * cur1[j] * phi[n / u]) % moder;
+                }
+            }
+            cur_pow = u;
+            memcpy(cur, cur1, sizeof(cur1));
+        }
     }
-    for (int i = 2; i <= sam.tot; ++i) {
-        vec[sam.par[i]].push_back(i);
+    for (int i = 1; i <= 3; ++ i){
+        if (n % i){
+            continue;
+        }
+        for (int j = 0; j < 1 << (i * 2); ++ j){
+            std::vector <int> tmp(8);
+            int x = j;
+            for (int k = 0; k < i; ++ k){
+                tmp[k] = x % 4;
+                x /= 4;
+            }
+            for (int k = i; k < 8; ++ k){
+                tmp[k] = tmp[k % i];
+            }
+            bool flag = true;
+            for (int k = 0; k < 4; ++ k){
+                int x = 0;
+                for (int u = k + 3; u >= k; -- u){
+                    x = x * 4 + tmp[u];
+                }
+                if (invalid[x]){
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag){
+                sum += phi[n / i];
+                sum -= sum >= moder ? moder : 0;
+            }
+        }
     }
-    dfs(sam.root);
-    auto g = std::__gcd(p, q);
-    p /= g;
-    q /= g;
-    printf("%lld/%lld\n", p, q);
+    sum = 1ll * sum * powermod(n, moder - 2) % moder;
+    printf("%d\n", sum);
     return 0;
 }
+```
