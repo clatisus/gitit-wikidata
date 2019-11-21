@@ -1,187 +1,190 @@
+
+https://github.com/clatisus/ACM-ICPC-Team-Archive/blob/master/template/Data_Structure/Link-Cut_Tree_Subtree-Size/lct.cpp
 ```
-#include <bits/stdc++.h>
+#include <cstdio>
+#include <algorithm>
+#include <queue>
+#include <vector>
+#include <map>
+#include <cstdlib>
+#include <cstring>
 
-const int moder = 998244353;
-const int N = 100010;
-const int M = 256;
-const int K = 64;
-const int BIT = 18;
-const int TMP = 10000;
-
-int powermod(int a, int exp){
-    int ret = 1;
-    for ( ; exp > 0; exp >>= 1){
-        if (exp & 1){
-            ret = 1ll * ret * a % moder;
-        }
-        a = 1ll * a * a % moder;
+template<typename T>
+inline void read(T &x) {
+    int c;
+    while (!isdigit(c = getchar())) {
     }
-    return ret;
+    x = c - '0';
+    while (isdigit(c = getchar())) {
+        x = x * 10 + c - '0';
+    }
 }
 
-int min[N], phi[N];
-std::vector <int> prime;
-bool invalid[M];
-int trans[BIT][K][K];
-int trans1[TMP][K][K];
-int trans_to[K][4];
-int cur[K], cur1[K];
+const int max_N = (int) 1e5 + 21;
 
-int main(){
-    phi[1] = 1;
-    for (int i = 2; i < N; ++ i){
-        if (!min[i]){
-            min[i] = i;
-            phi[i] = i - 1;
-            prime.push_back(i);
+using ptr = struct node*;
+
+struct node {
+    int val, dep, sum;
+    ptr p, ch[2];
+
+    node() = default;
+
+    void update() {
+        sum = ch[0]->sum + 1 + ch[1]->sum;
+    }
+
+    int cmp(const node& rhs) const {
+        return std::make_pair(val, dep) < std::make_pair(rhs.val, rhs.dep);
+    }
+
+    int d() {
+        if (p->ch[0] == this) {
+            return 0;
         }
-        for (auto u : prime){
-            if (i * u >= N) break;
-            min[i * u] = u;
-            if (i % u == 0){
-                phi[i * u] = phi[i] * (u - 1);
-                break;
-            }
-            phi[i * u] = phi[i] * u;
+        if (p->ch[1] == this) {
+            return 1;
+        }
+        return -1;
+    }
+
+    void set_ch(ptr x, int d) {
+        if (~d) {
+            ch[d] = x;
+        }
+        x->p = this;
+    }
+} pool[max_N];
+
+ptr null = pool, rt[max_N], last;
+
+void new_node(ptr x, int val, int dep) {
+    x->val = val;
+    x->dep = dep;
+    x->sum = 1;
+    x->p = x->ch[0] = x->ch[1] = null;
+}
+
+void rot(ptr x, ptr& rt) {
+    ptr y = x->p;
+    int d = x->d();
+    int dd = y->d();
+    y->p->set_ch(x, dd);
+    y->set_ch(x->ch[d ^ 1], d);
+    y->update();
+    x->set_ch(y, d ^ 1);
+    if (rt == y) {
+        rt = x;
+    }
+}
+
+void splay(ptr x, ptr& rt) {
+    for (; rt != x; rot(x, rt)) {
+        if (rt != x->p) {
+            rot(x->d() ^ x->p->d() ? x : x->p, rt);
         }
     }
-    int n, m;
-    scanf("%d%d", &n, &m);
-    std::vector <int> fact;
-    for (int i = 4; i <= n; ++ i){
-        if (n % i == 0){
-            fact.push_back(i);
+}
+
+void insert(ptr& x, ptr y) {
+    if (x == null) {
+        x = y;
+    } else {
+        int dir = x->cmp(*y);
+        insert(x->ch[dir], y);
+        x->ch[dir]->p = x;
+    }
+}
+// count pair <= (val, dep)
+int query(ptr x, int val, int dep) {
+    if (x == null) {
+        return 0;
+    } else {
+        last = x;
+    }
+    if (std::make_pair(x->val, x->dep) <= std::make_pair(val, dep)) {
+        return x->sum - x->ch[1]->sum + query(x->ch[1], val, dep);
+    } else {
+        return query(x->ch[0], val, dep);
+    }
+}
+
+int n, k, v[max_N], d[max_N], sz[max_N], mx[max_N];
+
+std::vector<int> vec[max_N];
+
+void dfs(int u) {
+    sz[u] = 1;
+    mx[u] = 0;
+    for (const auto& v : vec[u]) {
+        d[v] = d[u] + 1;
+        dfs(v);
+        sz[u] += sz[v];
+        if (sz[v] > sz[mx[u]]) {
+            mx[u] = v;
         }
     }
-    for (int i = 0; i < m; ++ i){
-        int x = 0;
-        std::vector <int> vec(4);
-        for (int j = 0; j < 4; ++ j){
-            scanf("%d", &vec[j]);
-        }
-        for (int j = 3; j >= 0; -- j){
-            x = x * 4 + vec[j];
-        }
-        invalid[x] = true;
+}
+
+using LL = long long;
+
+int vp[max_N], cnt;
+
+LL ans;
+
+void solve(int u) {
+    vp[++cnt] = u;
+    if (mx[u]) {
+        solve(mx[u]);
+        rt[u] = rt[mx[u]];
+    } else {
+        rt[u] = null;
     }
-    for (int i = 0; i < K; ++ i){
-        for (int j = 0; j < 4; ++ j){
-            int ni = i + (j << 6);
-            if (!invalid[i] && !invalid[ni]){
-                trans[0][i][ni / 4] = 1;
-                trans_to[i][j] = ni / 4;
-            }
-            else{
-                trans_to[i][j] = -1;
-            }
-        }
-    }
-    for (int u = 1; u < BIT; ++ u){
-        for (int k = 0; k < K; ++ k){
-            for (int i = 0; i < K; ++ i){
-                for (int j = 0; j < K; ++ j){
-                    trans[u][i][j] = (trans[u][i][j] + 1ll * trans[u - 1][i][k] * trans[u - 1][k][j]) % moder;
-                }
-            }
-        }
-    }
-    for (int i = 0; i < K; ++ i){
-        trans1[0][i][i] = 1;
-    }
-    for (int i = 1; i < TMP; ++ i){
-        for (int j = 0; j < K; ++ j){
-            for (int k = 0; k < 4; ++ k){
-                int nj = trans_to[j][k];
-                if (nj == -1){
-                    continue;
-                }
-                for (int u = 0; u < K; ++ u){
-                    int &w = trans1[i][nj][u];
-                    w += trans1[i - 1][j][u];
-                    w -= w >= moder ? moder : 0;
-                }
-            }
-        }
-    }
-    int sum = 0;
-    for (int i = 0; i < K; ++ i){
-        memset(cur, 0, sizeof(cur));
-        cur[i] = 1;
-        int cur_pow = 3;
-        for (auto u : fact){
-            memset(cur1, 0, sizeof(cur1));
-            int diff = u - cur_pow;
-            if (diff < TMP){
-                for (int j = 0; j < K; ++ j){
-                    for (int k = 0; k < K; ++ k){
-                        cur1[j] = (cur1[j] + 1ll * cur[k] * trans1[diff][j][k]) % moder;
-                    }
-                }
-            }
-            else{
-                for (int bit = 0; bit < BIT; ++ bit){
-                    memset(cur1, 0, sizeof(cur1));
-                    if (!(diff >> bit & 1)){
-                        continue;
-                    }
-                    for (int j = 0; j < K; ++ j){
-                        for (int k = 0; k < K; ++ k){
-                            cur1[j] = (cur1[j] + 1ll * cur[k] * trans[bit][j][k]) % moder;
-                        }
-                    }
-                    memcpy(cur, cur1, sizeof(cur1));
-                }
-            }
-            for (int j = 0; j < K; ++ j){
-                bool flag = true;
-                int x = j + (i << 6);
-                for (int k = 0; k < 3; ++ k){
-                    if (invalid[(x >> (k * 2)) & 255]){
-                        flag = false;
-                        break;
-                    }
-                }
-                if (flag){
-                    sum = (sum + 1ll * cur1[j] * phi[n / u]) % moder;
-                }
-            }
-            cur_pow = u;
-            memcpy(cur, cur1, sizeof(cur1));
-        }
-    }
-    for (int i = 1; i <= 3; ++ i){
-        if (n % i){
+    for (const auto& v : vec[u]) {
+        if (v == mx[u]) {
             continue;
         }
-        for (int j = 0; j < 1 << (i * 2); ++ j){
-            std::vector <int> tmp(8);
-            int x = j;
-            for (int k = 0; k < i; ++ k){
-                tmp[k] = x % 4;
-                x /= 4;
-            }
-            for (int k = i; k < 8; ++ k){
-                tmp[k] = tmp[k % i];
-            }
-            bool flag = true;
-            for (int k = 0; k < 4; ++ k){
-                int x = 0;
-                for (int u = k + 3; u >= k; -- u){
-                    x = x * 4 + tmp[u];
-                }
-                if (invalid[x]){
-                    flag = false;
-                    break;
-                }
-            }
-            if (flag){
-                sum += phi[n / i];
-                sum -= sum >= moder ? moder : 0;
+        int tmp = cnt + 1;
+        solve(v);
+        if (rt[u] != null) {
+            for (int i = tmp; i <= cnt; ++i) {
+                int w = vp[i];
+                ans += query(rt[u], 2 * ::v[u] - ::v[w], 2 * d[u] + k - d[w]);
+                splay(last, rt[u]);
+                ans -= query(rt[u], 2 * ::v[u] - ::v[w], -1);
+                splay(last, rt[u]);
             }
         }
+        for (int i = tmp; i <= cnt; ++i) {
+            int w = vp[i];
+            new_node(pool + w, ::v[w], d[w]);
+            insert(rt[u], pool + w);
+            splay(pool + w, rt[u]);
+        }
     }
-    sum = 1ll * sum * powermod(n, moder - 2) % moder;
-    printf("%d\n", sum);
-    return 0;
+    new_node(pool + u, v[u], d[u]);
+    insert(rt[u], pool + u);
+    splay(pool + u, rt[u]);
 }
+
+int main() {
+    read(n);
+    read(k);
+    for (int i = 1; i <= n; ++i) {
+        read(v[i]);
+    }
+    for (int i = 2, p; i <= n; ++i) {
+        read(p);
+        vec[p].push_back(i);
+    }
+    dfs(1);
+    solve(1);
+    printf("%lld\n", 2 * ans);
+}
+/*
+8 5
+8 4 2 2 6 4 2 2
+1 2 2 1 5 6 5
+ */
+
 ```
