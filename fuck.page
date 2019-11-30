@@ -1,190 +1,114 @@
-
-https://github.com/clatisus/ACM-ICPC-Team-Archive/blob/master/template/Data_Structure/Link-Cut_Tree_Subtree-Size/lct.cpp
 ```
-#include <cstdio>
-#include <algorithm>
-#include <queue>
-#include <vector>
-#include <map>
-#include <cstdlib>
-#include <cstring>
+#include <bits/stdc++.h>
 
-template<typename T>
-inline void read(T &x) {
-    int c;
-    while (!isdigit(c = getchar())) {
-    }
-    x = c - '0';
-    while (isdigit(c = getchar())) {
-        x = x * 10 + c - '0';
-    }
+using i128 = __int128;
+using ll = long long;
+
+std::map <ll, int> map;
+ll a, b, c, d;
+std::set <ll> set;
+
+i128 calc(i128 x){
+    return a * x * x * x + b * x * x + c * x + d;
 }
 
-const int max_N = (int) 1e5 + 21;
-
-using ptr = struct node*;
-
-struct node {
-    int val, dep, sum;
-    ptr p, ch[2];
-
-    node() = default;
-
-    void update() {
-        sum = ch[0]->sum + 1 + ch[1]->sum;
+void binary(ll left, ll right, bool dir){
+    if (left > right){
+        return;
     }
-
-    int cmp(const node& rhs) const {
-        return std::make_pair(val, dep) < std::make_pair(rhs.val, rhs.dep);
-    }
-
-    int d() {
-        if (p->ch[0] == this) {
-            return 0;
+    while (left < right){
+        ll mid = (left + right) / 2;
+        i128 ret = calc(mid);
+        if ((dir && ret >= 0) || (!dir && ret <= 0)){
+            right = mid;
         }
-        if (p->ch[1] == this) {
-            return 1;
-        }
-        return -1;
-    }
-
-    void set_ch(ptr x, int d) {
-        if (~d) {
-            ch[d] = x;
-        }
-        x->p = this;
-    }
-} pool[max_N];
-
-ptr null = pool, rt[max_N], last;
-
-void new_node(ptr x, int val, int dep) {
-    x->val = val;
-    x->dep = dep;
-    x->sum = 1;
-    x->p = x->ch[0] = x->ch[1] = null;
-}
-
-void rot(ptr x, ptr& rt) {
-    ptr y = x->p;
-    int d = x->d();
-    int dd = y->d();
-    y->p->set_ch(x, dd);
-    y->set_ch(x->ch[d ^ 1], d);
-    y->update();
-    x->set_ch(y, d ^ 1);
-    if (rt == y) {
-        rt = x;
-    }
-}
-
-void splay(ptr x, ptr& rt) {
-    for (; rt != x; rot(x, rt)) {
-        if (rt != x->p) {
-            rot(x->d() ^ x->p->d() ? x : x->p, rt);
+        else{
+            left = mid + 1;
         }
     }
-}
-
-void insert(ptr& x, ptr y) {
-    if (x == null) {
-        x = y;
-    } else {
-        int dir = x->cmp(*y);
-        insert(x->ch[dir], y);
-        x->ch[dir]->p = x;
-    }
-}
-// count pair <= (val, dep)
-int query(ptr x, int val, int dep) {
-    if (x == null) {
-        return 0;
-    } else {
-        last = x;
-    }
-    if (std::make_pair(x->val, x->dep) <= std::make_pair(val, dep)) {
-        return x->sum - x->ch[1]->sum + query(x->ch[1], val, dep);
-    } else {
-        return query(x->ch[0], val, dep);
+    if (calc(left) == 0){
+        set.insert(left);
     }
 }
 
-int n, k, v[max_N], d[max_N], sz[max_N], mx[max_N];
-
-std::vector<int> vec[max_N];
-
-void dfs(int u) {
-    sz[u] = 1;
-    mx[u] = 0;
-    for (const auto& v : vec[u]) {
-        d[v] = d[u] + 1;
-        dfs(v);
-        sz[u] += sz[v];
-        if (sz[v] > sz[mx[u]]) {
-            mx[u] = v;
+void solve(){
+    set.clear();
+    scanf("%lld%lld%lld%lld", &a, &b, &c, &d);
+    ll gcd = 0;
+    gcd = std::__gcd(gcd, a);
+    gcd = std::__gcd(gcd, b);
+    gcd = std::__gcd(gcd, c);
+    gcd = std::__gcd(gcd, d);
+    a /= gcd, b /= gcd, c /= gcd, d /= gcd;
+    if (a < 0){
+        a = -a, b = -b, c = -c, d = -d;
+    }
+    i128 da = 3 * a, db = 2 * b, dc = c;
+    i128 delta = db * db - 4 * da * dc;
+    const ll MAX = (ll) 3e9;
+    if (delta <= 0){
+        binary(-MAX, MAX, true);
+    }
+    else{
+        ll root = std::sqrt((long double) delta);
+        while ((i128) root * root < delta){
+            ++ root;
         }
-    }
-}
-
-using LL = long long;
-
-int vp[max_N], cnt;
-
-LL ans;
-
-void solve(int u) {
-    vp[++cnt] = u;
-    if (mx[u]) {
-        solve(mx[u]);
-        rt[u] = rt[mx[u]];
-    } else {
-        rt[u] = null;
-    }
-    for (const auto& v : vec[u]) {
-        if (v == mx[u]) {
-            continue;
-        }
-        int tmp = cnt + 1;
-        solve(v);
-        if (rt[u] != null) {
-            for (int i = tmp; i <= cnt; ++i) {
-                int w = vp[i];
-                ans += query(rt[u], 2 * ::v[u] - ::v[w], 2 * d[u] + k - d[w]);
-                splay(last, rt[u]);
-                ans -= query(rt[u], 2 * ::v[u] - ::v[w], -1);
-                splay(last, rt[u]);
+        ll x1 = (-db - root) / (2 * da), x2 = (-db + root) / (2 * da);
+        const int SHIFT = 10;
+        for (int i = -SHIFT; i <= SHIFT; ++ i){
+            if (calc(x1 + i) == 0){
+                set.insert(x1 + i);
+            }
+            if (calc(x2 + i) == 0){
+                set.insert(x2 + i);
             }
         }
-        for (int i = tmp; i <= cnt; ++i) {
-            int w = vp[i];
-            new_node(pool + w, ::v[w], d[w]);
-            insert(rt[u], pool + w);
-            splay(pool + w, rt[u]);
+        binary(-MAX, x1 - SHIFT - 1, true);
+        binary(x1 + SHIFT + 1, x2 - SHIFT - 1, false);
+        binary(x2 + SHIFT + 1, MAX, true);
+    }
+    if ((int) set.size() == 1 && a == 1){
+        ll x = *(set.begin());
+        if (std::abs(x) < (ll) 2e6){
+            ll a_real = 1, b_real = -3 * x, c_real = 3 * x * x, d_real = -x * x * x;
+            if (a == a_real && b == b_real && c == c_real && d == d_real){
+                map[x] += 3;
+                return;
+            }
         }
     }
-    new_node(pool + u, v[u], d[u]);
-    insert(rt[u], pool + u);
-    splay(pool + u, rt[u]);
+    for (auto x : set){
+        i128 na = a, nb = b + na * x, nc = c + nb * x;
+        if (na * x * x + nb * x + nc == 0){
+            map[x] += 2;
+        }
+        else{
+            map[x] += 1;
+        }
+    }
 }
 
-int main() {
-    read(n);
-    read(k);
-    for (int i = 1; i <= n; ++i) {
-        read(v[i]);
+int main(){
+    int n;
+    scanf("%d", &n);
+    for (int i = 0; i < n; ++ i){
+        solve();
     }
-    for (int i = 2, p; i <= n; ++i) {
-        read(p);
-        vec[p].push_back(i);
+    int max = 0;
+    ll value = 0;
+    for (auto u : map){
+        if (u.second > max){
+            max = u.second;
+            value = u.first;
+        }
     }
-    dfs(1);
-    solve(1);
-    printf("%lld\n", 2 * ans);
+    if (max == 0){
+        puts("NO");
+        return 0;
+    }
+    puts("YES");
+    printf("%lld %d\n", value, max);
+    return 0;
 }
-/*
-8 5
-8 4 2 2 6 4 2 2
-1 2 2 1 5 6 5
- */
-
 ```
