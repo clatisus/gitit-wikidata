@@ -1,114 +1,65 @@
 ```
 #include <bits/stdc++.h>
-
-using i128 = __int128;
-using ll = long long;
-
-std::map <ll, int> map;
-ll a, b, c, d;
-std::set <ll> set;
-
-i128 calc(i128 x){
-    return a * x * x * x + b * x * x + c * x + d;
-}
-
-void binary(ll left, ll right, bool dir){
-    if (left > right){
-        return;
-    }
-    while (left < right){
-        ll mid = (left + right) / 2;
-        i128 ret = calc(mid);
-        if ((dir && ret >= 0) || (!dir && ret <= 0)){
-            right = mid;
-        }
-        else{
-            left = mid + 1;
-        }
-    }
-    if (calc(left) == 0){
-        set.insert(left);
+ 
+void read(int &n){
+    n = 0;
+    char ch;
+    while (!isdigit(ch = getchar()))
+        ;
+    n = ch - '0';
+    while (isdigit(ch = getchar())){
+        n = n * 10 + ch - '0';
     }
 }
-
-void solve(){
-    set.clear();
-    scanf("%lld%lld%lld%lld", &a, &b, &c, &d);
-    ll gcd = 0;
-    gcd = std::__gcd(gcd, a);
-    gcd = std::__gcd(gcd, b);
-    gcd = std::__gcd(gcd, c);
-    gcd = std::__gcd(gcd, d);
-    a /= gcd, b /= gcd, c /= gcd, d /= gcd;
-    if (a < 0){
-        a = -a, b = -b, c = -c, d = -d;
-    }
-    i128 da = 3 * a, db = 2 * b, dc = c;
-    i128 delta = db * db - 4 * da * dc;
-    const ll MAX = (ll) 3e9;
-    if (delta <= 0){
-        binary(-MAX, MAX, true);
-    }
-    else{
-        ll root = std::sqrt((long double) delta);
-        while ((i128) root * root < delta){
-            ++ root;
+ 
+const int max_N = 1010;
+ 
+int n, l, k;
+char s[max_N * max_N];
+char ans[max_N][max_N];
+int cnt[300];
+ 
+int main () {
+    scanf("%d%d%d", &n, &l, &k);
+    scanf("%s", s);
+    std::sort(s, n * l + s);
+    for (int i = k; i < n; ++i) {
+        for (int j = 0; j < l; ++j) {
+            ans[i][j] = s[i * l + j];
         }
-        ll x1 = (-db - root) / (2 * da), x2 = (-db + root) / (2 * da);
-        const int SHIFT = 10;
-        for (int i = -SHIFT; i <= SHIFT; ++ i){
-            if (calc(x1 + i) == 0){
-                set.insert(x1 + i);
-            }
-            if (calc(x2 + i) == 0){
-                set.insert(x2 + i);
-            }
-        }
-        binary(-MAX, x1 - SHIFT - 1, true);
-        binary(x1 + SHIFT + 1, x2 - SHIFT - 1, false);
-        binary(x2 + SHIFT + 1, MAX, true);
     }
-    if ((int) set.size() == 1 && a == 1){
-        ll x = *(set.begin());
-        if (std::abs(x) < (ll) 2e6){
-            ll a_real = 1, b_real = -3 * x, c_real = 3 * x * x, d_real = -x * x * x;
-            if (a == a_real && b == b_real && c == c_real && d == d_real){
-                map[x] += 3;
-                return;
+    for (int i = 0; i < k; ++i) {
+        for (int j = 0; j < l; ++j) {
+            ++cnt[s[i * l + j]];
+        }
+    }
+    int begin = 0;
+    for (int i = 0; i < l; ++i) {
+        char t = 'a';
+        int now = cnt[t];
+        for (; now < k - begin; ++t, now += cnt[t]);
+        for (int j = k - 1; j >= begin; --j) {
+            while (!cnt[t]) --t;
+            ans[j][i] = t;
+            --cnt[t];
+        }
+        int end;
+        for (end = begin; ans[end][i] < ans[k - 1][i]; ++end);
+ 
+        for (int p = end - 1; p >= begin; --p) {
+            t = 'z';
+            for (int j = i + 1; j < l; ++j) {
+                while (!cnt[t]) --t;
+                ans[p][j] = t;
+                --cnt[t];
             }
         }
+ 
+        begin = end;
     }
-    for (auto x : set){
-        i128 na = a, nb = b + na * x, nc = c + nb * x;
-        if (na * x * x + nb * x + nc == 0){
-            map[x] += 2;
-        }
-        else{
-            map[x] += 1;
-        }
+    for (int i = 0; i < n; ++i) {
+        puts(ans[i]);
     }
-}
-
-int main(){
-    int n;
-    scanf("%d", &n);
-    for (int i = 0; i < n; ++ i){
-        solve();
-    }
-    int max = 0;
-    ll value = 0;
-    for (auto u : map){
-        if (u.second > max){
-            max = u.second;
-            value = u.first;
-        }
-    }
-    if (max == 0){
-        puts("NO");
-        return 0;
-    }
-    puts("YES");
-    printf("%lld %d\n", value, max);
     return 0;
 }
 ```
