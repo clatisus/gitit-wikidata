@@ -1,64 +1,51 @@
 ```
 #include <bits/stdc++.h>
- 
-void read(int &n){
-    n = 0;
-    char ch;
-    while (!isdigit(ch = getchar()))
-        ;
-    n = ch - '0';
-    while (isdigit(ch = getchar())){
-        n = n * 10 + ch - '0';
+
+using ll = long long;
+const int N = 100;
+
+int digit[N], digit1[N];
+
+void solve(){
+    ll x, y;
+    scanf("%lld%lld", &x, &y);
+    if (y == 0){
+        puts("Yes");
+        return;
     }
-}
- 
-const int max_N = 1010;
- 
-int n, l, k;
-char s[max_N * max_N];
-char ans[max_N][max_N];
-int cnt[300];
- 
-int main () {
-    scanf("%d%d%d", &n, &l, &k);
-    scanf("%s", s);
-    std::sort(s, n * l + s);
-    for (int i = k; i < n; ++i) {
-        for (int j = 0; j < l; ++j) {
-            ans[i][j] = s[i * l + j];
-        }
+    while (y % 2 == 0){
+        y /= 2;
     }
-    for (int i = 0; i < k; ++i) {
-        for (int j = 0; j < l; ++j) {
-            ++cnt[s[i * l + j]];
-        }
+    for (int i = 0; i < 32; ++ i){
+        digit[i] = x % 2;
+        x /= 2;
     }
-    int begin = 0;
-    for (int i = 0; i < l; ++i) {
-        char t = 'a';
-        int now = cnt[t];
-        for (; now < k - begin; ++t, now += cnt[t]);
-        for (int j = k - 1; j >= begin; --j) {
-            while (!cnt[t]) --t;
-            ans[j][i] = t;
-            --cnt[t];
-        }
-        int end;
-        for (end = begin; ans[end][i] < ans[k - 1][i]; ++end);
- 
-        for (int p = end - 1; p >= begin; --p) {
-            t = 'z';
-            for (int j = i + 1; j < l; ++j) {
-                while (!cnt[t]) --t;
-                ans[p][j] = t;
-                --cnt[t];
+    int dcnt = 0;
+    while (y){
+        digit1[dcnt ++] = y % 2;
+        y /= 2;
+    }
+    for (int i = 0; i + dcnt - 1 < 32; ++ i){
+        bool flag = true;
+        for (int j = 0; j < dcnt; ++ j){
+            if (digit[i + j] != digit1[j]){
+                flag = false;
+                break;
             }
         }
- 
-        begin = end;
+        if (flag){
+            puts("Yes");
+            return;
+        }
     }
-    for (int i = 0; i < n; ++i) {
-        puts(ans[i]);
+    puts("No");
+}
+
+int main(){
+    int test;
+    scanf("%d", &test);
+    while (test --){
+        solve();
     }
     return 0;
 }
