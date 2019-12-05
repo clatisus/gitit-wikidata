@@ -1,36 +1,145 @@
-```
+```c++
 #include <bits/stdc++.h>
 
-int main(){
-    int a, b;
-    scanf("%d%d", &a, &b);
-    if (a == b){
-        puts("0 / 1");
-        return 0;
+template<typename T>
+inline void read(T &x) {
+    int c;
+    while (!isdigit(c = getchar())) {
     }
-    if (a > b){
-        std::swap(a, b);
+    x = c - '0';
+    while (isdigit(c = getchar())) {
+        x = x * 10 + c - '0';
     }
-    int ans = 0;
-    for (int i = 0; i < b; ++ i){
-        int min1 = INT_MAX, min2 = INT_MAX;
-        for (int j = 0; j < a; ++ j){
-            min1 = std::min(min1, (b * j + i) % a);
-            min2 = std::min(min2, a - (b * j + i) % a);
-        }
-        if (min1 + 1 == min2){
-            ans = std::max(2 * min1 + 1, ans);
-        }
-        else if (min1 + 1 < min2){
-            ans = std::max(ans, 2 * (min1 + 1));
-        }
-        else{
-            ans = std::max(ans, 2 * min2);
+}
+
+using LL = long long;
+
+const int max_N = (int) 2e5 + 21;
+
+int n, w[max_N], Q[max_N], p[max_N], sz[max_N], mx[max_N], head[max_N], dfn[max_N], cnt, vp[max_N];
+
+LL d[max_N], ans;
+
+std::vector<int> vec[max_N];
+
+void dfs1(int u) {
+    sz[u] = 1;
+    mx[u] = 0;
+    for (const int &v : vec[u]) {
+        dfs1(v);
+        sz[u] += sz[v];
+        if (sz[mx[u]] < sz[v]) {
+            mx[u] = v;
         }
     }
-    int gcd = std::__gcd(2 * a - ans, 2 * a * b);
-    int x = (2 * a - ans) / gcd, y = 2 * a * b / gcd;
-    printf("%d / %d\n", x, y);
-    return 0;
+}
+
+void dfs2(int u, int c) {
+    vp[dfn[u] = ++cnt] = u;
+    if (mx[u]) {
+        dfs2(mx[u], c);
+    }
+    for (const int &v : vec[u]) {
+        if (dfn[v]) {
+            continue;
+        }
+        dfs2(v, v);
+    }
+}
+
+int seg[max_N * 4], tag[max_N * 4];
+
+#define ls(x) ((x) << 1)
+#define rs(x) (ls(x) | 1)
+#define mid ((l + r) >> 1)
+#define lch ls(x), l, mid
+#define rch rs(x), mid + 1, r
+
+inline void update(int x) {
+    seg[x] = std::min(seg[ls(x)], seg[rs(x)]);
+}
+
+inline void add_it(int x, int y) {
+    seg[x] += y;
+    tag[x] += y;
+}
+
+inline void down(int x) {
+    if (tag[x]) {
+        add_it(ls(x), tag[x]);
+        add_it(rs(x), tag[x]);
+        tag[x] = 0;
+    }
+}
+
+void build(int x = 1, int l = 1, int r = n) {
+    if (l == r) {
+        seg[x] = w[vp[l]];
+    } else {
+        build(lch);
+        build(rch);
+        update(x);
+    }
+}
+
+int qt;
+
+void access(int ql, int qr, int qa, int x = 1, int l = 1, int r = n) {
+    if (ql <= l && r <= qr) {
+        if (qa) {
+            add_it(x, qa);
+        } else {
+            qt = std::min(qt, seg[x]);
+        }
+    } else {
+        down(x);
+        if (ql <= mid) {
+            access(ql, qr, qa, lch);
+        }
+        if (qr > mid) {
+            access(ql, qr, qa, rch);
+        }
+        update(x);
+    }
+}
+
+int main() {
+    read(n);
+    read(w[1]);
+    ++n;
+    Q[1] = 1;
+    for (int i = 2; i <= n; ++i) {
+        read(d[i]);
+        read(p[i]);
+        vec[++p[i]].push_back(i);
+        read(w[i]);
+        Q[i] = i;
+    }
+    dfs1(1);
+    dfs2(1, 1);
+    std::sort(Q + 1, Q + 1 + n, [&](int x, int y) {
+        return d[x] > d[y];
+    });
+    build();
+    for (int i = 1; i <= n; ++i) {
+        int u = Q[i];
+        std::vector<std::pair<int, int>> tmp;
+        while (u) {
+            tmp.emplace_back(dfn[head[u]], dfn[u]);
+            u = p[head[u]];
+        }
+        qt = INT_MAX;
+        for (const auto& pr : tmp) {
+            access(pr.first, pr.second, 0);
+        }
+        if (qt) {
+            printf("%d %d\n", Q[i], qt);
+            ans += d[Q[i]] * qt;
+            for (const auto& pr : tmp) {
+                access(pr.first, pr.second, -qt);
+            }
+        }
+    }
+    printf("%lld\n", ans);
 }
 ```
