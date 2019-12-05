@@ -36,6 +36,7 @@ void dfs1(int u) {
 
 void dfs2(int u, int c) {
     vp[dfn[u] = ++cnt] = u;
+    head[u] = c;
     if (mx[u]) {
         dfs2(mx[u], c);
     }
@@ -133,7 +134,7 @@ int main() {
             access(pr.first, pr.second, 0);
         }
         if (qt) {
-            printf("%d %d\n", Q[i], qt);
+            // printf("%d %d\n", Q[i], qt);
             ans += d[Q[i]] * qt;
             for (const auto& pr : tmp) {
                 access(pr.first, pr.second, -qt);
@@ -142,4 +143,17 @@ int main() {
     }
     printf("%lld\n", ans);
 }
+/*
+ 9 6
+ 30 0 4
+ 40 9 2
+ 80 8 3
+ 20 9 2
+ 10 4 3
+ 70 5 8
+ 90 2 44
+ 50 0 6
+ 60 1 3
+
+ */
 ```
