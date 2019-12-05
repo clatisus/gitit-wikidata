@@ -12,11 +12,11 @@ int main(){
         std::swap(a, b);
     }
     int ans = 2 * a * b;
-    for (int i = 0; i < a; ++ i){
+    for (int i = 0; i < b; ++ i){
         int min1 = INT_MAX, min2 = INT_MAX;
-        for (int j = 0; j < b; ++ j){
-            min1 = std::min(min1, (a * j + i) % b);
-            min2 = std::min(min2, b - (a * j + i) % b);
+        for (int j = 0; j < a; ++ j){
+            min1 = std::min(min1, (b * j + i) % a);
+            min2 = std::min(min2, a - (b * j + i) % a);
         }
         if (min1 + 1 == min2){
             ans = std::min(2 * min1 + 1, ans);
