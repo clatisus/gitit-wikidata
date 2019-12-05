@@ -1,52 +1,39 @@
 ```
 #include <bits/stdc++.h>
 
-using ll = long long;
-const int N = 100;
+const int max_N = (int) 1e5 + 21;
 
-int digit[N], digit1[N];
+int n, m, next[max_N][26][2];
 
-void solve(){
-    ll x, y;
-    scanf("%lld%lld", &x, &y);
-    if (y == 0){
-        puts("Yes");
-        return;
-    }
-    while (y % 2 == 0){
-        y /= 2;
-    }
-    for (int i = 0; i < 32; ++ i){
-        digit[i] = x % 2;
-        x /= 2;
-    }
-    int dcnt = 0;
-    while (y){
-        digit1[dcnt ++] = y % 2;
-        y /= 2;
-    }
-    for (int i = 0; i + dcnt - 1 < 32; ++ i){
-        bool flag = true;
-        for (int j = 0; j < dcnt; ++ j){
-            if (digit[i + j] != digit1[j]){
-                flag = false;
-                break;
-            }
+char s[max_N], t[max_N];
+
+bool check(int st) {
+    for (int i = 1; i <= m; ++i) {
+        int c = s[i] - 'a';
+        if (next[st][c][st & 1] > n) {
+            return false;
         }
-        if (flag){
-            puts("Yes");
-            return;
-        }
+        st = next[st][c][st & 1] + 1;
     }
-    puts("No");
+    return true;
 }
 
-int main(){
-    int test;
-    scanf("%d", &test);
-    while (test --){
-        solve();
+int main() {
+    scanf("%s%s", s + 1, t + 1);
+    n = strlen(t + 1);
+    m = strlen(s + 1);
+    if (m > n || (n - m) % 2 == 1) {
+        puts("NO");
+        return 0;
     }
-    return 0;
+    for (int c = 0; c < 26; ++c) {
+        next[n + 1][c][0] = next[n + 1][c][1] = n + 1;
+    }
+    for (int i = n; i; --i) {
+        memcpy(next[i], next[i + 1], sizeof next[i + 1]);
+        next[i][t[i] - 'a'][i & 1] = i;
+    }
+    int c = s[1] - 'a';
+    puts(check(next[1][c][1]) ? "YES" : "NO");
 }
 ```
